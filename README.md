@@ -13,7 +13,7 @@ La sveglia SmartAlarm potrebbe indurre allo sviluppo dei seguenti sintomi:
 - Viso gonfio e pallido
 - Sonnolenza a lungo termine
 - Cattivo umore
-- Aggressività 
+- Sbalzi d'umore e aggressività 
 - Perdita di interesse nella vita (nei casi più estremi)
 
 Per evitare questi sintomi consigliamo caldamente di impostare la sveglia in modo da dormire un minimo di 8 ore per notte per non mettere in pericolo il prodotto, l'individuo e la comunità.
@@ -23,5 +23,5 @@ Passando alle cose serie, l'intero progetto si basa su una struttura formata da 
 ![main structure](/documentation/main_structure.png)
 
 ### Clock system (1 persona)
-Questo layer rappresenta la base operativa del progetto e ha il compito di gestire tutte le funzioni base del sistema tra cui data, ora, giorno della settimana, informazioni ambientali (temperatura e luce) e 
+Questo layer rappresenta la base operativa del progetto e ha il compito di gestire tutte informazioni basilari tra cui data, ora, giorno della settimana, informazioni ambientali (temperatura e luce) implementare un sistema di sveglie che, oltre ad avere le stesse caratteristiche delle sveglie normali, permette di lanciare e monitorare i minigiochi tramite il Activity launch system. 
 
