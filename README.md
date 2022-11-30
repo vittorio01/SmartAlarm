@@ -4,6 +4,7 @@ SmartAlarm è un progetto che prevede lo sviluppo di una sveglia intelligente in
 - I più furbi che spengono le sveglie inconsciamente nel sonno (tra cui anche me).
 - I più sonnolenti, che non riescono a svegliarsi neanche con una bomba atomica, che mettono 50 sveglie a distanza di 5 minuti in grado di disturbare qualsiasi persona nel raggio di 20 metri.
 - I più pigri che, una volta svegli, non riescono ad alzarsi dal letto e si riaddormentano dopo qualche secondo.
+
 Il progetto viene sviluppato per funzionare su una scheda di sviluppo Ti MSP432, dotata di un microcontrollore Arm Cortex M4, con il relativo BoosterPack.
 L'idea originale è quella di implementare nella sveglia, oltre le funzioni base di una normale sveglia, dei minigiochi/attività in grado di riattivare il più velocemente possibile l'attività cerebrale del mal capitato. 
 ## Avvertenze sull'utilizzo 
@@ -22,5 +23,5 @@ Passando alle cose serie, l'intero progetto si basa su una struttura formata da 
 ![main structure](/documentation/main_structure.png)
 
 ### Clock system (1 persona)
-Questo layer rappresenta la base operativa del progetto e ha il compito di gestire tutte le funzioni base del sistema.
+Questo layer rappresenta la base operativa del progetto e ha il compito di gestire tutte le funzioni base del sistema tra cui data, ora, giorno della settimana, informazioni ambientali (temperatura e luce) e 
 
