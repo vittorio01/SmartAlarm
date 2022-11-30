@@ -19,4 +19,8 @@ Per evitare questi sintomi consigliamo caldamente di impostare la sveglia in mod
 ## Linee guida per lo sviluppo 
 
 Passando alle cose serie, l'intero progetto si basa su una struttura formata da due layer principali: uno per la gestione delle funzioni principali della sveglia e uno che rappresenta i minigiochi che possono essere attivati dalla sveglia. 
+![main structure](/documentation/main_structure.png)
+
+### Clock system (1 persona)
+Questo layer rappresenta la base operativa del progetto e ha il compito di gestire tutte le funzioni base del sistema.
 
