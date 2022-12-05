@@ -51,7 +51,7 @@ Il menù impostazioni viene utilizzato per la modifica delle informazioni base e
 Idee per la realizzazione:
 - Sarebbe molto soddisfacente poter scorrere fra le impostazioni utilizzanto il pad analogico a sinistra e selezionare l'opzione tramite uno dei due tasti a destra 
 - Alcune impostazioni utili potrebbero modificare altri aspetti della sveglia come il volume delle suonerie
-
+- Quando l'alimentazione viene a mancare il menu dovrebbe essere lanciato subito dopo all'avvio successivo per impostare tutte le informazioni perse.
 ### Sottomenù sveglie 
 
 Questo sottomenu viene dedicato interamente alla gestione delle sveglie. Per la realizzazione si potrebbe optare per una versione semplice che contiene un numero predefinito di sveglie oppure una versione più complessa che da la possibilità di assegnarne un numero arbitrario.
@@ -74,3 +74,55 @@ Idee per la realizzazione:
 <p align="center"> 
     <img width="200" src="/documentation/game_launch.png" alt="Game launch">
 </p>
+
+- Il sistema dovrebbe inoltre verificare l'esito dell'esecuzione dei minigames ed eseguire operazioni in caso di esito negativo. Ad esempio, lanciare un altra attività nel caso in cui quella precedente restituisca uno stato di inattività .
+
+## Ringtones system 
+
+Questo layer si occupa semplicemente della gestione e dell'avvio delle suonerie. Le suonerie vengono ripodotte tramite il buzzer integrato e possono essere di diversa durata.
+
+Idee per l'implementazione:
+
+- Su internet si trovano molti progetti per la riproduzione di suonerie. Una buona idea sarebbe quella di rappresentare le suonerie come array contenenti toni, che vengono riporodotti in serie ad intervalli prestabiliti (tipo 100ms)
+
+- Sempre su internet si trovano moltissime suonerie già create precedentemente (l'ideale per non perdere tempo a scrivere manualmente i toni)
+
+### Activities
+
+Ogni attività viene concretamente realizzata e impacchettata come una funzione che viene lanciata dall'activity launch system. Le funzioni possono utilizzare tutti i disositivi hardware della scheda con alcune restrizioni (il sistema RTC e uno dei timer devono rimanere inalterati per il corretto funzionamento del clock system). Le funzioni devono ritornare un valore prestabilito per segnalare al clock system come è stata eseguita l'attività:
+ 
+- Completa esecuzione, nel caso in cui l'attività è stata eseguita correttamente 
+- Inattivo, nel caso l'utente non reagisce agli stimoli
+- Annullato, nel caso in cui all'utente non piace il gioco
+
+Le attività possono essere di qualunque tipo (devono portare l'utente a svegliarsi completamente invece di farlo riaddormentare di nuovo). Alcune idee possono essere:
+
+- snake 
+- risoluzione di operazioni algebriche 
+- ...
+- Non lo so non mi vengono alte idee
+
+# Struttura del progetto (ancora da perfezionare)
+La programmazione, dato che deve essere composta da più parti, deve essere separata in più files. Nel progetto Github si trovano diverse sottocartelle dedicate allo sviluppo delle varie sezioni:
+
+- ![activities](/activities) contiene tutti i minigiochi (un singolo file contiene un minigioco dedicato), che vengono registrati in un file games, che contiene tutti i riferimenti alle funzioni (ancora da perfezionare) e l'activity launch system in un file dedicato.
+
+- ![ringtones](/ringtones) contiene il sistema per la gestione delle suonerie e le suonerie stesse
+
+- Il file ![clock_system.ino](/clock_system.ino) contiene l'intero layer dedicato alla gestione dell'intero sistema ed è il file che deve effettivamente essere mandato in compilazione (tutti i moduli hanno un file ".h", che devono essere aggiunti nel codice principale tramite #import)
+
+- Il file ![activity_system_launcher.cpp](/activities/activity_system_launcher.cpp) deve contenere l'implementazione delle seguenti funzioni:
+    * `state` è un tipo di dato definito tramite 
+        `typedef state enum {RUNNING, USER_INACTIVE, TASK_COMPLETED, TASK_CLOSED, UNDEFINED}`
+    * `state launch_game()` per lanciare casualmente un minigioco. La funzione tiene occupato il microcontrollore fino al suo completamento e restituisce un esito.
+    * `state get_activity_state()` restituisce lo stato attuale dell'attività in esecuzione o l'ultimo stato generato.
+    
+- Il file ![ringtones.cpp](/ringtones/ringtones.cpp) deve contenere l'implementazione delle seguenti funzioni:
+    * `void start_ringtone()` per lanciare casualmente una suoneria. La funzione, una volta che viene lanciata, tiene occupato il processore riproducendo la suoneria ciclicamente fino a quando non viene invocata la funzione `void start_ringtone(int ringtone)`.
+    * `void start_ringtone(int ringtone)` per lanciare una suoneria specifica. L'esecuzione rimane la stessa di `void start_ringtone()`.
+    * `void stop_ringtone()` per fermare a suoneria attualmente in riproduzione. 
+    * `int get_ringtones_number()` restituisce il numero di suonerie registrate.
+    
+Il clock system, quando deve dialogare con gli altri moduli, richiama semplicemente le funzioni implementate nei files ![ringtones.cpp](/ringtones/ringtones.cpp) e ![activity_system_launcher.cpp](/activities/activity_system_launcher.cpp). 
+
+Dato che i moduli secondari possono tenere occupata la cpu per molto tempo, il clock system deve utilizzare un timer e relativo interrupt per eseguire eventuali poerazioni di background come la verifica della corretta esecuzione delle attività.  
