@@ -21,15 +21,21 @@ Per evitare questi sintomi consigliamo caldamente di impostare la sveglia in mod
 
 Passando alle cose serie, l'intero progetto si basa su una struttura formata da due layer principali: uno per la gestione delle funzioni principali della sveglia e uno che rappresenta i minigiochi che possono essere attivati dalla sveglia. 
 
-![main structure](/documentation/main_structure.png)
-
+<p align="center">
+    <img width="200" src="/documentation/main_structure.png" alt="System structure">
+</p>
 ### Clock system (1 persona)
 Questo layer rappresenta la base operativa del progetto e ha il compito di gestire tutte informazioni basilari tra cui data, ora, giorno della settimana, informazioni ambientali (temperatura e luce) implementare un sistema di sveglie che, oltre ad avere le stesse caratteristiche delle sveglie normali, permette di lanciare e monitorare i minigiochi tramite l'Activity launch system. Il clock system gestisce, dal punto di vista dell'utente, due menu principali: uno dedicato alla visualizzazione delle informazioni e uno per la modifica delle impostazioni. 
 
 * Schermata principale 
   La schermata principale viene visualizzata ogni volta che la sveglia non deve eseguire altre operazioni. Come una normale sveglia, questa schermata deve rappresentare alcune informazioni necessarie (data, ora, giorno della settimana,...) e alcune opzionali per rendere il tutto più figo (temperatura, giorno/notte,...). Il desing può essere scelto liberamente dal programmatore assegnato (per favore fallo bello e stiloso).
+<p align="center">
+    <img width="200" src="/documentation/main.png" alt="Main panel">
+    Esempio Scemo
+</p>
+
 * Menu impostazioni
   Il menu impostazioni viene utilizzato per la modifica delle informazioni base e l'assegnazione delle sveglie. 
-  ![main panel](/documentation/main.png)
-
+  
+  
 
