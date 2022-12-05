@@ -111,7 +111,7 @@ La programmazione, dato che deve essere composta da più parti, deve essere sepa
 
 - La cartella ![Libraries](/Libraries) contiene eventuali librerie utilizzate dal clock system. Nelle cartelle ![ringtones](/ringtones) e ![activities](/activities) sono presenti altre sottocartelle dedicate
 
-- Il file ![clock_system.ino](/clock_system.ino) contiene l'intero layer dedicato alla gestione dell'intero sistema ed è il file che deve effettivamente essere mandato in compilazione (tutti i moduli hanno un file ".h", che devono essere aggiunti nel codice principale tramite #import)
+- Il file ![Smart_Alarm.ino](/Smart_Alarm.ino) contiene l'intero layer dedicato alla gestione dell'intero sistema ed è il file che deve effettivamente essere mandato in compilazione (tutti i moduli hanno un file ".h", che devono essere aggiunti nel codice principale tramite #import)
 
 - Il file ![activity_system_launcher.cpp](/activities/activity_system_launcher.cpp) deve contenere l'implementazione delle seguenti funzioni:
     * `state` è un tipo di dato definito tramite 
