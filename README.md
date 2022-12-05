@@ -105,9 +105,11 @@ Le attività possono essere di qualunque tipo (devono portare l'utente a sveglia
 # Struttura del progetto (ancora da perfezionare)
 La programmazione, dato che deve essere composta da più parti, deve essere separata in più files. Nel progetto Github si trovano diverse sottocartelle dedicate allo sviluppo delle varie sezioni:
 
-- ![activities](/activities) contiene tutti i minigiochi (un singolo file contiene un minigioco dedicato), che vengono registrati in un file games, che contiene tutti i riferimenti alle funzioni (ancora da perfezionare) e l'activity launch system in un file dedicato.
+- La cartella ![activities](/activities) contiene tutti i minigiochi (un singolo file contiene un minigioco dedicato), che vengono registrati in un file games, che contiene tutti i riferimenti alle funzioni (ancora da perfezionare) e l'activity launch system in un file dedicato.
 
-- ![ringtones](/ringtones) contiene il sistema per la gestione delle suonerie e le suonerie stesse
+- La cartella ![ringtones](/ringtones) contiene il sistema per la gestione delle suonerie e le suonerie stesse
+
+- La cartella ![Libraries](/Libraries) contiene eventuali librerie utilizzate dal clock system. Nelle cartelle ![ringtones](/ringtones) e ![activities](/activities) sono presenti altre sottocartelle dedicate
 
 - Il file ![clock_system.ino](/clock_system.ino) contiene l'intero layer dedicato alla gestione dell'intero sistema ed è il file che deve effettivamente essere mandato in compilazione (tutti i moduli hanno un file ".h", che devono essere aggiunti nel codice principale tramite #import)
 
