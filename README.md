@@ -117,13 +117,12 @@ La programmazione, dato che deve essere composta da più parti, deve essere sepa
     * `state` è un tipo di dato definito tramite 
         `typedef state enum {RUNNING, USER_INACTIVE, TASK_COMPLETED, TASK_CLOSED, UNDEFINED}`
     * `state launch_game()` per lanciare casualmente un minigioco. La funzione tiene occupato il microcontrollore fino al suo completamento e restituisce un esito.
-    * `state get_activity_state()` restituisce lo stato attuale dell'attività in esecuzione o l'ultimo stato generato.
-    
 - Il file ![ringtones.cpp](/ringtones/ringtones.cpp) deve contenere l'implementazione delle seguenti funzioni:
-    * `void start_ringtone()` per lanciare casualmente una suoneria. La funzione, una volta che viene lanciata, la suoneria viene riprodotta ciclicamente fino a quando non viene invocata la funzione `void start_ringtone(int ringtone)`.
-    * `void start_ringtone(int ringtone)` per lanciare una suoneria specifica. L'esecuzione rimane la stessa di `void start_ringtone()`.
+    * `void start_ringtone(int piezoPin)` per lanciare casualmente una suoneria. La funzione, una volta che viene lanciata, la suoneria viene riprodotta ciclicamente fino a quando non viene invocata la funzione `void start_ringtone(int ringtone)`.
+    * `bool start_ringtone(int piezoPin,int ringtone)` per lanciare una suoneria specifica. L'esecuzione rimane la stessa di `void start_ringtone() ma restituisce 'false' in caso di errore
     * `void stop_ringtone()` per fermare a suoneria attualmente in riproduzione. 
     * `int get_ringtones_number()` restituisce il numero di suonerie registrate.
+    * 'char* get_ringtone_description(int ringtone)' restituisce una stringa con le informazioni della suoneria
     
 Il clock system, quando deve dialogare con gli altri moduli, richiama semplicemente le funzioni implementate nei files ![ringtones.cpp](/src/ringtones/ringtones.cpp) e ![activity_system_launcher.cpp](/src/activities/activity_system_launcher.cpp). 
   
