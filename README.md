@@ -105,26 +105,25 @@ Le attività possono essere di qualunque tipo (devono portare l'utente a sveglia
 # Struttura del progetto (ancora da perfezionare)
 La programmazione, dato che deve essere composta da più parti, deve essere separata in più files. Nel progetto Github si trovano diverse sottocartelle dedicate allo sviluppo delle varie sezioni:
 
-- La cartella ![activities](/activities) contiene tutti i minigiochi (un singolo file contiene un minigioco dedicato), che vengono registrati in un file games, che contiene tutti i riferimenti alle funzioni (ancora da perfezionare) e l'activity launch system in un file dedicato.
+- La cartella ![activities](/src/activities) contiene tutti i minigiochi (un singolo file contiene un minigioco dedicato), che vengono registrati in un file games, che contiene tutti i riferimenti alle funzioni (ancora da perfezionare) e l'activity launch system in un file dedicato.
 
-- La cartella ![ringtones](/ringtones) contiene il sistema per la gestione delle suonerie e le suonerie stesse
+- La cartella ![ringtones](/src/ringtones) contiene il sistema per la gestione delle suonerie e le suonerie stesse
 
-- La cartella ![Libraries](/Libraries) contiene eventuali librerie utilizzate dal clock system. Nelle cartelle ![ringtones](/ringtones) e ![activities](/activities) sono presenti altre sottocartelle dedicate
+- La cartella ![Libraries](/src/Libraries) contiene eventuali librerie utilizzate dal clock system. Nelle cartelle ![ringtones](/src/ringtones) e ![activities](/activities) sono presenti altre sottocartelle dedicate
 
-- Il file ![Smart_Alarm.ino](/Smart_Alarm.ino) contiene l'intero layer dedicato alla gestione dell'intero sistema ed è il file che deve effettivamente essere mandato in compilazione (tutti i moduli hanno un file ".h", che devono essere aggiunti nel codice principale tramite #import)
+- Il file ![SmartAlarm.ino](/SmartAlarm.ino) contiene l'intero layer dedicato alla gestione dell'intero sistema ed è il file che deve effettivamente essere mandato in compilazione (tutti i moduli hanno un file ".h", che devono essere aggiunti nel codice principale tramite #import)
 
-- Il file ![activity_system_launcher.cpp](/activities/activity_system_launcher.cpp) deve contenere l'implementazione delle seguenti funzioni:
+- Il file ![activity_system_launcher.cpp](/src/activities/activity_system_launcher.cpp) deve contenere l'implementazione delle seguenti funzioni:
     * `state` è un tipo di dato definito tramite 
         `typedef state enum {RUNNING, USER_INACTIVE, TASK_COMPLETED, TASK_CLOSED, UNDEFINED}`
     * `state launch_game()` per lanciare casualmente un minigioco. La funzione tiene occupato il microcontrollore fino al suo completamento e restituisce un esito.
     * `state get_activity_state()` restituisce lo stato attuale dell'attività in esecuzione o l'ultimo stato generato.
     
 - Il file ![ringtones.cpp](/ringtones/ringtones.cpp) deve contenere l'implementazione delle seguenti funzioni:
-    * `void start_ringtone()` per lanciare casualmente una suoneria. La funzione, una volta che viene lanciata, tiene occupato il processore riproducendo la suoneria ciclicamente fino a quando non viene invocata la funzione `void start_ringtone(int ringtone)`.
+    * `void start_ringtone()` per lanciare casualmente una suoneria. La funzione, una volta che viene lanciata, la suoneria viene riprodotta ciclicamente fino a quando non viene invocata la funzione `void start_ringtone(int ringtone)`.
     * `void start_ringtone(int ringtone)` per lanciare una suoneria specifica. L'esecuzione rimane la stessa di `void start_ringtone()`.
     * `void stop_ringtone()` per fermare a suoneria attualmente in riproduzione. 
     * `int get_ringtones_number()` restituisce il numero di suonerie registrate.
     
-Il clock system, quando deve dialogare con gli altri moduli, richiama semplicemente le funzioni implementate nei files ![ringtones.cpp](/ringtones/ringtones.cpp) e ![activity_system_launcher.cpp](/activities/activity_system_launcher.cpp). 
-
-Dato che i moduli secondari possono tenere occupata la cpu per molto tempo, il clock system deve utilizzare un timer e relativo interrupt per eseguire eventuali poerazioni di background come la verifica della corretta esecuzione delle attività.  
+Il clock system, quando deve dialogare con gli altri moduli, richiama semplicemente le funzioni implementate nei files ![ringtones.cpp](/src/ringtones/ringtones.cpp) e ![activity_system_launcher.cpp](/src/activities/activity_system_launcher.cpp). 
+  
