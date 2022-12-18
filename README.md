@@ -42,7 +42,7 @@ Alcune idee per la realizzazione:
   
 - La retroilluminazione del display potrebbe dare fastidio durante i periodi notturni e consumare energia. Sarebbe carino trovare un sistema per tenere accesa la retroilluminazione del display solo quando il dispositivo capisce quanto viene utilizzato, tipo alla pressione di un tasto o alla ricezione di un  movimento
   
-- Qualche persona poco intelligente potrebbe lasciare la sveglia sottosopra. Ricordate come il professore ha implementato l'accellerometro? Bene ci siamo capiti
+- Qualche persona poco intelligente potrebbe lasciare la sveglia sottosopra. Ricordate come il professore ha implementato l'accelerometro? Bene ci siamo capiti
 
 ## Menù impostazioni
 
@@ -52,6 +52,7 @@ Idee per la realizzazione:
 - Sarebbe molto soddisfacente poter scorrere fra le impostazioni utilizzanto il pad analogico a sinistra e selezionare l'opzione tramite uno dei due tasti a destra 
 - Alcune impostazioni utili potrebbero modificare altri aspetti della sveglia come il volume delle suonerie
 - Quando l'alimentazione viene a mancare il menu dovrebbe essere lanciato subito dopo all'avvio successivo per impostare tutte le informazioni perse.
+
 ### Sottomenù sveglie 
 
 Questo sottomenu viene dedicato interamente alla gestione delle sveglie. Per la realizzazione si potrebbe optare per una versione semplice che contiene un numero predefinito di sveglie oppure una versione più complessa che da la possibilità di assegnarne un numero arbitrario.
@@ -69,7 +70,8 @@ Il lancio delle attività corrisponde effettivamente all'avvio delle funzioni sp
 Idee per la realizzazione:
 
 - Dal punto di vista della programmazione un'idea efficente potrebbe essere quella di inserire un array di puntatori a funzioni in cui ogni campo punta ala funzione di un'attività specifica. In questo modo l'interfaccia deve solamente sorteggiare un indice casuale dell'array e lanciare la funzione corrispondente. 
-- l'attività, dato che viene lanciata subito dopo all'attivazione di una sveglia, deve avviarsi una volta che l'utente è pronto per giocare. Un'idea potrebbe essere quella di visualizzare una schermata di attesa dedicata e di avviare il gioco alla pressione di un tasto.
+- l'attività, dato che viene lanciata subito dopo all'attivazione di una sveglia, deve avviarsi una volta che l'utente è pronto per giocare. Un'idea potrebbe essere quella di visualizzare una schermata di attesa dedicata e di avviare il gioco alla pressione di un tasto. 
+Da un punto di vista pratico, il sistema casuale per il lancio dell'attività dovrebbe essere implementato separatamente rispetto alla schermata di attesa.
 
 <p align="center"> 
     <img width="200" src="/documentation/game_launch.png" alt="Game launch">
@@ -79,7 +81,7 @@ Idee per la realizzazione:
 
 ## Ringtones system 
 
-Questo layer si occupa semplicemente della gestione e dell'avvio delle suonerie. Le suonerie vengono ripodotte tramite il buzzer integrato e possono essere di diversa durata.
+Questo layer si occupa semplicemente della gestione e dell'avvio delle suonerie. Le suonerie vengono riprodotte in modo ciclico tramite il buzzer integrato e possono essere di diversa durata.
 
 Idee per l'implementazione:
 
@@ -102,27 +104,30 @@ Le attività possono essere di qualunque tipo (devono portare l'utente a sveglia
 - ...
 - Non lo so non mi vengono alte idee
 
-# Struttura del progetto (ancora da perfezionare)
-La programmazione, dato che deve essere composta da più parti, deve essere separata in più files. Nel progetto Github si trovano diverse sottocartelle dedicate allo sviluppo delle varie sezioni:
+# Struttura del progetto
+La programmazione, dato che deve essere composta da più parti, deve essere separata in più files. Le cartelle ![activities](/modules/activities_launcher) e ![ringtones](/modules/ringtones_manager) contengono la programmazione dell'activities system launcher e del ringtones manager, che verranno implementati come delle librerie da aggiungere al programma principale.
+Nel progetto Github si trovano diverse sottocartelle dedicate allo sviluppo delle varie sezioni:
 
-- La cartella ![activities](/src/activities) contiene tutti i minigiochi (un singolo file contiene un minigioco dedicato), che vengono registrati in un file games, che contiene tutti i riferimenti alle funzioni (ancora da perfezionare) e l'activity launch system in un file dedicato.
+- La cartella ![activities](/modules/activities_launcher) contiene tutti i minigiochi (un singolo file contiene un minigioco dedicato), che vengono registrati in un file games, che contiene tutti i riferimenti alle funzioni (ancora da perfezionare) e l'activity launch system in un file dedicato.
 
-- La cartella ![ringtones](/src/ringtones) contiene il sistema per la gestione delle suonerie e le suonerie stesse
+- La cartella ![ringtones](/modules/ringtones_manager) contiene il sistema per la gestione delle suonerie e le suonerie stesse
 
-- La cartella ![Libraries](/src/Libraries) contiene eventuali librerie utilizzate dal clock system. Nelle cartelle ![ringtones](/src/ringtones) e ![activities](/activities) sono presenti altre sottocartelle dedicate
+- La cartella ![lib](/lib) contiene eventuali librerie utilizzate dal clock system. Nelle cartelle ![ringtones](/modules/ringtones_manager) e ![activities](/modules/activities_launcher) sono presenti altre sottocartelle dedicate
 
-- Il file ![SmartAlarm.ino](/SmartAlarm.ino) contiene l'intero layer dedicato alla gestione dell'intero sistema ed è il file che deve effettivamente essere mandato in compilazione (tutti i moduli hanno un file ".h", che devono essere aggiunti nel codice principale tramite #import)
+- Il file ![main.c](/main.c) contiene l'intero layer dedicato alla gestione dell'intero sistema ed è il file che deve effettivamente essere mandato in compilazione (tutti i moduli hanno un file ".h", che devono essere aggiunti nel codice principale tramite #include)
 
-- Il file ![activity_system_launcher.cpp](/src/activities/activity_system_launcher.cpp) deve contenere l'implementazione delle seguenti funzioni:
+- Il file ![activities.cpp](/modules/activities_launcher/activities.cpp) deve contenere l'implementazione delle seguenti funzioni:
     * `state` è un tipo di dato definito tramite 
         `typedef state enum {RUNNING, USER_INACTIVE, TASK_COMPLETED, TASK_CLOSED, UNDEFINED}`
     * `state launch_game()` per lanciare casualmente un minigioco. La funzione tiene occupato il microcontrollore fino al suo completamento e restituisce un esito.
-- Il file ![ringtones.cpp](/ringtones/ringtones.cpp) deve contenere l'implementazione delle seguenti funzioni:
+- Il file ![ringtones.cpp](/modules/ringtones_manager/ringtones.cpp) deve contenere l'implementazione delle seguenti funzioni:
     * `void start_ringtone(unsigned int piezoPin)` per lanciare casualmente una suoneria. La funzione, una volta che viene lanciata, la suoneria viene riprodotta ciclicamente fino a quando non viene invocata la funzione `void start_ringtone(int ringtone)`.
     * `bool start_ringtone(unsigned int piezoPin,unsigned int ringtone)` per lanciare una suoneria specifica. L'esecuzione rimane la stessa di `void start_ringtone()` ma restituisce `false` in caso di errore
     * `void stop_ringtone()` per fermare a suoneria attualmente in riproduzione. 
     * `int get_ringtones_number()` restituisce il numero di suonerie registrate.
     * `char* get_ringtone_description(unsigned int ringtone)` restituisce una stringa con le informazioni della suoneria
-    
-Il clock system, quando deve dialogare con gli altri moduli, richiama semplicemente le funzioni implementate nei files ![ringtones.cpp](/src/ringtones/ringtones.cpp) e ![activity_system_launcher.cpp](/src/activities/activity_system_launcher.cpp). 
+
+Dato che CCS non permette di utilizzare `bool` come tipo di dato, nelle cartelle lib di tutte le sezioni del progetto è presente una libreria che definisce questo tipo di dato.
+
+Il clock system, quando deve dialogare con gli altri moduli, richiama semplicemente le funzioni implementate nei files ![ringtones.cpp](/modules/ringtones_manager/ringtones.h) e ![activities.cpp](/modules/activities_launcher/activities.h). 
   
