@@ -1,8 +1,19 @@
 #include "lib/stdbool.h"
+#include <ti/devices/msp432p4xx/inc/msp.h>
+#include <ti/devices/msp432p4xx/driverlib/driverlib.h>
 
 #ifndef _SMARTALARM_RINGTONES_
 #define _SMARTALARM_RINGTONES_
 
+#define BUZZER_PORT     GPIO_PORT_P2
+#define BUZZER_PIN      GPIO_PIN7
+#define DEFAULT_VOLUME  25
+
+#define PWM_CAPTURE_COMPARE_REGISTER            TIMER_A_CAPTURECOMPARE_REGISTER_4
+#define PWM_CAPTURE_COMPARE_REGISTER_INTERRUPT  TIMER_A_CCIE_CCR3_INTERRUPT_DISABLE
+#define PWM_TIMER                               TIMER_A0_BASE
+#define DURATION_TIMER                          TIMER_A1_BASE
+#define DUR_CAPTURE_COMPARE_REGISTER_INTERRUPT  TIMER_A_CCIE_CCR0_INTERRUPT_ENABLE
 //definition for note pitches 
 #define NOTE_B0  31
 #define NOTE_C1  33
@@ -103,11 +114,11 @@
 #define EIGHT_NOTE          WHOLE_NOTE/8 
 #define EIGHT_DOTTED_NOTE   WHOLE_NOTE/8 + WHOLE_NOTE/16 
 
-void startRandomRingtone(unsigned int piezoPin);
-bool startSpecifiedRingtone(unsigned int piezoPin, unsigned int ringtone);
+void startRandomRingtone(unsigned const int piezoPin);
+bool startSpecifiedRingtone(unsigned const int piezoPin, unsigned const int ringtone);
 void stopRingtone();
 
-const char* getRingtoneDescription(unsigned int ringtone);
+const char* getRingtoneDescription(unsigned const int ringtone);
 unsigned int getRingtonesNumber();
 
 #define NOKIA_TONES_NUMBER 14
@@ -120,20 +131,19 @@ const int nokia_ringtone[NOKIA_TONES_NUMBER*2]=
 
 #define RINGTONES_NUMBER 1
 
-/*
 extern const int* ringtones_tones[RINGTONES_NUMBER];
 extern const unsigned int ringtones_durations[RINGTONES_NUMBER];
 extern const char* ringtones_descriptions[RINGTONES_NUMBER];
-*/
-
 
 bool ring_on;
 unsigned int currentTone;
 unsigned int selectedRingtone;
 unsigned int selectedRingtoneDuration;
-unsigned int selectedPiezoPin;
 
+Timer_A_CompareModeConfig compareConfig_PWM;
 
+Timer_A_UpModeConfig upConfig_PWM;
+Timer_A_UpModeConfig upConfig_DUR;
 
 #endif /*_SMARTALARM_RINGTONES_*/
 
