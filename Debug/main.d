@@ -19,11 +19,11 @@ main.obj: /home/vittorio/ti/ccs1210/ccs/ccs_base/arm/include/CMSIS/core_cm4.h
 main.obj: /home/vittorio/ti/ccs1210/ccs/ccs_base/arm/include/CMSIS/cmsis_compiler.h
 main.obj: /home/vittorio/ti/ccs1210/ccs/ccs_base/arm/include/CMSIS/cmsis_ccs.h
 main.obj: /home/vittorio/ti/ccs1210/ccs/ccs_base/arm/include/system_msp432p401r.h
-main.obj: ../modules/ringtones_manager/ringtones.h
+main.obj: ../modules/ringtones_manager/ringtones_manager.h
+main.obj: /home/vittorio/ti/ccs1210/ccs/tools/compiler/ti-cgt-arm_20.2.7.LTS/include/stdbool.h
 main.obj: /home/vittorio/workspace_v12/driverlib/source/ti/devices/msp432p4xx/inc/msp.h
 main.obj: /home/vittorio/workspace_v12/driverlib/source/ti/devices/msp432p4xx/driverlib/driverlib.h
 main.obj: /home/vittorio/workspace_v12/driverlib/source/ti/devices/msp432p4xx/driverlib/adc14.h
-main.obj: /home/vittorio/ti/ccs1210/ccs/tools/compiler/ti-cgt-arm_20.2.7.LTS/include/stdbool.h
 main.obj: /home/vittorio/workspace_v12/driverlib/source/ti/devices/msp432p4xx/driverlib/aes256.h
 main.obj: /home/vittorio/workspace_v12/driverlib/source/ti/devices/msp432p4xx/driverlib/comp_e.h
 main.obj: /home/vittorio/workspace_v12/driverlib/source/ti/devices/msp432p4xx/driverlib/cpu.h
@@ -52,7 +52,7 @@ main.obj: /home/vittorio/workspace_v12/driverlib/source/ti/devices/msp432p4xx/dr
 main.obj: /home/vittorio/workspace_v12/driverlib/source/ti/devices/msp432p4xx/driverlib/wdt_a.h
 main.obj: /home/vittorio/workspace_v12/driverlib/source/ti/devices/msp432p4xx/driverlib/sysctl.h
 main.obj: /home/vittorio/workspace_v12/driverlib/source/ti/devices/msp432p4xx/driverlib/flash.h
-main.obj: ../modules/ringtones_manager/ringtones/nokia.h
+main.obj: ../modules/ringtones_manager/ringtones/the_lick.h
 main.obj: ../modules/ringtones_manager/ringtones/notes.h
 main.obj: ../modules/activities_launcher/activities.h
 
@@ -94,15 +94,15 @@ main.obj: ../modules/activities_launcher/activities.h
 
 /home/vittorio/ti/ccs1210/ccs/ccs_base/arm/include/system_msp432p401r.h:
 
-../modules/ringtones_manager/ringtones.h:
+../modules/ringtones_manager/ringtones_manager.h:
+
+/home/vittorio/ti/ccs1210/ccs/tools/compiler/ti-cgt-arm_20.2.7.LTS/include/stdbool.h:
 
 /home/vittorio/workspace_v12/driverlib/source/ti/devices/msp432p4xx/inc/msp.h:
 
 /home/vittorio/workspace_v12/driverlib/source/ti/devices/msp432p4xx/driverlib/driverlib.h:
 
 /home/vittorio/workspace_v12/driverlib/source/ti/devices/msp432p4xx/driverlib/adc14.h:
-
-/home/vittorio/ti/ccs1210/ccs/tools/compiler/ti-cgt-arm_20.2.7.LTS/include/stdbool.h:
 
 /home/vittorio/workspace_v12/driverlib/source/ti/devices/msp432p4xx/driverlib/aes256.h:
 
@@ -160,7 +160,7 @@ main.obj: ../modules/activities_launcher/activities.h
 
 /home/vittorio/workspace_v12/driverlib/source/ti/devices/msp432p4xx/driverlib/flash.h:
 
-../modules/ringtones_manager/ringtones/nokia.h:
+../modules/ringtones_manager/ringtones/the_lick.h:
 
 ../modules/ringtones_manager/ringtones/notes.h:
 

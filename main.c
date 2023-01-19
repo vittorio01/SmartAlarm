@@ -1,5 +1,5 @@
 #include "msp.h"
-#include "modules/ringtones_manager/ringtones.h"
+#include "modules/ringtones_manager/ringtones_manager.h"
 #include "modules/activities_launcher/activities.h"
 
 void main(void)

@@ -12,7 +12,7 @@ ORDERED_OBJS += \
 "./startup_msp432p401r_ccs.obj" \
 "./system_msp432p401r.obj" \
 "./modules/activities_launcher/activities.obj" \
-"./modules/ringtones_manager/ringtones.obj" \
+"./modules/ringtones_manager/ringtones_manager.obj" \
 "../msp432p401r.cmd" \
 $(GEN_CMDS__FLAG) \
 -llibc.a \
@@ -161,9 +161,8 @@ SmartAlarm.hex: $(EXE_OUTPUTS)
 # Other Targets
 clean:
 	-$(RM) $(BIN_OUTPUTS__QUOTED)$(EXE_OUTPUTS__QUOTED)
-	-$(RM) "main.obj" "startup_msp432p401r_ccs.obj" "system_msp432p401r.obj" "modules/activities_launcher/activities.obj" "modules/ringtones_manager/ringtones.obj" 
-	-$(RM) "main.d" "startup_msp432p401r_ccs.d" "system_msp432p401r.d" 
-	-$(RM) "modules/activities_launcher/activities.d" "modules/ringtones_manager/ringtones.d" 
+	-$(RM) "main.obj" "startup_msp432p401r_ccs.obj" "system_msp432p401r.obj" "modules/activities_launcher/activities.obj" "modules/ringtones_manager/ringtones_manager.obj" 
+	-$(RM) "main.d" "startup_msp432p401r_ccs.d" "system_msp432p401r.d" "modules/activities_launcher/activities.d" "modules/ringtones_manager/ringtones_manager.d" 
 	-@echo 'Finished clean'
 	-@echo ' '
 

@@ -3,22 +3,22 @@
 ################################################################################
 
 # Add inputs and outputs from these tool invocations to the build variables 
-CPP_SRCS += \
-../modules/ringtones_manager/ringtones.cpp 
+C_SRCS += \
+../modules/ringtones_manager/ringtones_manager.c 
+
+C_DEPS += \
+./modules/ringtones_manager/ringtones_manager.d 
 
 OBJS += \
-./modules/ringtones_manager/ringtones.obj 
-
-CPP_DEPS += \
-./modules/ringtones_manager/ringtones.d 
+./modules/ringtones_manager/ringtones_manager.obj 
 
 OBJS__QUOTED += \
-"modules/ringtones_manager/ringtones.obj" 
+"modules/ringtones_manager/ringtones_manager.obj" 
 
-CPP_DEPS__QUOTED += \
-"modules/ringtones_manager/ringtones.d" 
+C_DEPS__QUOTED += \
+"modules/ringtones_manager/ringtones_manager.d" 
 
-CPP_SRCS__QUOTED += \
-"../modules/ringtones_manager/ringtones.cpp" 
+C_SRCS__QUOTED += \
+"../modules/ringtones_manager/ringtones_manager.c" 
 
 
