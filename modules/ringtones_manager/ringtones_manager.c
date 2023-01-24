@@ -1,5 +1,6 @@
 #include "ringtones_manager.h"
 void ringtones_manager_intitialize(const int piezoPort, const int piezoPin) {
+
    int the_lick_notes[THE_LICK_DIMENSION]=THE_LICK_NOTES;
    int the_lick_durations[THE_LICK_DIMENSION]=THE_LICK_DURATIONS;
    ringtones.ringtones_informations[0]=THE_LICK_INFORMATIONS;
@@ -17,13 +18,13 @@ void ringtones_manager_intitialize(const int piezoPort, const int piezoPin) {
 
    piezo.upConfig_PWM.captureCompareInterruptEnable_CCR0_CCIE = TIMER_A_TAIE_INTERRUPT_DISABLE;
    piezo.upConfig_PWM.clockSource=TIMER_A_CLOCKSOURCE_SMCLK;
-   piezo.upConfig_PWM.clockSourceDivider=TIMER_A_CLOCKSOURCE_DIVIDER_12;
+   piezo.upConfig_PWM.clockSourceDivider=TIMER_A_CLOCKSOURCE_DIVIDER_4;
    piezo.upConfig_PWM.timerClear=TIMER_A_DO_CLEAR;
    piezo.upConfig_PWM.timerInterruptEnable_TAIE=TIMER_A_TAIE_INTERRUPT_DISABLE;
    piezo.upConfig_PWM.timerPeriod=0;
 
-   piezo.upConfig_note.clockSource=TIMER_A_CLOCKSOURCE_SMCLK;
-   piezo.upConfig_note.clockSourceDivider=TIMER_A_CLOCKSOURCE_DIVIDER_64;
+   piezo.upConfig_note.clockSource=TIMER_A_CLOCKSOURCE_ACLK;
+   piezo.upConfig_note.clockSourceDivider=TIMER_A_CLOCKSOURCE_DIVIDER_8;
    piezo.upConfig_note.timerPeriod=10;
    piezo.upConfig_note.timerInterruptEnable_TAIE=TIMER_A_TAIE_INTERRUPT_DISABLE;
    piezo.upConfig_note.captureCompareInterruptEnable_CCR0_CCIE=TIMER_A_CCIE_CCR0_INTERRUPT_ENABLE;
@@ -47,6 +48,8 @@ bool start_ringtone(unsigned int ringtone) {
     if (ringtone>=RINGTONES_NUMBER) {
         return false;
     }
+    CS_setReferenceOscillatorFrequency(CS_REFO_128KHZ);
+    CS_initClockSignal(CS_ACLK, CS_REFOCLK_SELECT, CS_CLOCK_DIVIDER_1)
     ringtones.currentTone=0;
     ringtones.selectedRingtone=ringtone;
     Interrupt_disableMaster();
