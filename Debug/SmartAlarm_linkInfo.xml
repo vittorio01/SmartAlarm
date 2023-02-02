@@ -2,7 +2,7 @@
 <link_info>
    <banner>TI ARM Linker Unix v20.2.7.LTS</banner>
    <copyright>Copyright (c) 1996-2018 Texas Instruments Incorporated</copyright>
-   <link_time>0x63c96b70</link_time>
+   <link_time>0x63dbd113</link_time>
    <link_errors>0x0</link_errors>
    <output_file>SmartAlarm.out</output_file>
    <entry_point>
@@ -121,21 +121,33 @@
          <path>/home/vittorio/workspace_v12/driverlib/source/ti/devices/msp432p4xx/driverlib/ccs/</path>
          <kind>archive</kind>
          <file>msp432p4xx_driverlib.lib</file>
-         <name>gpio.o</name>
+         <name>cs.o</name>
       </input_file>
       <input_file id="fl-cd">
          <path>/home/vittorio/workspace_v12/driverlib/source/ti/devices/msp432p4xx/driverlib/ccs/</path>
          <kind>archive</kind>
          <file>msp432p4xx_driverlib.lib</file>
-         <name>interrupt.o</name>
+         <name>gpio.o</name>
       </input_file>
       <input_file id="fl-ce">
          <path>/home/vittorio/workspace_v12/driverlib/source/ti/devices/msp432p4xx/driverlib/ccs/</path>
          <kind>archive</kind>
          <file>msp432p4xx_driverlib.lib</file>
-         <name>timer_a.o</name>
+         <name>interrupt.o</name>
       </input_file>
       <input_file id="fl-cf">
+         <path>/home/vittorio/workspace_v12/driverlib/source/ti/devices/msp432p4xx/driverlib/ccs/</path>
+         <kind>archive</kind>
+         <file>msp432p4xx_driverlib.lib</file>
+         <name>sysctl_a.o</name>
+      </input_file>
+      <input_file id="fl-d0">
+         <path>/home/vittorio/workspace_v12/driverlib/source/ti/devices/msp432p4xx/driverlib/ccs/</path>
+         <kind>archive</kind>
+         <file>msp432p4xx_driverlib.lib</file>
+         <name>timer_a.o</name>
+      </input_file>
+      <input_file id="fl-d1">
          <path>/home/vittorio/workspace_v12/driverlib/source/ti/devices/msp432p4xx/driverlib/ccs/</path>
          <kind>archive</kind>
          <file>msp432p4xx_driverlib.lib</file>
@@ -2281,215 +2293,215 @@
          <value>0x5c5</value>
          <object_component_ref idref="oc-c4"/>
       </symbol>
-      <symbol id="sm-184">
+      <symbol id="sm-186">
          <name>__TI_static_base__</name>
          <value>0x0</value>
       </symbol>
-      <symbol id="sm-187">
+      <symbol id="sm-189">
          <name>__mpu_init</name>
          <value>0x0</value>
       </symbol>
-      <symbol id="sm-188">
+      <symbol id="sm-18a">
          <name>_system_post_cinit</name>
          <value>0x0</value>
       </symbol>
-      <symbol id="sm-189">
+      <symbol id="sm-18b">
          <name>NMI_Handler</name>
          <value>0x5bf</value>
       </symbol>
-      <symbol id="sm-18a">
+      <symbol id="sm-18c">
          <name>HardFault_Handler</name>
          <value>0x5bf</value>
       </symbol>
-      <symbol id="sm-18b">
+      <symbol id="sm-18d">
          <name>MemManage_Handler</name>
          <value>0x5bf</value>
       </symbol>
-      <symbol id="sm-18c">
+      <symbol id="sm-18e">
          <name>BusFault_Handler</name>
          <value>0x5bf</value>
       </symbol>
-      <symbol id="sm-18d">
+      <symbol id="sm-18f">
          <name>UsageFault_Handler</name>
          <value>0x5bf</value>
       </symbol>
-      <symbol id="sm-18e">
+      <symbol id="sm-190">
          <name>SVC_Handler</name>
          <value>0x5bf</value>
       </symbol>
-      <symbol id="sm-18f">
+      <symbol id="sm-191">
          <name>DebugMon_Handler</name>
          <value>0x5bf</value>
       </symbol>
-      <symbol id="sm-190">
+      <symbol id="sm-192">
          <name>PendSV_Handler</name>
          <value>0x5bf</value>
       </symbol>
-      <symbol id="sm-191">
+      <symbol id="sm-193">
          <name>SysTick_Handler</name>
          <value>0x5bf</value>
       </symbol>
-      <symbol id="sm-192">
+      <symbol id="sm-194">
          <name>PSS_IRQHandler</name>
          <value>0x5bf</value>
       </symbol>
-      <symbol id="sm-193">
+      <symbol id="sm-195">
          <name>CS_IRQHandler</name>
          <value>0x5bf</value>
       </symbol>
-      <symbol id="sm-194">
+      <symbol id="sm-196">
          <name>PCM_IRQHandler</name>
          <value>0x5bf</value>
       </symbol>
-      <symbol id="sm-195">
+      <symbol id="sm-197">
          <name>WDT_A_IRQHandler</name>
          <value>0x5bf</value>
       </symbol>
-      <symbol id="sm-196">
+      <symbol id="sm-198">
          <name>FPU_IRQHandler</name>
          <value>0x5bf</value>
       </symbol>
-      <symbol id="sm-197">
+      <symbol id="sm-199">
          <name>FLCTL_IRQHandler</name>
          <value>0x5bf</value>
       </symbol>
-      <symbol id="sm-198">
+      <symbol id="sm-19a">
          <name>COMP_E0_IRQHandler</name>
          <value>0x5bf</value>
       </symbol>
-      <symbol id="sm-199">
+      <symbol id="sm-19b">
          <name>COMP_E1_IRQHandler</name>
          <value>0x5bf</value>
       </symbol>
-      <symbol id="sm-19a">
+      <symbol id="sm-19c">
          <name>TA0_0_IRQHandler</name>
          <value>0x5bf</value>
       </symbol>
-      <symbol id="sm-19b">
+      <symbol id="sm-19d">
          <name>TA0_N_IRQHandler</name>
          <value>0x5bf</value>
       </symbol>
-      <symbol id="sm-19c">
+      <symbol id="sm-19e">
          <name>TA1_0_IRQHandler</name>
          <value>0x5bf</value>
       </symbol>
-      <symbol id="sm-19d">
+      <symbol id="sm-19f">
          <name>TA1_N_IRQHandler</name>
          <value>0x5bf</value>
       </symbol>
-      <symbol id="sm-19e">
+      <symbol id="sm-1a0">
          <name>TA2_0_IRQHandler</name>
          <value>0x5bf</value>
       </symbol>
-      <symbol id="sm-19f">
+      <symbol id="sm-1a1">
          <name>TA2_N_IRQHandler</name>
          <value>0x5bf</value>
       </symbol>
-      <symbol id="sm-1a0">
+      <symbol id="sm-1a2">
          <name>TA3_0_IRQHandler</name>
          <value>0x5bf</value>
       </symbol>
-      <symbol id="sm-1a1">
+      <symbol id="sm-1a3">
          <name>TA3_N_IRQHandler</name>
          <value>0x5bf</value>
       </symbol>
-      <symbol id="sm-1a2">
+      <symbol id="sm-1a4">
          <name>EUSCIA0_IRQHandler</name>
          <value>0x5bf</value>
       </symbol>
-      <symbol id="sm-1a3">
+      <symbol id="sm-1a5">
          <name>EUSCIA1_IRQHandler</name>
          <value>0x5bf</value>
       </symbol>
-      <symbol id="sm-1a4">
+      <symbol id="sm-1a6">
          <name>EUSCIA2_IRQHandler</name>
          <value>0x5bf</value>
       </symbol>
-      <symbol id="sm-1a5">
+      <symbol id="sm-1a7">
          <name>EUSCIA3_IRQHandler</name>
          <value>0x5bf</value>
       </symbol>
-      <symbol id="sm-1a6">
+      <symbol id="sm-1a8">
          <name>EUSCIB0_IRQHandler</name>
          <value>0x5bf</value>
       </symbol>
-      <symbol id="sm-1a7">
+      <symbol id="sm-1a9">
          <name>EUSCIB1_IRQHandler</name>
          <value>0x5bf</value>
       </symbol>
-      <symbol id="sm-1a8">
+      <symbol id="sm-1aa">
          <name>EUSCIB2_IRQHandler</name>
          <value>0x5bf</value>
       </symbol>
-      <symbol id="sm-1a9">
+      <symbol id="sm-1ab">
          <name>EUSCIB3_IRQHandler</name>
          <value>0x5bf</value>
       </symbol>
-      <symbol id="sm-1aa">
+      <symbol id="sm-1ac">
          <name>ADC14_IRQHandler</name>
          <value>0x5bf</value>
       </symbol>
-      <symbol id="sm-1ab">
+      <symbol id="sm-1ad">
          <name>T32_INT1_IRQHandler</name>
          <value>0x5bf</value>
       </symbol>
-      <symbol id="sm-1ac">
+      <symbol id="sm-1ae">
          <name>T32_INT2_IRQHandler</name>
          <value>0x5bf</value>
       </symbol>
-      <symbol id="sm-1ad">
+      <symbol id="sm-1af">
          <name>T32_INTC_IRQHandler</name>
          <value>0x5bf</value>
       </symbol>
-      <symbol id="sm-1ae">
+      <symbol id="sm-1b0">
          <name>AES256_IRQHandler</name>
          <value>0x5bf</value>
       </symbol>
-      <symbol id="sm-1af">
+      <symbol id="sm-1b1">
          <name>RTC_C_IRQHandler</name>
          <value>0x5bf</value>
       </symbol>
-      <symbol id="sm-1b0">
+      <symbol id="sm-1b2">
          <name>DMA_ERR_IRQHandler</name>
          <value>0x5bf</value>
       </symbol>
-      <symbol id="sm-1b1">
+      <symbol id="sm-1b3">
          <name>DMA_INT3_IRQHandler</name>
          <value>0x5bf</value>
       </symbol>
-      <symbol id="sm-1b2">
+      <symbol id="sm-1b4">
          <name>DMA_INT2_IRQHandler</name>
          <value>0x5bf</value>
       </symbol>
-      <symbol id="sm-1b3">
+      <symbol id="sm-1b5">
          <name>DMA_INT1_IRQHandler</name>
          <value>0x5bf</value>
       </symbol>
-      <symbol id="sm-1b4">
+      <symbol id="sm-1b6">
          <name>DMA_INT0_IRQHandler</name>
          <value>0x5bf</value>
       </symbol>
-      <symbol id="sm-1b5">
+      <symbol id="sm-1b7">
          <name>PORT1_IRQHandler</name>
          <value>0x5bf</value>
       </symbol>
-      <symbol id="sm-1b6">
+      <symbol id="sm-1b8">
          <name>PORT2_IRQHandler</name>
          <value>0x5bf</value>
       </symbol>
-      <symbol id="sm-1b7">
+      <symbol id="sm-1b9">
          <name>PORT3_IRQHandler</name>
          <value>0x5bf</value>
       </symbol>
-      <symbol id="sm-1b8">
+      <symbol id="sm-1ba">
          <name>PORT4_IRQHandler</name>
          <value>0x5bf</value>
       </symbol>
-      <symbol id="sm-1b9">
+      <symbol id="sm-1bb">
          <name>PORT5_IRQHandler</name>
          <value>0x5bf</value>
       </symbol>
-      <symbol id="sm-1ba">
+      <symbol id="sm-1bc">
          <name>PORT6_IRQHandler</name>
          <value>0x5bf</value>
       </symbol>

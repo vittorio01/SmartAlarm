@@ -49,7 +49,7 @@ bool start_ringtone(unsigned int ringtone) {
         return false;
     }
     CS_setReferenceOscillatorFrequency(CS_REFO_128KHZ);
-    CS_initClockSignal(CS_ACLK, CS_REFOCLK_SELECT, CS_CLOCK_DIVIDER_1)
+    CS_initClockSignal(CS_ACLK, CS_REFOCLK_SELECT, CS_CLOCK_DIVIDER_1);
     ringtones.currentTone=0;
     ringtones.selectedRingtone=ringtone;
     Interrupt_disableMaster();
