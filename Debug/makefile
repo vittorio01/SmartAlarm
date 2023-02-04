@@ -2,7 +2,9 @@
 # Automatically-generated file. Do not edit!
 ################################################################################
 
-CG_TOOL_ROOT := /home/vittorio/ti/ccs1210/ccs/tools/compiler/ti-cgt-arm_20.2.7.LTS
+SHELL = cmd.exe
+
+CG_TOOL_ROOT := C:/ti/ccs1220/ccs/tools/compiler/ti-cgt-arm_20.2.7.LTS
 
 GEN_OPTS__FLAG := 
 GEN_CMDS__FLAG := 
@@ -16,12 +18,12 @@ ORDERED_OBJS += \
 "../msp432p401r.cmd" \
 $(GEN_CMDS__FLAG) \
 -llibc.a \
--l"/home/vittorio/workspace_v12/driverlib/source/ti/devices/msp432p4xx/driverlib/ccs/msp432p4xx_driverlib.lib" \
+-l"C:/Users/Filippo Castellan/Google Drive/FOGLI DIGITALI/3 anno/IoT/libreria/simplelink_msp432p4_sdk_3_40_01_02/source/ti/devices/msp432p4xx/driverlib/ccs/msp432p4xx_driverlib.lib" \
 
 -include ../makefile.init
 
-RM := rm -rf
-RMDIR := rm -rf
+RM := DEL /F
+RMDIR := RMDIR /S/Q
 
 # All of the sources participating in the build are defined here
 -include sources.mk
@@ -132,12 +134,6 @@ SmartAlarm.out \
 EXE_OUTPUTS__QUOTED += \
 "SmartAlarm.out" \
 
-BIN_OUTPUTS += \
-SmartAlarm.hex \
-
-BIN_OUTPUTS__QUOTED += \
-"SmartAlarm.hex" \
-
 
 # All Target
 all: $(OBJS) $(CMD_SRCS) $(GEN_CMDS)
@@ -147,22 +143,15 @@ all: $(OBJS) $(CMD_SRCS) $(GEN_CMDS)
 SmartAlarm.out: $(OBJS) $(CMD_SRCS) $(GEN_CMDS)
 	@echo 'Building target: "$@"'
 	@echo 'Invoking: Arm Linker'
-	"/home/vittorio/ti/ccs1210/ccs/tools/compiler/ti-cgt-arm_20.2.7.LTS/bin/armcl" -mv7M4 --code_state=16 --float_support=FPv4SPD16 -me --advice:power=all --define=__MSP432P401R__ --define=ccs -g --gcc --diag_warning=225 --diag_wrap=off --display_error_number --abi=eabi -z -m"SmartAlarm.map" --heap_size=1024 --stack_size=512 -i"/home/vittorio/ti/ccs1210/ccs/ccs_base/arm/include" -i"/home/vittorio/ti/ccs1210/ccs/tools/compiler/ti-cgt-arm_20.2.7.LTS/lib" -i"/home/vittorio/ti/ccs1210/ccs/tools/compiler/ti-cgt-arm_20.2.7.LTS/include" --reread_libs --diag_wrap=off --display_error_number --warn_sections --xml_link_info="SmartAlarm_linkInfo.xml" --rom_model -o "SmartAlarm.out" $(ORDERED_OBJS)
+	"C:/ti/ccs1220/ccs/tools/compiler/ti-cgt-arm_20.2.7.LTS/bin/armcl" -mv7M4 --code_state=16 --float_support=FPv4SPD16 -me --advice:power=all --define=__MSP432P401R__ --define=ccs -g --gcc --diag_warning=225 --diag_wrap=off --display_error_number --abi=eabi -z -m"SmartAlarm.map" --heap_size=1024 --stack_size=512 -i"C:/ti/ccs1220/ccs/ccs_base/arm/include" -i"C:/ti/ccs1220/ccs/tools/compiler/ti-cgt-arm_20.2.7.LTS/lib" -i"C:/ti/ccs1220/ccs/tools/compiler/ti-cgt-arm_20.2.7.LTS/include" --reread_libs --diag_wrap=off --display_error_number --warn_sections --xml_link_info="SmartAlarm_linkInfo.xml" --rom_model -o "SmartAlarm.out" $(ORDERED_OBJS)
 	@echo 'Finished building target: "$@"'
-	@echo ' '
-
-SmartAlarm.hex: $(EXE_OUTPUTS)
-	@echo 'Building secondary target: "$@"'
-	@echo 'Invoking: Arm Hex Utility'
-	"/home/vittorio/ti/ccs1210/ccs/tools/compiler/ti-cgt-arm_20.2.7.LTS/bin/armhex" --memwidth=8 --romwidth=8 --diag_wrap=off -o "SmartAlarm.hex" $(EXE_OUTPUTS__QUOTED)
-	@echo 'Finished building secondary target: "$@"'
 	@echo ' '
 
 # Other Targets
 clean:
-	-$(RM) $(BIN_OUTPUTS__QUOTED)$(EXE_OUTPUTS__QUOTED)
-	-$(RM) "main.obj" "startup_msp432p401r_ccs.obj" "system_msp432p401r.obj" "modules/activities_launcher/activities.obj" "modules/ringtones_manager/ringtones_manager.obj" 
-	-$(RM) "main.d" "startup_msp432p401r_ccs.d" "system_msp432p401r.d" "modules/activities_launcher/activities.d" "modules/ringtones_manager/ringtones_manager.d" 
+	-$(RM) $(EXE_OUTPUTS__QUOTED)
+	-$(RM) "main.obj" "startup_msp432p401r_ccs.obj" "system_msp432p401r.obj" "modules\activities_launcher\activities.obj" "modules\ringtones_manager\ringtones_manager.obj" 
+	-$(RM) "main.d" "startup_msp432p401r_ccs.d" "system_msp432p401r.d" "modules\activities_launcher\activities.d" "modules\ringtones_manager\ringtones_manager.d" 
 	-@echo 'Finished clean'
 	-@echo ' '
 
