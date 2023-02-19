@@ -3,6 +3,7 @@
 #include <stdbool.h>
 #include <ti/devices/msp432p4xx/inc/msp.h>
 #include <ti/devices/msp432p4xx/driverlib/driverlib.h>
+#include <modules/hardware/hardware.h>
 
 #include "ringtones/the_lick.h"
 #define RINGTONES_NUMBER 1

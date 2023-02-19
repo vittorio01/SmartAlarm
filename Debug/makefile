@@ -12,6 +12,9 @@ ORDERED_OBJS += \
 "./startup_msp432p401r_ccs.obj" \
 "./system_msp432p401r.obj" \
 "./modules/activities_launcher/activities.obj" \
+"./modules/hardware/hardware.obj" \
+"./modules/hardware/libraries/Crystalfontz128x128_ST7735.obj" \
+"./modules/hardware/libraries/HAL_MSP_EXP432P401R_Crystalfontz128x128_ST7735.obj" \
 "./modules/ringtones_manager/ringtones_manager.obj" \
 "../msp432p401r.cmd" \
 $(GEN_CMDS__FLAG) \
@@ -27,9 +30,13 @@ RMDIR := rm -rf
 -include sources.mk
 -include subdir_vars.mk
 -include modules/activities_launcher/subdir_vars.mk
+-include modules/hardware/subdir_vars.mk
+-include modules/hardware/libraries/subdir_vars.mk
 -include modules/ringtones_manager/subdir_vars.mk
 -include subdir_rules.mk
 -include modules/activities_launcher/subdir_rules.mk
+-include modules/hardware/subdir_rules.mk
+-include modules/hardware/libraries/subdir_rules.mk
 -include modules/ringtones_manager/subdir_rules.mk
 -include objects.mk
 
@@ -148,8 +155,8 @@ SmartAlarm.out: $(OBJS) $(CMD_SRCS) $(LDS_SRCS) $(LD_SRCS) $(A_SRCS) $(LIB_SRCS)
 # Other Targets
 clean:
 	-$(RM) $(EXE_OUTPUTS__QUOTED)
-	-$(RM) "main.obj" "startup_msp432p401r_ccs.obj" "system_msp432p401r.obj" "modules/activities_launcher/activities.obj" "modules/ringtones_manager/ringtones_manager.obj" 
-	-$(RM) "main.d" "startup_msp432p401r_ccs.d" "system_msp432p401r.d" "modules/activities_launcher/activities.d" "modules/ringtones_manager/ringtones_manager.d" 
+	-$(RM) "main.obj" "startup_msp432p401r_ccs.obj" "system_msp432p401r.obj" "modules/activities_launcher/activities.obj" "modules/hardware/hardware.obj" "modules/hardware/libraries/Crystalfontz128x128_ST7735.obj" "modules/hardware/libraries/HAL_MSP_EXP432P401R_Crystalfontz128x128_ST7735.obj" "modules/ringtones_manager/ringtones_manager.obj" 
+	-$(RM) "main.d" "startup_msp432p401r_ccs.d" "system_msp432p401r.d" "modules/activities_launcher/activities.d" "modules/hardware/hardware.d" "modules/hardware/libraries/Crystalfontz128x128_ST7735.d" "modules/hardware/libraries/HAL_MSP_EXP432P401R_Crystalfontz128x128_ST7735.d" "modules/ringtones_manager/ringtones_manager.d" 
 	-@echo 'Finished clean'
 	-@echo ' '
 

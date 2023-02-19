@@ -52,6 +52,11 @@ main.obj: /home/asus-laptop/github/SmartAlarm/Resources/driverlib/source/ti/devi
 main.obj: /home/asus-laptop/github/SmartAlarm/Resources/driverlib/source/ti/devices/msp432p4xx/driverlib/wdt_a.h
 main.obj: /home/asus-laptop/github/SmartAlarm/Resources/driverlib/source/ti/devices/msp432p4xx/driverlib/sysctl.h
 main.obj: /home/asus-laptop/github/SmartAlarm/Resources/driverlib/source/ti/devices/msp432p4xx/driverlib/flash.h
+main.obj: /home/asus-laptop/github/SmartAlarm/modules/hardware/hardware.h
+main.obj: /home/asus-laptop/github/SmartAlarm/modules/hardware/libraries/Crystalfontz128x128_ST7735.h
+main.obj: /home/asus-laptop/github/SmartAlarm/Resources/driverlib/source/ti/grlib/grlib.h
+main.obj: /home/asus-laptop/Applications/CodeComposerStudio/ccs/tools/compiler/ti-cgt-arm_20.2.7.LTS/include/assert.h
+main.obj: /home/asus-laptop/github/SmartAlarm/modules/hardware/libraries/HAL_MSP_EXP432P401R_Crystalfontz128x128_ST7735.h
 main.obj: ../modules/ringtones_manager/ringtones/the_lick.h
 main.obj: ../modules/ringtones_manager/ringtones/notes.h
 main.obj: ../modules/activities_launcher/activities.h
@@ -159,6 +164,16 @@ main.obj: ../modules/activities_launcher/activities.h
 /home/asus-laptop/github/SmartAlarm/Resources/driverlib/source/ti/devices/msp432p4xx/driverlib/sysctl.h:
 
 /home/asus-laptop/github/SmartAlarm/Resources/driverlib/source/ti/devices/msp432p4xx/driverlib/flash.h:
+
+/home/asus-laptop/github/SmartAlarm/modules/hardware/hardware.h:
+
+/home/asus-laptop/github/SmartAlarm/modules/hardware/libraries/Crystalfontz128x128_ST7735.h:
+
+/home/asus-laptop/github/SmartAlarm/Resources/driverlib/source/ti/grlib/grlib.h:
+
+/home/asus-laptop/Applications/CodeComposerStudio/ccs/tools/compiler/ti-cgt-arm_20.2.7.LTS/include/assert.h:
+
+/home/asus-laptop/github/SmartAlarm/modules/hardware/libraries/HAL_MSP_EXP432P401R_Crystalfontz128x128_ST7735.h:
 
 ../modules/ringtones_manager/ringtones/the_lick.h:
 

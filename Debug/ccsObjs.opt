@@ -2,6 +2,9 @@
 "./startup_msp432p401r_ccs.obj"
 "./system_msp432p401r.obj"
 "./modules/activities_launcher/activities.obj"
+"./modules/hardware/hardware.obj"
+"./modules/hardware/libraries/Crystalfontz128x128_ST7735.obj"
+"./modules/hardware/libraries/HAL_MSP_EXP432P401R_Crystalfontz128x128_ST7735.obj"
 "./modules/ringtones_manager/ringtones_manager.obj"
 "../msp432p401r.cmd"
 -llibc.a

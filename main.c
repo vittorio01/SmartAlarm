@@ -1,6 +1,7 @@
 #include "msp.h"
 #include "modules/ringtones_manager/ringtones_manager.h"
 #include "modules/activities_launcher/activities.h"
+#include <modules/hardware/hardware.h>
 
 void main(void)
 {
