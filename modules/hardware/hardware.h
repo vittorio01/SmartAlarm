@@ -13,6 +13,6 @@ typedef struct Timers {
 
 void initHardware();
 void initTimerSystem();
-
+void initClockSystem();
 Timers timerlist;
 #endif

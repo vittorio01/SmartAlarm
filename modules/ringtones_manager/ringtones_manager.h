@@ -1,8 +1,8 @@
 #ifndef __RINGTONES_MANAGER_H__
 #define __RINGTONES_MANAGER_H__
+#include <driverlib/source/ti/devices/msp432p4xx/driverlib/driverlib.h>
+#include <driverlib/source/ti/devices/msp432p4xx/inc/msp.h>
 #include <stdbool.h>
-#include <ti/devices/msp432p4xx/inc/msp.h>
-#include <ti/devices/msp432p4xx/driverlib/driverlib.h>
 #include <modules/hardware/hardware.h>
 
 #include "ringtones/the_lick.h"
