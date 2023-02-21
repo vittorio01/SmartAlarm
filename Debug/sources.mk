@@ -126,6 +126,7 @@ GEN_OPTS__QUOTED :=
 SUBDIRS := \
 . \
 modules/activities_launcher \
+modules/clock_system \
 modules/hardware \
 modules/hardware/libraries \
 modules/ringtones_manager \

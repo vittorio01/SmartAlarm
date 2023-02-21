@@ -1,11 +1,18 @@
 #include "hardware.h"
 
-void initHardware() {
+/* GENERALS INIT. */
+void initHardware(Graphics_Context* gc) {
     initClockSystem();
     initTimerSystem();
-
+    initButtonSystem();
+    initLedSystem();
+    intiDisplaySystem(gc);
+    initAdcSystem();
 }
 
+/* MODULES INIT. */
+
+// TIMERS
 void initTimerSystem() {
 
     timerlist.timer0_type=NOT_USED;
@@ -14,11 +21,85 @@ void initTimerSystem() {
     timerlist.timer3_type=NOT_USED;
 }
 
+// CLOCK SYSTEM
 void initClockSystem() {
     CS_setReferenceOscillatorFrequency(CS_REFO_128KHZ);
     CS_initClockSignal(CS_ACLK, CS_REFOCLK_SELECT, CS_CLOCK_DIVIDER_1);
 }
 
+//BUTTONS
+void initButtonSystem() {
+    /* button S1 [P3.5]
+     * specification:
+     * - interrupt falling edge
+     * - already has the pull-up resistor
+     */
+    GPIO_setAsInputPinWithPullUpResistor(BUT_S1_PORT, BUT_S1_PIN);
+    GPIO_enableInterrupt(BUT_S1_PORT, BUT_S1_PIN);
+    Interrupt_enableInterrupt(BUT_S1_PORT_INT);
+}
+
+// LEDS
+void initLedSystem() {
+    /* Blue of RGB LED [P5.6]
+     *
+     */
+    GPIO_setAsOutputPin(RGB_LED_BLUE_PORT, RGB_LED_BLUE_PIN);
+    GPIO_setOutputLowOnPin(RGB_LED_BLUE_PORT, RGB_LED_BLUE_PIN);
+}
+
+// DIPLAY
+void intiDisplaySystem(Graphics_Context* gc) {
+    /* Initializes display */
+    Crystalfontz128x128_Init();
+
+    /* Set default screen orientation */
+    Crystalfontz128x128_SetOrientation(LCD_ORIENTATION_UP);
+
+    /* Initializes graphics context */
+    Graphics_initContext(gc, &g_sCrystalfontz128x128,&g_sCrystalfontz128x128_funcs);
+    Graphics_setForegroundColor(gc, GRAPHICS_COLOR_RED);
+    Graphics_setBackgroundColor(gc, GRAPHICS_COLOR_WHITE);
+    GrContextFontSet(gc, &g_sFontFixed6x8);
+    Graphics_clearDisplay(gc);
+}
+
+// ADC14
+void initAdcSystem() {
+    // Configuring GPIOs  !![add here for new adc pin]!!
+    GPIO_setAsPeripheralModuleFunctionInputPin(JOY_X_PORT, JOY_X_PIN, GPIO_TERTIARY_MODULE_FUNCTION);
+    GPIO_setAsPeripheralModuleFunctionInputPin(JOY_Y_PORT, JOY_Y_PIN, GPIO_TERTIARY_MODULE_FUNCTION);
+
+    ADC14_enableModule();   // enable ADC block
+
+    //![Single Sample Mode Configure]
+    /* Initializing ADC (MCLK/1/4) */
+    ADC14_initModule(ADC_CLOCKSOURCE_MCLK, ADC_PREDIVIDER_1, ADC_DIVIDER_4, 0);
+
+    // Configuring ADC Memory !![add here for new adc pin]!!
+    // joy_x
+    ADC14_configureSingleSampleMode(JOY_X_MEM, true);
+    ADC14_configureConversionMemory(JOY_X_MEM, ADC_VREFPOS_AVCC_VREFNEG_VSS, JOY_X_ADC_CH, false);
+    // joy_y
+    ADC14_configureSingleSampleMode(JOY_Y_MEM, true);
+    ADC14_configureConversionMemory(JOY_Y_MEM, ADC_VREFPOS_AVCC_VREFNEG_VSS, JOY_Y_ADC_CH, false);
+
+    /* Configuring Sample Timer */
+    ADC14_enableSampleTimer(ADC_MANUAL_ITERATION);
+
+    /* Enabling/Toggling Conversion */
+    ADC14_enableConversion();
+    ADC14_toggleConversionTrigger();
+    //![Single Sample Mode Configure]
+
+    // set resolution at 8-bits (we don't need more for the joystick)
+    ADC14_setResolution(ADC_8BIT);
+
+    /* Enabling interrupts */
+    Interrupt_enableInterrupt(INT_ADC14);
+}
+
+/* TIMER FUNCTIONS */
 timerNumber generate_delay(const uint16_t delay, void* handler) {
     timerNumber selectedTimer=UNDEFINED;
     if (delay<=32768) {
@@ -125,7 +206,7 @@ timerNumber generate_pwm(const uint16_t frequency, const uint16_t volume, const 
             Timer_A_CompareModeConfig compareConfig;
             compareConfig.compareInterruptEnable=TIMER_A_CAPTURECOMPARE_INTERRUPT_DISABLE;
             compareConfig.compareOutputMode=TIMER_A_OUTPUTMODE_TOGGLE_SET;
-            compareConfig.compareValue=volume
+            compareConfig.compareValue=volume;
             compareConfig.compareRegister=1;
 
               piezo.upConfig_PWM.captureCompareInterruptEnable_CCR0_CCIE = TIMER_A_TAIE_INTERRUPT_DISABLE;
@@ -198,6 +279,7 @@ bool disable_timer(timerNumber timer) {
     return false;
 }
 
+/* TIMERS IRQ */
 void TA0_0_IRQHandler(void)
 {
     Timer_A_clearCaptureCompareInterrupt(TIMER_A0_BASE,TIMER_A_CAPTURECOMPARE_REGISTER_0);
@@ -257,3 +339,39 @@ void TA3_0_IRQHandler(void)
             break;
         }
 }
+
+/* BUTTONS FUNCTIONS */
+
+/* BUTTONS IRQ */
+// PORT5 INTERRUPT ISR
+void PORT5_IRQHandler(void) {
+    uint_fast16_t status = GPIO_getEnabledInterruptStatus(GPIO_PORT_P5); //check which pins generated the interrupt
+    GPIO_clearInterruptFlag(GPIO_PORT_P5, status); //clear the interrupt flag (to clear pending interrupt indicator)
+
+    if (status & BUT_S1_PIN) { //check if the button S1 was pressed
+        switch (current_activity) {
+        case CLOCK: break;
+        case GAME: break;
+        }
+    }
+}
+
+/* ADC FUNCTIONS */
+void enableJoyInterrupt() { //enable the joystick adc interrupt
+    ADC14_enableInterrupt(JOY_X_INT);
+}
+void disableJoyInterrupt() { //disable the joystick adc interrupt
+    ADC14_disableInterrupt(JOY_X_INT);
+}
+
+/* ADC14 IRQ */
+void ADC14_IRQHandler() {
+    uint64_t status = ADC14_getEnabledInterruptStatus();  //same as the gpio int
+    ADC14_clearInterruptFlag(status);                     //same as the gpio int
+    if (JOY_X_INT & status) {
+        adcJoy.joyXvalue = ADC14_getResult(JOY_X_MEM);    //read the adc value
+        adcJoy.joyYvalue = ADC14_getResult(JOY_Y_MEM);    //read the adc value
+    }
+    ADC14_toggleConversionTrigger();    //start a new conversion
+}
+
