@@ -64,7 +64,7 @@ timerNumber generate_delay(const uint16_t delay, void* handler);
 
 timerNumber generate_rate(const uint16_t delay, void* handler);
 
-timerNumber generate_pwm(const uint16_t frequency, const uint8_t port, const uint8_t pin);
+timerNumber generate_pwm(const uint16_t frequency, const uint16_t volume,const uint8_t port, const uint8_t pin);
 
 bool disable_timer(timerNumber timer);
 

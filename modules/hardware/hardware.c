@@ -194,7 +194,7 @@ timerNumber generate_rate(const uint16_t delay, void* handler) {
 
 timerNumber generate_pwm(const uint16_t frequency, const uint16_t volume, const uint8_t port, const uint8_t pin) {
     timerNumber selectedTimer=UNDEFINED;
-        if (delay<=32768) {
+        if (frequency<=32768) {
             Timer_A_UpModeConfig config;
             config.clockSource=TIMER_A_CLOCKSOURCE_ACLK;
             config.clockSourceDivider=TIMER_A_CLOCKSOURCE_DIVIDER_2;
@@ -208,13 +208,6 @@ timerNumber generate_pwm(const uint16_t frequency, const uint16_t volume, const 
             compareConfig.compareOutputMode=TIMER_A_OUTPUTMODE_TOGGLE_SET;
             compareConfig.compareValue=volume;
             compareConfig.compareRegister=1;
-
-              piezo.upConfig_PWM.captureCompareInterruptEnable_CCR0_CCIE = TIMER_A_TAIE_INTERRUPT_DISABLE;
-              piezo.upConfig_PWM.clockSource=TIMER_A_CLOCKSOURCE_SMCLK;
-              piezo.upConfig_PWM.clockSourceDivider=TIMER_A_CLOCKSOURCE_DIVIDER_4;
-              piezo.upConfig_PWM.timerClear=TIMER_A_DO_CLEAR;
-              piezo.upConfig_PWM.timerInterruptEnable_TAIE=TIMER_A_TAIE_INTERRUPT_DISABLE;
-              piezo.upConfig_PWM.timerPeriod=0;
             if (timerlist.timer0_type==NOT_USED) {
                 timerlist.timer0_type=PWM;
                 selectedTimer=TIMER0;
