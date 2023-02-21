@@ -1,10 +1,15 @@
 #include "msp.h"
-#include "main.h"
 #include "modules/clock_system/clock.h"
-#include "modules/ringtones_manager/ringtones_manager.h"
-#include "modules/activities_launcher/activities.h"
-#include <modules/hardware/hardware.h>
+//#include <modules/hardware/hardware.h>
 
+typedef enum {GAME, CLOCK} running_activity;  // define witch main part of the program is running
+
+typedef struct joystick {
+    uint_fast16_t joyXvalue;
+    uint_fast16_t joyYvalue;
+}joystick;
+
+joystick adcJoy;
 
 /* GLOBAL VARIABLES */
 running_activity current_activity = CLOCK;

@@ -19,12 +19,12 @@ main.obj: /home/asus-laptop/Applications/CodeComposerStudio/ccs/ccs_base/arm/inc
 main.obj: /home/asus-laptop/Applications/CodeComposerStudio/ccs/ccs_base/arm/include/CMSIS/cmsis_compiler.h
 main.obj: /home/asus-laptop/Applications/CodeComposerStudio/ccs/ccs_base/arm/include/CMSIS/cmsis_ccs.h
 main.obj: /home/asus-laptop/Applications/CodeComposerStudio/ccs/ccs_base/arm/include/system_msp432p401r.h
-main.obj: ../main.h
 main.obj: ../modules/clock_system/clock.h
-main.obj: ../modules/ringtones_manager/ringtones_manager.h
+main.obj: /home/asus-laptop/github/SmartAlarm/modules/hardware/hardware.h
+main.obj: /home/asus-laptop/Applications/CodeComposerStudio/ccs/tools/compiler/ti-cgt-arm_20.2.7.LTS/include/stdbool.h
+main.obj: /home/asus-laptop/github/SmartAlarm/modules/hardware/libraries/Crystalfontz128x128_ST7735.h
 main.obj: /home/asus-laptop/github/SmartAlarm/driverlib/source/ti/devices/msp432p4xx/driverlib/driverlib.h
 main.obj: /home/asus-laptop/github/SmartAlarm/driverlib/source/ti/devices/msp432p4xx/driverlib/adc14.h
-main.obj: /home/asus-laptop/Applications/CodeComposerStudio/ccs/tools/compiler/ti-cgt-arm_20.2.7.LTS/include/stdbool.h
 main.obj: /home/asus-laptop/github/SmartAlarm/driverlib/source/ti/devices/msp432p4xx/inc/msp.h
 main.obj: /home/asus-laptop/github/SmartAlarm/driverlib/source/ti/devices/msp432p4xx/driverlib/aes256.h
 main.obj: /home/asus-laptop/github/SmartAlarm/driverlib/source/ti/devices/msp432p4xx/driverlib/comp_e.h
@@ -54,14 +54,13 @@ main.obj: /home/asus-laptop/github/SmartAlarm/driverlib/source/ti/devices/msp432
 main.obj: /home/asus-laptop/github/SmartAlarm/driverlib/source/ti/devices/msp432p4xx/driverlib/wdt_a.h
 main.obj: /home/asus-laptop/github/SmartAlarm/driverlib/source/ti/devices/msp432p4xx/driverlib/sysctl.h
 main.obj: /home/asus-laptop/github/SmartAlarm/driverlib/source/ti/devices/msp432p4xx/driverlib/flash.h
-main.obj: /home/asus-laptop/github/SmartAlarm/modules/hardware/hardware.h
-main.obj: /home/asus-laptop/github/SmartAlarm/modules/hardware/libraries/Crystalfontz128x128_ST7735.h
 main.obj: /home/asus-laptop/github/SmartAlarm/driverlib/source/ti/grlib/grlib.h
 main.obj: /home/asus-laptop/Applications/CodeComposerStudio/ccs/tools/compiler/ti-cgt-arm_20.2.7.LTS/include/assert.h
 main.obj: /home/asus-laptop/github/SmartAlarm/modules/hardware/libraries/HAL_MSP_EXP432P401R_Crystalfontz128x128_ST7735.h
-main.obj: ../modules/ringtones_manager/ringtones/the_lick.h
-main.obj: ../modules/ringtones_manager/ringtones/notes.h
-main.obj: ../modules/activities_launcher/activities.h
+main.obj: /home/asus-laptop/github/SmartAlarm/modules/ringtones_manager/ringtones_manager.h
+main.obj: /home/asus-laptop/github/SmartAlarm/modules/ringtones_manager/ringtones/the_lick.h
+main.obj: /home/asus-laptop/github/SmartAlarm/modules/ringtones_manager/ringtones/notes.h
+main.obj: /home/asus-laptop/github/SmartAlarm/modules/activities_launcher/activities.h
 
 ../main.c:
 
@@ -101,17 +100,17 @@ main.obj: ../modules/activities_launcher/activities.h
 
 /home/asus-laptop/Applications/CodeComposerStudio/ccs/ccs_base/arm/include/system_msp432p401r.h:
 
-../main.h:
-
 ../modules/clock_system/clock.h:
 
-../modules/ringtones_manager/ringtones_manager.h:
+/home/asus-laptop/github/SmartAlarm/modules/hardware/hardware.h:
+
+/home/asus-laptop/Applications/CodeComposerStudio/ccs/tools/compiler/ti-cgt-arm_20.2.7.LTS/include/stdbool.h:
+
+/home/asus-laptop/github/SmartAlarm/modules/hardware/libraries/Crystalfontz128x128_ST7735.h:
 
 /home/asus-laptop/github/SmartAlarm/driverlib/source/ti/devices/msp432p4xx/driverlib/driverlib.h:
 
 /home/asus-laptop/github/SmartAlarm/driverlib/source/ti/devices/msp432p4xx/driverlib/adc14.h:
-
-/home/asus-laptop/Applications/CodeComposerStudio/ccs/tools/compiler/ti-cgt-arm_20.2.7.LTS/include/stdbool.h:
 
 /home/asus-laptop/github/SmartAlarm/driverlib/source/ti/devices/msp432p4xx/inc/msp.h:
 
@@ -171,19 +170,17 @@ main.obj: ../modules/activities_launcher/activities.h
 
 /home/asus-laptop/github/SmartAlarm/driverlib/source/ti/devices/msp432p4xx/driverlib/flash.h:
 
-/home/asus-laptop/github/SmartAlarm/modules/hardware/hardware.h:
-
-/home/asus-laptop/github/SmartAlarm/modules/hardware/libraries/Crystalfontz128x128_ST7735.h:
-
 /home/asus-laptop/github/SmartAlarm/driverlib/source/ti/grlib/grlib.h:
 
 /home/asus-laptop/Applications/CodeComposerStudio/ccs/tools/compiler/ti-cgt-arm_20.2.7.LTS/include/assert.h:
 
 /home/asus-laptop/github/SmartAlarm/modules/hardware/libraries/HAL_MSP_EXP432P401R_Crystalfontz128x128_ST7735.h:
 
-../modules/ringtones_manager/ringtones/the_lick.h:
+/home/asus-laptop/github/SmartAlarm/modules/ringtones_manager/ringtones_manager.h:
 
-../modules/ringtones_manager/ringtones/notes.h:
+/home/asus-laptop/github/SmartAlarm/modules/ringtones_manager/ringtones/the_lick.h:
 
-../modules/activities_launcher/activities.h:
+/home/asus-laptop/github/SmartAlarm/modules/ringtones_manager/ringtones/notes.h:
+
+/home/asus-laptop/github/SmartAlarm/modules/activities_launcher/activities.h:
 

@@ -3,8 +3,6 @@
 #include <stdbool.h>
 #include "libraries/Crystalfontz128x128_ST7735.h"
 #include "libraries/HAL_MSP_EXP432P401R_Crystalfontz128x128_ST7735.h"
-#include "main.h"
-
 
 /* PINS DEFINE */
 // BUTTONS
@@ -31,7 +29,7 @@
 #define JOY_B_PIN GPIO_PIN1
 
 /* TIMERS STRUCTS */
-typedef enum {TIMER0,TIMER1,TIMER2,TIMER3,UNDEFINED} timerNumber;
+typedef enum {TIMER0,TIMER1,TIMER2,TIMER3,NONE} timerNumber;
 typedef enum {DELAY,RATE,PWM,NOT_USED} timerType;
 
 typedef struct Timers {
@@ -60,13 +58,28 @@ void intiDisplaySystem(Graphics_Context* gc);
 void initAdcSystem();       //set all the adc input pin (single mode)
 
 /* TIMER FUNCTIONS */
+//the function generate_delay verifies if there is an available timer and configures it with a delay and a specific handler:
+// - The delay can be a value from 1ms to 32760ms
+// - The handler is called only once time and the timer automatically reset its functions
+// - The function returns back a value timerNumber which identifies the assigned timer (assume NONE if all timers are busy or there is an argument error)
+// - The timer can be stopped with the function disable_timer
 timerNumber generate_delay(const uint16_t delay, void* handler);
 
+//the function generate_rate verifies if there is an available timer and configures it with a delay and a specific handler:
+// - The delay can be a value from 1ms to 32760ms
+// - The handler is automaticaly called infinite times with the specified delay
+// - The function returns back a value timerNumber which identifies the assigned timer (assume NONE if all timers are busy or there is an argument error)
+// - The timer can be stopped with the function disable_timer
 timerNumber generate_rate(const uint16_t delay, void* handler);
 
+//the function generate_pwm verifies if there is an avabile timer and configures it to generate a PWM signal to a specific GPIO port:
+// - The PWM signal can be defined with frequency (max 64000Hz) and volume parameters (max 100)
+// - The function returns back a value timerNumber which identifies the assigned timer (assume NONE if all timers are busy or there is an argument error)
+// - The PWM generation can be stopped using the disable_timer function
 timerNumber generate_pwm(const uint16_t frequency, const uint16_t volume,const uint8_t port, const uint8_t pin);
 
-bool disable_timer(timerNumber timer);
+//the function disable_timer stops the specified timer.
+void disable_timer(timerNumber timer);
 
 Timers timerlist;
 
