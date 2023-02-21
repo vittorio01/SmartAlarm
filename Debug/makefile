@@ -2,9 +2,7 @@
 # Automatically-generated file. Do not edit!
 ################################################################################
 
-SHELL = cmd.exe
-
-CG_TOOL_ROOT := C:/ti/ccs1220/ccs/tools/compiler/ti-cgt-arm_20.2.7.LTS
+CG_TOOL_ROOT := /home/asus-laptop/Applications/CodeComposerStudio/ccs/tools/compiler/ti-cgt-arm_20.2.7.LTS
 
 GEN_OPTS__FLAG := 
 GEN_CMDS__FLAG := 
@@ -22,12 +20,12 @@ ORDERED_OBJS += \
 "../msp432p401r.cmd" \
 $(GEN_CMDS__FLAG) \
 -llibc.a \
--l"C:/Users/Filippo Castellan/Desktop/SmartAlarm/driverlib/source/ti/devices/msp432p4xx/driverlib/ccs/msp432p4xx_driverlib.lib" \
+-l"/home/asus-laptop/github/SmartAlarm/driverlib/source/ti/devices/msp432p4xx/driverlib/ccs/msp432p4xx_driverlib.lib" \
 
 -include ../makefile.init
 
-RM := DEL /F
-RMDIR := RMDIR /S/Q
+RM := rm -rf
+RMDIR := rm -rf
 
 # All of the sources participating in the build are defined here
 -include sources.mk
@@ -153,15 +151,15 @@ all: $(OBJS) $(CMD_SRCS) $(LDS_SRCS) $(LD_SRCS) $(A_SRCS) $(LIB_SRCS) $(GEN_CMDS
 SmartAlarm.out: $(OBJS) $(CMD_SRCS) $(LDS_SRCS) $(LD_SRCS) $(A_SRCS) $(LIB_SRCS) $(GEN_CMDS)
 	@echo 'Building target: "$@"'
 	@echo 'Invoking: Arm Linker'
-	"C:/ti/ccs1220/ccs/tools/compiler/ti-cgt-arm_20.2.7.LTS/bin/armcl" -mv7M4 --code_state=16 --float_support=FPv4SPD16 -me --advice:power="all" --define=__MSP432P401R__ --define=ccs -g --gcc --diag_warning=225 --diag_wrap=off --display_error_number --abi=eabi -z -m"SmartAlarm.map" --heap_size=1024 --stack_size=512 -i"C:/ti/ccs1220/ccs/ccs_base/arm/include" -i"C:/ti/ccs1220/ccs/tools/compiler/ti-cgt-arm_20.2.7.LTS/lib" -i"C:/ti/ccs1220/ccs/tools/compiler/ti-cgt-arm_20.2.7.LTS/include" --reread_libs --diag_wrap=off --display_error_number --warn_sections --xml_link_info="SmartAlarm_linkInfo.xml" --rom_model -o "SmartAlarm.out" $(ORDERED_OBJS) $(A_SRCS)
+	"/home/asus-laptop/Applications/CodeComposerStudio/ccs/tools/compiler/ti-cgt-arm_20.2.7.LTS/bin/armcl" -mv7M4 --code_state=16 --float_support=FPv4SPD16 -me --advice:power="all" --define=__MSP432P401R__ --define=ccs -g --gcc --diag_warning=225 --diag_wrap=off --display_error_number --abi=eabi -z -m"SmartAlarm.map" --heap_size=1024 --stack_size=512 -i"/home/asus-laptop/Applications/CodeComposerStudio/ccs/ccs_base/arm/include" -i"/home/asus-laptop/Applications/CodeComposerStudio/ccs/tools/compiler/ti-cgt-arm_20.2.7.LTS/lib" -i"/home/asus-laptop/Applications/CodeComposerStudio/ccs/tools/compiler/ti-cgt-arm_20.2.7.LTS/include" --reread_libs --diag_wrap=off --display_error_number --warn_sections --xml_link_info="SmartAlarm_linkInfo.xml" --rom_model -o "SmartAlarm.out" $(ORDERED_OBJS) $(A_SRCS)
 	@echo 'Finished building target: "$@"'
 	@echo ' '
 
 # Other Targets
 clean:
 	-$(RM) $(EXE_OUTPUTS__QUOTED)
-	-$(RM) "main.obj" "startup_msp432p401r_ccs.obj" "system_msp432p401r.obj" "modules\activities_launcher\activities.obj" "modules\clock_system\clock.obj" "modules\hardware\hardware.obj" "modules\hardware\libraries\Crystalfontz128x128_ST7735.obj" "modules\hardware\libraries\HAL_MSP_EXP432P401R_Crystalfontz128x128_ST7735.obj" "modules\ringtones_manager\ringtones_manager.obj" 
-	-$(RM) "main.d" "startup_msp432p401r_ccs.d" "system_msp432p401r.d" "modules\activities_launcher\activities.d" "modules\clock_system\clock.d" "modules\hardware\hardware.d" "modules\hardware\libraries\Crystalfontz128x128_ST7735.d" "modules\hardware\libraries\HAL_MSP_EXP432P401R_Crystalfontz128x128_ST7735.d" "modules\ringtones_manager\ringtones_manager.d" 
+	-$(RM) "main.obj" "startup_msp432p401r_ccs.obj" "system_msp432p401r.obj" "modules/activities_launcher/activities.obj" "modules/clock_system/clock.obj" "modules/hardware/hardware.obj" "modules/hardware/libraries/Crystalfontz128x128_ST7735.obj" "modules/hardware/libraries/HAL_MSP_EXP432P401R_Crystalfontz128x128_ST7735.obj" "modules/ringtones_manager/ringtones_manager.obj" 
+	-$(RM) "main.d" "startup_msp432p401r_ccs.d" "system_msp432p401r.d" "modules/activities_launcher/activities.d" "modules/clock_system/clock.d" "modules/hardware/hardware.d" "modules/hardware/libraries/Crystalfontz128x128_ST7735.d" "modules/hardware/libraries/HAL_MSP_EXP432P401R_Crystalfontz128x128_ST7735.d" "modules/ringtones_manager/ringtones_manager.d" 
 	-@echo 'Finished clean'
 	-@echo ' '
 
