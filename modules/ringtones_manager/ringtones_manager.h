@@ -8,37 +8,36 @@
 #include "ringtones/the_lick.h"
 #define RINGTONES_NUMBER 1
 
-#define DEVICE_TIMER_PWM        TIMER_A0_BASE
-#define CCR_TIMER_PWM           TIMER_A_CAPTURECOMPARE_REGISTER_4
-#define DEVICE_TIMER_NOTE       TIMER_A1_BASE
 
 typedef struct ringtones_list{
-    int ringtones_lengths[RINGTONES_NUMBER];
-    int* ringtones_tones[RINGTONES_NUMBER];
-    int* ringtones_durations[RINGTONES_NUMBER];
+    uint16_t ringtones_lengths[RINGTONES_NUMBER];
+    uint16_t* ringtones_tones[RINGTONES_NUMBER];
+    uint16_t* ringtones_durations[RINGTONES_NUMBER];
     char* ringtones_informations[RINGTONES_NUMBER];
-    int currentTone;
-    int selectedRingtone;
+    uint16_t currentTone;
+    uint16_t selectedRingtone;
 } ringtones_list;
 
 
 typedef struct hardware_informations {
-    int piezoPin;
-    int piezoPort;
+    uint16_t piezoPin;
+    uint16_t piezoPort;
     bool piezoRunning;
-    Timer_A_CompareModeConfig compareConfig_PWM;
-    Timer_A_UpModeConfig upConfig_PWM;
-    Timer_A_UpModeConfig upConfig_note;
+    bool piezoTonePause;
+    uint16_t volume;
+    timerNumber usedDelayTimer;
+    timerNumber usedPWMTimer;
+
 } hardware_informations;
 
 hardware_informations piezo;
 ringtones_list ringtones;
 
-void ringtones_manager_intitialize(const int piezoPort, const int piezoPin);
-bool start_ringtone(unsigned int ringtone);
-unsigned int get_ringtones_number();
+void ringtones_manager_initialize(const uint16_t piezoPort, const uint16_t piezoPin);
+bool start_ringtone(uint16_t ringtone,uint16_t volume);
+uint16_t get_ringtones_number();
 void stop_ringtone();
-char* get_ringtone_description(unsigned int ringtone);
+char* get_ringtone_description(uint16_t ringtone);
 void noteInterrupt();
 
 #endif

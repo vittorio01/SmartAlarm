@@ -67,7 +67,7 @@ timerNumber generate_delay(const uint16_t delay, void* handler);
 
 //the function generate_rate verifies if there is an available timer and configures it with a delay and a specific handler:
 // - The delay can be a value from 1ms to 32760ms
-// - The handler is automaticaly called infinite times with the specified delay
+// - The handler is automatically called infinite times with the specified delay
 // - The function returns back a value timerNumber which identifies the assigned timer (assume NONE if all timers are busy or there is an argument error)
 // - The timer can be stopped with the function disable_timer
 timerNumber generate_rate(const uint16_t delay, void* handler);

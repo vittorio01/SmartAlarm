@@ -1,6 +1,6 @@
 #include "msp.h"
 #include "modules/clock_system/clock.h"
-//#include <modules/hardware/hardware.h>
+#include <modules/hardware/hardware.h>
 
 typedef enum {GAME, CLOCK} running_activity;  // define witch main part of the program is running
 
