@@ -43,8 +43,11 @@ typedef struct Timers {
     timerType timer3_type;
 } Timers;
 
-/* ADC STRUCTS */
-
+/* JOYSTICK STRUCTS */
+typedef struct joystick {
+    uint_fast8_t joyXvalue;
+    uint_fast8_t joyYvalue;
+}joystick;
 
 /* GENERALS INIT. */
 void initHardware(Graphics_Context* gc);
@@ -87,8 +90,7 @@ Timers timerlist;
 
 
 /* ADC FUNCTIONS */
-void enableJoyInterrupt();  //enable the joystick adc interrupt
-void disableJoyInterrupt(); //disable the joystick adc interrupt
+joystick getJoyValue();         //return the joystick X & Y values (0-255)
 
 
 

@@ -73,31 +73,26 @@ void initAdcSystem() {
     ADC14_enableModule();   // enable ADC block
 
 
-    //![Single Sample Mode Configure]
-    // Initializing ADC (MCLK/1/4)
-    //ADC14_initModule(ADC_CLOCKSOURCE_MCLK, ADC_PREDIVIDER_1, ADC_DIVIDER_4, 0);
 
-    // Configuring ADC Memory !![add here for new adc pin]!!
+    // Initializing ADC (MCLK/1/4)
+    ADC14_initModule(ADC_CLOCKSOURCE_MCLK, ADC_PREDIVIDER_1, ADC_DIVIDER_1, 0);
+
+    // Configuring ADC Memory and ADC mode  !![add here for new adc pin]!!
+    ADC14_configureMultiSequenceMode(JOY_Y_MEM, JOY_X_MEM, 0);
     // joy_x
-    ADC14_configureSingleSampleMode(JOY_X_MEM, true);
     ADC14_configureConversionMemory(JOY_X_MEM, ADC_VREFPOS_AVCC_VREFNEG_VSS, JOY_X_ADC_CH, false);
     // joy_y
-    ADC14_configureSingleSampleMode(JOY_Y_MEM, true);
     ADC14_configureConversionMemory(JOY_Y_MEM, ADC_VREFPOS_AVCC_VREFNEG_VSS, JOY_Y_ADC_CH, false);
 
     // Configuring Sample Timer
     ADC14_enableSampleTimer(ADC_MANUAL_ITERATION);
 
-    // Enabling/Toggling Conversion
-    ADC14_enableConversion();
-    ADC14_toggleConversionTrigger();
-    //![Single Sample Mode Configure]
-
     // set resolution at 8-bits (we don't need more for the joystick)
     ADC14_setResolution(ADC_8BIT);
 
-    // Enabling interrupts
-    Interrupt_enableInterrupt(INT_ADC14);
+    // Enabling Conversion
+    ADC14_enableConversion();
+
 
 }
 
@@ -328,36 +323,20 @@ void TA3_0_IRQHandler(void)
 
 // BUTTONS FUNCTIONS
 
-/* BUTTONS IRQ
+//BUTTONS IRQ
 // PORT5 INTERRUPT ISR
-void PORT5_IRQHandler(void) {
+/*void PORT5_IRQHandler(void) {
     uint_fast16_t status = GPIO_getEnabledInterruptStatus(GPIO_PORT_P5); //check which pins generated the interrupt
     GPIO_clearInterruptFlag(GPIO_PORT_P5, status); //clear the interrupt flag (to clear pending interrupt indicator)
-
-    if (status & BUT_S1_PIN) { //check if the button S1 was pressed
-        switch (current_activity) {
-        case CLOCK: break;
-        case GAME: break;
-        }
-    }
 }*/
 
 /* ADC FUNCTIONS */
-void enableJoyInterrupt() { //enable the joystick adc interrupt
-    ADC14_enableInterrupt(JOY_X_INT);
-}
-void disableJoyInterrupt() { //disable the joystick adc interrupt
-    ADC14_disableInterrupt(JOY_X_INT);
+
+joystick getJoyValue() {
+    joystick JoyValues;
+    ADC14_toggleConversionTrigger();
+    JoyValues.joyXvalue = ADC14_getResult(JOY_X_MEM);    //read the adc value
+    JoyValues.joyYvalue = ADC14_getResult(JOY_Y_MEM);    //read the adc value
+    return JoyValues;
 }
 
-/* ADC14 IRQ
-void ADC14_IRQHandler() {
-    uint64_t status = ADC14_getEnabledInterruptStatus();  //same as the gpio int
-    ADC14_clearInterruptFlag(status);                     //same as the gpio int
-    if (JOY_X_INT & status) {
-        adcJoy.joyXvalue = ADC14_getResult(JOY_X_MEM);    //read the adc value
-        adcJoy.joyYvalue = ADC14_getResult(JOY_Y_MEM);    //read the adc value
-    }
-    ADC14_toggleConversionTrigger();    //start a new conversion
-}
-*/
