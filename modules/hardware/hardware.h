@@ -59,6 +59,7 @@ void initButtonSystem();    // set all the buttons configurations
 void initLedSystem();       // set all the leds port
 void intiDisplaySystem(Graphics_Context* gc);
 void initAdcSystem();       //set all the adc input pin (single mode)
+void initRTCSystem();
 
 /* TIMER FUNCTIONS */
 //the function generate_delay verifies if there is an available timer and configures it with a delay and a specific handler:
@@ -92,6 +93,7 @@ Timers timerlist;
 /* ADC FUNCTIONS */
 joystick getJoyValue();         //return the joystick X & Y values (0-255)
 
+/* RTC FUNCTIONS */
 
 
 #endif

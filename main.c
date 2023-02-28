@@ -10,7 +10,7 @@ void main(void) {
 	initHardware(gc);   //initialize all the hardware
 
 	while(1){
-
+	    testJoy(gc);
 	}
 
 }

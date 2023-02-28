@@ -25,6 +25,19 @@ void initTimerSystem() {
 void initClockSystem() {
     CS_setReferenceOscillatorFrequency(CS_REFO_128KHZ);
     CS_initClockSignal(CS_ACLK, CS_REFOCLK_SELECT, CS_CLOCK_DIVIDER_1);
+
+    /* Initializing the clock source as follows:
+         *      MCLK = MODOSC/4 = 6MHz
+         *      ACLK = REFO/2 = 16kHz
+         *      HSMCLK = DCO/2 = 1.5Mhz
+         *      SMCLK = DCO/4 = 750kHz
+         *      BCLK  = REFO = 32kHz
+         */
+   CS_setDCOCenteredFrequency(CS_DCO_FREQUENCY_48);
+   MAP_CS_initClockSignal(CS_MCLK, CS_MODOSC_SELECT, CS_CLOCK_DIVIDER_1);
+   MAP_CS_initClockSignal(CS_HSMCLK, CS_DCOCLK_SELECT, CS_CLOCK_DIVIDER_2);
+   MAP_CS_initClockSignal(CS_SMCLK, CS_DCOCLK_SELECT, CS_CLOCK_DIVIDER_4);
+   MAP_CS_initClockSignal(CS_BCLK, CS_REFOCLK_SELECT, CS_CLOCK_DIVIDER_1);
 }
 
 //BUTTONS
@@ -72,8 +85,6 @@ void initAdcSystem() {
 
     ADC14_enableModule();   // enable ADC block
 
-
-
     // Initializing ADC (MCLK/1/4)
     ADC14_initModule(ADC_CLOCKSOURCE_MCLK, ADC_PREDIVIDER_1, ADC_DIVIDER_1, 0);
 
@@ -93,6 +104,35 @@ void initAdcSystem() {
     // Enabling Conversion
     ADC14_enableConversion();
 
+
+}
+
+/* start up time */
+ const RTC_C_Calendar currentTime = {
+         0x32,
+         0x01,
+         0x15,
+         0x06,
+         0x12,
+         0x11,
+         0x2023
+ };
+
+void initRTCSystem() {
+    /* Initializing RTC with current time as described in time in
+     * definitions section */
+    MAP_RTC_C_initCalendar(&currentTime, RTC_C_FORMAT_BINARY);
+
+    /* Specify an interrupt to assert every minute */
+    MAP_RTC_C_setCalendarEvent(RTC_C_CALENDAREVENT_MINUTECHANGE);
+
+    /* Enable interrupt for RTC Ready Status, which asserts when the RTC
+     * Calendar registers are ready to read. */
+    MAP_RTC_C_clearInterruptFlag(RTC_C_CLOCK_READ_READY_INTERRUPT | RTC_C_TIME_EVENT_INTERRUPT | RTC_C_CLOCK_ALARM_INTERRUPT);
+    MAP_RTC_C_enableInterrupt(RTC_C_CLOCK_READ_READY_INTERRUPT | RTC_C_TIME_EVENT_INTERRUPT | RTC_C_CLOCK_ALARM_INTERRUPT);
+
+    /* Start RTC Clock */
+    MAP_RTC_C_startClock();
 
 }
 
@@ -321,17 +361,17 @@ void TA3_0_IRQHandler(void)
         }
 }
 
-// BUTTONS FUNCTIONS
+/* BUTTONS FUNCTIONS */
 
-//BUTTONS IRQ
-// PORT5 INTERRUPT ISR
-/*void PORT5_IRQHandler(void) {
+/* BUTTONS IRQ */
+// PORT5 IRQ
+void PORT5_IRQHandler(void) {
     uint_fast16_t status = GPIO_getEnabledInterruptStatus(GPIO_PORT_P5); //check which pins generated the interrupt
     GPIO_clearInterruptFlag(GPIO_PORT_P5, status); //clear the interrupt flag (to clear pending interrupt indicator)
-}*/
+
+}
 
 /* ADC FUNCTIONS */
-
 joystick getJoyValue() {
     joystick JoyValues;
     ADC14_toggleConversionTrigger();
@@ -339,4 +379,9 @@ joystick getJoyValue() {
     JoyValues.joyYvalue = ADC14_getResult(JOY_Y_MEM);    //read the adc value
     return JoyValues;
 }
+
+/* RTC FUNCTIONS */
+//RTC IRQ is i clock.c file
+
+
 
