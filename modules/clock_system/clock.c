@@ -1,6 +1,7 @@
 #include "clock.h"
 
- static volatile RTC_C_Calendar currentTime;
+
+
 
 
 void testJoy(Graphics_Context *gc) { //only a test
@@ -13,7 +14,33 @@ void testJoy(Graphics_Context *gc) { //only a test
     Graphics_drawString(gc, (int8_t*) joy, sizeof(joy), 10, 20,OPAQUE_TEXT);
 }
 
+/* SETTINGS VIEW*/
+void settingsView(Graphics_Context *gc) {
 
+}
+
+
+
+/* CLOCK VIEW */
+void clockView(Graphics_Context *gc) {
+    initClockView(gc);
+
+    while(!joyButtonPressed) {  // exit this loop when the joystick button are pressed and enter the menu viewd
+        if(updateTime){
+            drawTime(gc);
+        }
+        if(updateDate){
+            drawDate(gc);
+        }
+    }
+}
+
+
+
+
+
+
+/* CLOCK VIEW FUNCTIONS */
 void initClockView(Graphics_Context *gc) {
     Graphics_Rectangle fillRectangle;
     //color the entire frame of black
@@ -26,15 +53,21 @@ void initClockView(Graphics_Context *gc) {
     //Graphics_setFont(gc, &g_sFontCm16b);
 }
 
-
+//DRAW TIME ON THE DIPLAY
 void drawTime(Graphics_Context *gc) {
+    #define TIME_POSITION_X 49
+    #define TIME_POSITION_Y 60
     char time[10];
     sprintf(time, "%02d:%02d",currentTime.hours, currentTime.minutes);
-    Graphics_drawString(gc, (int8_t*) time, sizeof(time), 49, 60, OPAQUE_TEXT);  // (the background will be drown)
-
+    Graphics_drawString(gc, (int8_t*) time, sizeof(time), TIME_POSITION_X, TIME_POSITION_Y, OPAQUE_TEXT);  // (the background will be drown)
+    updateTime = 0;     // time updated
 }
 
+//DRAW DATE ON THE DISPLAY
 void drawDate(Graphics_Context *gc) {
+    #define DATE_POSITION_X 0
+    #define DATE_POSITION_Y 122
+
     char date[20];
     char day[10];
     char numb[10];
@@ -66,8 +99,8 @@ void drawDate(Graphics_Context *gc) {
     }
 
     sprintf(date, "%s %s %s", day, numb, month);
-    Graphics_drawString(gc, (int8_t*) date, sizeof(date), 0, 122, OPAQUE_TEXT);  // (the background will be drown)
-
+    Graphics_drawString(gc, (int8_t*) date, sizeof(date), DATE_POSITION_X, DATE_POSITION_Y, OPAQUE_TEXT);  // (the background will be drown)
+    updateDate = 0;
 }
 
 
@@ -80,7 +113,11 @@ void RTC_C_IRQHandler(void) {
     MAP_RTC_C_clearInterruptFlag(status);
 
     if (status & RTC_C_TIME_EVENT_INTERRUPT){
+        updateTime = 1;       //display need a time update (updated every minute)
         currentTime = MAP_RTC_C_getCalendarTime();
+        if(currentTime.hours == 0 && currentTime.minutes == 0 && currentTime.seconds == 1) {    // check if the date need an update
+            updateDate = 1;
+        }
 
     }
 }

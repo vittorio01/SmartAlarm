@@ -42,14 +42,20 @@ void initClockSystem() {
 
 //BUTTONS
 void initButtonSystem() {
-    // button S1 [P3.5]
-    // specification:
-    // - interrupt falling edge
-    // - already has the pull-up resistor
-    //
+    /* button S1 [P3.5]
+     * button JB [P4.1]
+     * specification:
+     * - interrupt falling edge
+     * - already has the pull-up resistor
+     */
+    button1Pressed = 0; //reset the button1 status flag
     GPIO_setAsInputPinWithPullUpResistor(BUT_S1_PORT, BUT_S1_PIN);
     GPIO_enableInterrupt(BUT_S1_PORT, BUT_S1_PIN);
     Interrupt_enableInterrupt(BUT_S1_PORT_INT);
+    joyButtonPressed = 0;
+    GPIO_setAsInputPinWithPullUpResistor(JOY_B_PORT, JOY_B_PIN);
+    GPIO_enableInterrupt(JOY_B_PORT, JOY_B_PIN);
+    Interrupt_enableInterrupt(JOY_B_PORT_INT);
 }
 
 // LEDS
@@ -362,26 +368,36 @@ void TA3_0_IRQHandler(void)
 }
 
 /* BUTTONS FUNCTIONS */
+uint8_t Button1Pressed() {
+
+}
+
 
 /* BUTTONS IRQ */
+// PORT4 IRQ
+void PORT4_IRQHandler(void) {
+    uint_fast16_t status = GPIO_getEnabledInterruptStatus(GPIO_PORT_P4); // check which pins generated the interrupt
+        GPIO_clearInterruptFlag(GPIO_PORT_P4, status); // clear the interrupt flag (to clear pending interrupt indicator)
+        joyButtonPressed = 1;
+}
 // PORT5 IRQ
 void PORT5_IRQHandler(void) {
-    uint_fast16_t status = GPIO_getEnabledInterruptStatus(GPIO_PORT_P5); //check which pins generated the interrupt
-    GPIO_clearInterruptFlag(GPIO_PORT_P5, status); //clear the interrupt flag (to clear pending interrupt indicator)
-
+    uint_fast16_t status = GPIO_getEnabledInterruptStatus(GPIO_PORT_P5); // check which pins generated the interrupt
+    GPIO_clearInterruptFlag(GPIO_PORT_P5, status); // clear the interrupt flag (to clear pending interrupt indicator)
+    button1Pressed = 1;
 }
 
 /* ADC FUNCTIONS */
 joystick getJoyValue() {
     joystick JoyValues;
     ADC14_toggleConversionTrigger();
-    JoyValues.joyXvalue = ADC14_getResult(JOY_X_MEM);    //read the adc value
-    JoyValues.joyYvalue = ADC14_getResult(JOY_Y_MEM);    //read the adc value
+    JoyValues.joyXvalue = ADC14_getResult(JOY_X_MEM);    // read the adc value
+    JoyValues.joyYvalue = ADC14_getResult(JOY_Y_MEM);    // read the adc value
     return JoyValues;
 }
 
 /* RTC FUNCTIONS */
-//RTC IRQ is i clock.c file
+// RTC IRQ is in clock.c file
 
 
 

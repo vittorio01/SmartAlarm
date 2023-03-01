@@ -27,6 +27,7 @@
 #define JOY_Y_ADC_CH ADC_INPUT_A9
 #define JOY_B_PORT GPIO_PORT_P4
 #define JOY_B_PIN GPIO_PIN1
+#define JOY_B_PORT_INT INT_PORT4
 
 /* TIMERS STRUCTS */
 typedef enum {TIMER0,TIMER1,TIMER2,TIMER3,NONE} timerNumber;
@@ -88,10 +89,12 @@ void disable_timer(timerNumber timer);
 Timers timerlist;
 
 /* BUTTONS FUNCTIONS */
-
+volatile uint8_t button1Pressed;     // if it's !=0 the button1 was pressed, else not (must be resetted by user, setted by button's IRQ)
+volatile uint8_t joyButtonPressed;   // same as button1 but for joystick button
+uint8_t Button1Pressed();   // return if the button1 was pressed or not: 0 - 1
 
 /* ADC FUNCTIONS */
-joystick getJoyValue();         //return the joystick X & Y values (0-255)
+joystick getJoyValue(); // return the joystick X & Y values (0-255)
 
 /* RTC FUNCTIONS */
 
