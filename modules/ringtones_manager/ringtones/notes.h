@@ -94,14 +94,16 @@
 #define NOTE_DS8 4978
 #define REST      0
 
-#define WHOLE_NOTE          4000
-#define HALF_NOTE           WHOLE_NOTE/2
-#define HALF_DOTTED_NOTE    WHOLE_NOTE/2 + WHOLE_NOTE/4
-#define QUARTER_NOTE        WHOLE_NOTE/4
-#define QUARTER_DOTTED_NOTE WHOLE_NOTE/4 + WHOLE_NOTE/8
-#define EIGHT_NOTE          WHOLE_NOTE/8
-#define EIGHT_DOTTED_NOTE   WHOLE_NOTE/8 + WHOLE_NOTE/16
+#define WHOLE_NOTE                  4000
+#define HALF_NOTE                   WHOLE_NOTE/2
+#define HALF_DOTTED_NOTE            WHOLE_NOTE/2 + WHOLE_NOTE/4
+#define QUARTER_NOTE                WHOLE_NOTE/4
+#define QUARTER_DOTTED_NOTE         WHOLE_NOTE/4 + WHOLE_NOTE/8
+#define EIGHT_NOTE                  WHOLE_NOTE/8
+#define EIGHT_DOTTED_NOTE           WHOLE_NOTE/8 + WHOLE_NOTE/16
+#define SIXTEENTH_NOTE              WHOLE_NOTE/16
+#define SIXTEENTH_DOTTED_NOTE       WHOLE_NOTE/16 + WHOLE_NOTE/32
 
-#define NOTE_DIVISION_DURATION  100
+#define NOTE_DIVISION_DURATION  10
 
 #endif

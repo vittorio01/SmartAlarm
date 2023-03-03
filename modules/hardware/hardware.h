@@ -29,8 +29,11 @@
 #define JOY_B_PIN GPIO_PIN1
 #define JOY_B_PORT_INT INT_PORT4
 
+#define BUZZER_PORT GPIO_PORT_P2
+#define BUZZER_PIN GPIO_PIN7
+
 /* TIMERS STRUCTS */
-typedef enum {TIMER0,TIMER1,TIMER2,TIMER3,NONE} timerNumber;
+typedef enum {TIMER1,TIMER2,TIMER3,NONE} timerNumber;
 typedef enum {DELAY,RATE,PWM,NOT_USED} timerType;
 
 typedef struct Timers {
@@ -54,6 +57,7 @@ typedef struct joystick {
 void initHardware(Graphics_Context* gc);
 
 /* MODULES INIT. */
+void initRCM();
 void initClockSystem();
 void initTimerSystem();
 void initButtonSystem();    // set all the buttons configurations
@@ -77,11 +81,12 @@ timerNumber generate_delay(const uint16_t delay, void* handler);
 // - The timer can be stopped with the function disable_timer
 timerNumber generate_rate(const uint16_t delay, void* handler);
 
-//the function generate_pwm verifies if there is an avabile timer and configures it to generate a PWM signal to a specific GPIO port:
-// - The PWM signal can be defined with frequency (max 64000Hz) and volume parameters (max 100)
-// - The function returns back a value timerNumber which identifies the assigned timer (assume NONE if all timers are busy or there is an argument error)
-// - The PWM generation can be stopped using the disable_timer function
-timerNumber generate_pwm(const uint16_t frequency, const uint16_t volume,const uint8_t port, const uint8_t pin);
+//This function generates a tone with boosterpack buzzer.
+//Frequency value must be between 3Hz and 250Khz and the volume must be a value between 1 and 100 (otherwise the function will not start)
+void generate_tone(const uint16_t frequency, const uint16_t volume);
+
+//This function turn off the buzzer tone
+void disable_tone();
 
 //the function disable_timer stops the specified timer.
 void disable_timer(timerNumber timer);

@@ -2,6 +2,7 @@
 
 /* GENERALS INIT. */
 void initHardware(Graphics_Context* gc) {
+    initPCM();
     initClockSystem();
     initTimerSystem();
     initButtonSystem();
@@ -11,6 +12,12 @@ void initHardware(Graphics_Context* gc) {
 }
 
 /* MODULES INIT. */
+
+void initPCM() {
+    PCM_setCoreVoltageLevel(PCM_VCORE1);
+    FlashCtl_setWaitState(FLASH_BANK0, 2);
+    FlashCtl_setWaitState(FLASH_BANK1, 2);
+}
 
 // TIMERS
 void initTimerSystem() {
@@ -33,11 +40,11 @@ void initClockSystem() {
          *      SMCLK = DCO/4 = 750kHz
          *      BCLK  = REFO = 32kHz
          */
-   CS_setDCOCenteredFrequency(CS_DCO_FREQUENCY_48);
+   /*CS_setDCOCenteredFrequency(CS_DCO_FREQUENCY_48);
    MAP_CS_initClockSignal(CS_MCLK, CS_MODOSC_SELECT, CS_CLOCK_DIVIDER_1);
    MAP_CS_initClockSignal(CS_HSMCLK, CS_DCOCLK_SELECT, CS_CLOCK_DIVIDER_2);
    MAP_CS_initClockSignal(CS_SMCLK, CS_DCOCLK_SELECT, CS_CLOCK_DIVIDER_4);
-   MAP_CS_initClockSignal(CS_BCLK, CS_REFOCLK_SELECT, CS_CLOCK_DIVIDER_1);
+   MAP_CS_initClockSignal(CS_BCLK, CS_REFOCLK_SELECT, CS_CLOCK_DIVIDER_1);*/
 }
 
 //BUTTONS
@@ -143,9 +150,10 @@ void initRTCSystem() {
 }
 
 /* TIMER FUNCTIONS */
+/* TIMER FUNCTIONS */
 timerNumber generate_delay(const uint16_t delay, void* handler) {
     timerNumber selectedTimer=NONE;
-    if (delay<=32768) {
+    if (delay<=32768 && delay!=0) {
 
         Timer_A_UpModeConfig config;
         config.clockSource=TIMER_A_CLOCKSOURCE_ACLK;
@@ -154,18 +162,11 @@ timerNumber generate_delay(const uint16_t delay, void* handler) {
         config.captureCompareInterruptEnable_CCR0_CCIE=TIMER_A_CCIE_CCR0_INTERRUPT_ENABLE;
         config.timerClear=TIMER_A_DO_CLEAR;
         config.timerPeriod=delay*2;
-        if (timerlist.timer0_type==NOT_USED) {
-            timerlist.timer0_type=DELAY;
-            selectedTimer=TIMER0;
-            Timer_A_configureUpMode(TIMER_A0_BASE,&config);
-            Timer_A_startCounter(TIMER_A0_BASE,TIMER_A_UP_MODE);
-            Interrupt_enableInterrupt(INT_TA0_0);
-            return selectedTimer;
-        }
         if (timerlist.timer1_type==NOT_USED) {
             timerlist.timer1_type=DELAY;
             selectedTimer=TIMER1;
             Timer_A_configureUpMode(TIMER_A1_BASE,&config);
+            timerlist.timer1_handler=handler;
             Timer_A_startCounter(TIMER_A1_BASE,TIMER_A_UP_MODE);
             Interrupt_enableInterrupt(INT_TA1_0);
             return selectedTimer;
@@ -174,6 +175,7 @@ timerNumber generate_delay(const uint16_t delay, void* handler) {
             timerlist.timer2_type=DELAY;
             selectedTimer=TIMER2;
             Timer_A_configureUpMode(TIMER_A2_BASE,&config);
+            timerlist.timer2_handler=handler;
             Timer_A_startCounter(TIMER_A2_BASE,TIMER_A_UP_MODE);
             Interrupt_enableInterrupt(INT_TA2_0);
             return selectedTimer;
@@ -182,6 +184,7 @@ timerNumber generate_delay(const uint16_t delay, void* handler) {
             timerlist.timer3_type=DELAY;
             selectedTimer=TIMER3;
             Timer_A_configureUpMode(TIMER_A3_BASE,&config);
+            timerlist.timer3_handler=handler;
             Timer_A_startCounter(TIMER_A3_BASE,TIMER_A_UP_MODE);
             Interrupt_enableInterrupt(INT_TA3_0);
             return selectedTimer;
@@ -192,7 +195,7 @@ timerNumber generate_delay(const uint16_t delay, void* handler) {
 
 timerNumber generate_rate(const uint16_t delay, void* handler) {
     timerNumber selectedTimer=NONE;
-        if (delay<=32768) {
+        if (delay<=32768 && delay!=0) {
             Timer_A_UpModeConfig config;
             config.clockSource=TIMER_A_CLOCKSOURCE_ACLK;
             config.clockSourceDivider=TIMER_A_CLOCKSOURCE_DIVIDER_64;
@@ -200,18 +203,11 @@ timerNumber generate_rate(const uint16_t delay, void* handler) {
             config.captureCompareInterruptEnable_CCR0_CCIE=TIMER_A_CCIE_CCR0_INTERRUPT_ENABLE;
             config.timerClear=TIMER_A_DO_CLEAR;
             config.timerPeriod=delay*2;
-            if (timerlist.timer0_type==NOT_USED) {
-                timerlist.timer0_type=RATE;
-                selectedTimer=TIMER0;
-                Timer_A_configureUpMode(TIMER_A0_BASE,&config);
-                Timer_A_startCounter(TIMER_A0_BASE,TIMER_A_UP_MODE);
-                Interrupt_enableInterrupt(INT_TA0_0);
-                return selectedTimer;
-            }
             if (timerlist.timer1_type==NOT_USED) {
                 timerlist.timer1_type=RATE;
                 selectedTimer=TIMER1;
                 Timer_A_configureUpMode(TIMER_A1_BASE,&config);
+                timerlist.timer1_handler=handler;
                 Timer_A_startCounter(TIMER_A1_BASE,TIMER_A_UP_MODE);
                 Interrupt_enableInterrupt(INT_TA1_0);
                 return selectedTimer;
@@ -220,6 +216,7 @@ timerNumber generate_rate(const uint16_t delay, void* handler) {
                 timerlist.timer2_type=RATE;
                 selectedTimer=TIMER2;
                 Timer_A_configureUpMode(TIMER_A2_BASE,&config);
+                timerlist.timer2_handler=handler;
                 Timer_A_startCounter(TIMER_A2_BASE,TIMER_A_UP_MODE);
                 Interrupt_enableInterrupt(INT_TA2_0);
                 return selectedTimer;
@@ -228,6 +225,7 @@ timerNumber generate_rate(const uint16_t delay, void* handler) {
                 timerlist.timer3_type=RATE;
                 selectedTimer=TIMER3;
                 Timer_A_configureUpMode(TIMER_A3_BASE,&config);
+                timerlist.timer3_handler=handler;
                 Timer_A_startCounter(TIMER_A3_BASE,TIMER_A_UP_MODE);
                 Interrupt_enableInterrupt(INT_TA3_0);
                 return selectedTimer;
@@ -236,55 +234,44 @@ timerNumber generate_rate(const uint16_t delay, void* handler) {
         return selectedTimer;
 }
 
-timerNumber generate_pwm(const uint16_t frequency, const uint16_t volume, const uint8_t port, const uint8_t pin) {
-    timerNumber selectedTimer=NONE;
-        if (volume <= 100 && frequency<=64000  && !(timerlist.timer0_type==PWM || timerlist.timer1_type==PWM || timerlist.timer2_type==PWM || timerlist.timer3_type==PWM)) {
-            uint16_t timerValue=(1/frequency)*64000;
-            uint16_t timerDutyCycle= volume*65536/100;
-            GPIO_setAsPeripheralModuleFunctionInputPin(port, pin, GPIO_PRIMARY_MODULE_FUNCTION);
-            Timer_A_PWMConfig config;
-            config.clockSource=TIMER_A_CLOCKSOURCE_ACLK;
-            config.clockSourceDivider=TIMER_A_CLOCKSOURCE_DIVIDER_2;
-            config.compareRegister=TIMER_A_CAPTURECOMPARE_REGISTER_1;
-            config.dutyCycle=timerDutyCycle;
-            config.timerPeriod=timerValue;
-            config.compareOutputMode=TIMER_A_OUTPUTMODE_TOGGLE;
+void generate_tone(const uint16_t frequency, const uint16_t volume) {
+    if ((volume <= 100 && frequency<=250000) && (volume!=0 && frequency!=0)) {
+        if (timerlist.timer0_type!=NOT_USED) disable_tone();
+        uint16_t timerValue=(250000/frequency);
+        uint16_t timerDutyCycle= volume*timerValue/200;
+        GPIO_setAsPeripheralModuleFunctionOutputPin(BUZZER_PORT, BUZZER_PIN,GPIO_PRIMARY_MODULE_FUNCTION);
 
-            if (timerlist.timer0_type==NOT_USED) {
-                timerlist.timer0_type=PWM;
-                selectedTimer=TIMER0;
-                Timer_A_generatePWM(TIMER_A0_BASE,&config);
-                return selectedTimer;
-            }
-            if (timerlist.timer1_type==NOT_USED) {
-                timerlist.timer1_type=PWM;
-                selectedTimer=TIMER1;
-                Timer_A_generatePWM(TIMER_A1_BASE,&config);
-                return selectedTimer;
-            }
-            if (timerlist.timer2_type==NOT_USED) {
-                timerlist.timer2_type=PWM;
-                selectedTimer=TIMER2;
-                Timer_A_generatePWM(TIMER_A2_BASE,&config);
-                return selectedTimer;
-            }
-            if (timerlist.timer3_type==NOT_USED) {
-                timerlist.timer3_type=PWM;
-                selectedTimer=TIMER3;
-                Timer_A_generatePWM(TIMER_A3_BASE,&config);
-                return selectedTimer;
-            }
-        }
-        return selectedTimer;
+        Timer_A_CompareModeConfig compareConfig_PWM = {
+                TIMER_A_CAPTURECOMPARE_REGISTER_4,
+                TIMER_A_CAPTURECOMPARE_INTERRUPT_DISABLE,
+                TIMER_A_OUTPUTMODE_TOGGLE_SET,
+                timerDutyCycle
+                };
+
+        Timer_A_UpModeConfig upConfig = {
+                TIMER_A_CLOCKSOURCE_SMCLK,
+                TIMER_A_CLOCKSOURCE_DIVIDER_12,
+                timerValue,
+                TIMER_A_TAIE_INTERRUPT_DISABLE,
+                TIMER_A_CCIE_CCR0_INTERRUPT_DISABLE,
+                TIMER_A_DO_CLEAR
+                };
+        timerlist.timer0_type=PWM;
+        Timer_A_configureUpMode(TIMER_A0_BASE, &upConfig);
+
+        Timer_A_startCounter(TIMER_A0_BASE, TIMER_A_UP_MODE);
+        Timer_A_initCompare(TIMER_A0_BASE, &compareConfig_PWM);
+    }
+}
+
+void disable_tone() {
+        Timer_A_stopTimer(TIMER_A0_BASE);
+        Interrupt_disableInterrupt(INT_TA0_0);
+        timerlist.timer0_type=NOT_USED;
 }
 
 void disable_timer(timerNumber timer) {
     switch(timer) {
-    case TIMER0:
-        Timer_A_stopTimer(TIMER_A0_BASE);
-        Interrupt_disableInterrupt(INT_TA0_0);
-        timerlist.timer0_type=NOT_USED;
-        break;
     case TIMER1:
         Timer_A_stopTimer(TIMER_A1_BASE);
         Interrupt_disableInterrupt(INT_TA1_0);
@@ -304,21 +291,6 @@ void disable_timer(timerNumber timer) {
 }
 
 /* TIMERS IRQ */
-void TA0_0_IRQHandler(void)
-{
-    Timer_A_clearCaptureCompareInterrupt(TIMER_A0_BASE,TIMER_A_CAPTURECOMPARE_REGISTER_0);
-    switch(timerlist.timer0_type) {
-        case DELAY:
-            Timer_A_stopTimer(TIMER_A0_BASE);
-            Interrupt_disableInterrupt(INT_TA0_0);
-            timerlist.timer0_type=NOT_USED;
-        case RATE:
-            timerlist.timer0_handler();
-            break;
-        case PWM:
-            break;
-        }
-}
 
 void TA1_0_IRQHandler(void)
 {
@@ -366,7 +338,6 @@ void TA3_0_IRQHandler(void)
             break;
         }
 }
-
 /* BUTTONS FUNCTIONS */
 uint8_t Button1Pressed() {
 

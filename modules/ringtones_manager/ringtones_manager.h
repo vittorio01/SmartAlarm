@@ -8,36 +8,33 @@
 #include "ringtones/the_lick.h"
 #define RINGTONES_NUMBER 1
 
-
 typedef struct ringtones_list{
-    uint16_t ringtones_lengths[RINGTONES_NUMBER];
-    uint16_t* ringtones_tones[RINGTONES_NUMBER];
-    uint16_t* ringtones_durations[RINGTONES_NUMBER];
-    char* ringtones_informations[RINGTONES_NUMBER];
+    const uint16_t ringtones_lengths[RINGTONES_NUMBER];
+    const uint16_t* ringtones_tones[RINGTONES_NUMBER];
+    const uint16_t* ringtones_durations[RINGTONES_NUMBER];
+    const char* ringtones_informations[RINGTONES_NUMBER];
     uint16_t currentTone;
     uint16_t selectedRingtone;
 } ringtones_list;
 
+extern ringtones_list ringtones;
+
+
 
 typedef struct hardware_informations {
-    uint16_t piezoPin;
-    uint16_t piezoPort;
     bool piezoRunning;
     bool piezoTonePause;
     uint16_t volume;
     timerNumber usedDelayTimer;
-    timerNumber usedPWMTimer;
 
 } hardware_informations;
 
-hardware_informations piezo;
-ringtones_list ringtones;
+extern hardware_informations piezo;
 
-void ringtones_manager_initialize(const uint16_t piezoPort, const uint16_t piezoPin);
 bool start_ringtone(uint16_t ringtone,uint16_t volume);
 uint16_t get_ringtones_number();
 void stop_ringtone();
-char* get_ringtone_description(uint16_t ringtone);
+const char* get_ringtone_description(uint16_t ringtone);
 void noteInterrupt();
 
 #endif
