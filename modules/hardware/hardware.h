@@ -57,7 +57,7 @@ typedef struct joystick {
 void initHardware(Graphics_Context* gc);
 
 /* MODULES INIT. */
-void initRCM();
+void initPCM();
 void initClockSystem();
 void initTimerSystem();
 void initButtonSystem();    // set all the buttons configurations
