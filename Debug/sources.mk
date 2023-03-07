@@ -129,5 +129,6 @@ modules/activities_launcher \
 modules/clock_system \
 modules/hardware \
 modules/hardware/libraries \
+modules/ringtones_manager/ringtones \
 modules/ringtones_manager \
 

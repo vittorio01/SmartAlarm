@@ -48,6 +48,7 @@ void initClockSystem() {
    CS_initClockSignal(CS_HSMCLK, CS_DCOCLK_SELECT, CS_CLOCK_DIVIDER_2);
    CS_initClockSignal(CS_SMCLK, CS_DCOCLK_SELECT, CS_CLOCK_DIVIDER_4);
    CS_initClockSignal(CS_BCLK, CS_REFOCLK_SELECT, CS_CLOCK_DIVIDER_1);
+   CS_initClockSignal(CS_ACLK, CS_REFOCLK_SELECT, CS_CLOCK_DIVIDER_1);
 }
 
 //BUTTONS
@@ -163,6 +164,48 @@ void initRTCSystem() {
 }
 
 /* TIMER FUNCTIONS */
+
+bool generate_wait(const uint16_t delay) {
+    bool selectedTimer=false;
+        if (delay<=32768 && delay!=0) {
+            Timer_A_UpModeConfig config;
+            config.clockSource=TIMER_A_CLOCKSOURCE_ACLK;
+            config.clockSourceDivider=TIMER_A_CLOCKSOURCE_DIVIDER_64;
+            config.timerInterruptEnable_TAIE=TIMER_A_TAIE_INTERRUPT_DISABLE;
+            config.captureCompareInterruptEnable_CCR0_CCIE=TIMER_A_CCIE_CCR0_INTERRUPT_ENABLE;
+            config.timerClear=TIMER_A_DO_CLEAR;
+            config.timerPeriod=delay*2;
+            if (timerlist.timer1_type==NOT_USED) {
+                timerlist.timer1_type=WAIT;
+                selectedTimer=true;
+                Timer_A_configureUpMode(TIMER_A1_BASE,&config);
+                Timer_A_startCounter(TIMER_A1_BASE,TIMER_A_UP_MODE);
+                Interrupt_enableInterrupt(INT_TA1_0);
+                PCM_gotoLPM0();
+                return selectedTimer;
+            }
+            if (timerlist.timer2_type==NOT_USED) {
+                timerlist.timer2_type=WAIT;
+                selectedTimer=true;
+                Timer_A_configureUpMode(TIMER_A2_BASE,&config);
+                Timer_A_startCounter(TIMER_A2_BASE,TIMER_A_UP_MODE);
+                Interrupt_enableInterrupt(INT_TA2_0);
+                PCM_gotoLPM0();
+                return selectedTimer;
+            }
+            if (timerlist.timer3_type==NOT_USED) {
+                timerlist.timer3_type=WAIT;
+                selectedTimer=true;
+                Timer_A_configureUpMode(TIMER_A3_BASE,&config);
+                Timer_A_startCounter(TIMER_A3_BASE,TIMER_A_UP_MODE);
+                Interrupt_enableInterrupt(INT_TA3_0);
+                PCM_gotoLPM0();
+                return selectedTimer;
+            }
+        }
+        return selectedTimer;
+}
+
 timerNumber generate_delay(const uint16_t delay, void* handler) {
     timerNumber selectedTimer=NONE;
     if (delay<=32768 && delay!=0) {
@@ -315,7 +358,11 @@ void TA1_0_IRQHandler(void)
         case RATE:
             timerlist.timer1_handler();
             break;
-        case PWM:
+        case WAIT:
+            Timer_A_stopTimer(TIMER_A1_BASE);
+            Interrupt_disableInterrupt(INT_TA1_0);
+            timerlist.timer1_type=NOT_USED;
+        default:
             break;
         }
 }
@@ -330,7 +377,11 @@ void TA2_0_IRQHandler(void)
         case RATE:
             timerlist.timer2_handler();
             break;
-        case PWM:
+        case WAIT:
+            Timer_A_stopTimer(TIMER_A2_BASE);
+            Interrupt_disableInterrupt(INT_TA2_0);
+            timerlist.timer2_type=NOT_USED;
+        default:
             break;
         }
 }
@@ -346,6 +397,10 @@ void TA3_0_IRQHandler(void)
         case RATE:
             timerlist.timer3_handler();
             break;
+        case WAIT:
+            Timer_A_stopTimer(TIMER_A3_BASE);
+            Interrupt_disableInterrupt(INT_TA3_0);
+            timerlist.timer1_type=NOT_USED;
         case PWM:
             break;
         }

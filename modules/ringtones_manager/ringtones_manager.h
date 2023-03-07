@@ -5,8 +5,8 @@
 #include <stdbool.h>
 #include <modules/hardware/hardware.h>
 
-#include "ringtones/the_lick.h"
 #define RINGTONES_NUMBER 1
+#include "ringtones/the_lick.c"
 
 typedef struct ringtones_list{
     const uint16_t ringtones_lengths[RINGTONES_NUMBER];
@@ -19,8 +19,6 @@ typedef struct ringtones_list{
 
 extern ringtones_list ringtones;
 
-
-
 typedef struct hardware_informations {
     bool piezoRunning;
     bool piezoTonePause;
@@ -30,11 +28,23 @@ typedef struct hardware_informations {
 } hardware_informations;
 
 extern hardware_informations piezo;
-
-bool start_ringtone(uint16_t ringtone,uint16_t volume);
-uint16_t get_ringtones_number();
-void stop_ringtone();
-const char* get_ringtone_description(uint16_t ringtone);
 void noteInterrupt();
+
+/*ringtones_manager API*/
+
+//All registered ringtones are associated with an ID (number from 0 to n-1 for n ringtones)
+
+//start_ringtone starts the specified ringtone.
+//The function uses the PWM timer and requires one free normal timer
+bool start_ringtone(uint16_t ringtone,uint16_t volume);
+
+//get_ringtones_number returns the number of registered ringtones
+uint16_t get_ringtones_number();
+
+//stop_ringtone stops the current ringtone
+void stop_ringtone();
+
+//get_ringtone_description returns the title of the specified ringtone
+const char* get_ringtone_description(uint16_t ringtone);
 
 #endif

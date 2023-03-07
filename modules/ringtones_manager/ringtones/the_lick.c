@@ -1,6 +1,5 @@
 #ifndef __THE_LICK_H__
 #define __THE_LICK_H__
-
 #include "notes.h"
 
 #define THE_LICK_DIMENSION  8

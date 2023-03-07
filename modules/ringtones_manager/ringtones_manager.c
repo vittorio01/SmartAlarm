@@ -1,3 +1,4 @@
+#include <modules/ringtones_manager/ringtones/the_lick.c>
 #include "ringtones_manager.h"
 
 const uint16_t the_lick_notes[THE_LICK_DIMENSION]=THE_LICK_NOTES;
