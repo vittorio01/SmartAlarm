@@ -10,6 +10,10 @@
 #define BUT_S1_PORT GPIO_PORT_P5
 #define BUT_S1_PIN GPIO_PIN1
 
+#define BUT_S2_PORT_INT INT_PORT3
+#define BUT_S2_PORT GPIO_PORT_P3
+#define BUT_S2_PIN GPIO_PIN5
+
 // LEDS
 #define RGB_LED_BLUE_PORT GPIO_PORT_P5
 #define RGB_LED_BLUE_PIN GPIO_PIN6
@@ -49,9 +53,16 @@ typedef struct Timers {
 
 /* JOYSTICK STRUCTS */
 typedef struct joystick {
-    uint_fast8_t joyXvalue;
-    uint_fast8_t joyYvalue;
+    int_fast8_t joyXvalue;
+    int_fast8_t joyYvalue;
 }joystick;
+
+/* BUTTONS STRUCTS */
+volatile typedef struct ButtonStatus{
+    volatile uint8_t b1;     // if it's !=0 the button1 was pressed, else not (must be resetted by user, setted by button's IRQ)
+    volatile uint8_t b2;
+    volatile uint8_t jb;   // same as button1 but for joystick button
+}ButtonStatus;
 
 /* GENERALS INIT. */
 void initHardware(Graphics_Context* gc);
@@ -94,11 +105,11 @@ void disable_timer(timerNumber timer);
 Timers timerlist;
 
 /* BUTTONS FUNCTIONS */
-volatile uint8_t button1Pressed;     // if it's !=0 the button1 was pressed, else not (must be resetted by user, setted by button's IRQ)
-volatile uint8_t joyButtonPressed;   // same as button1 but for joystick button
-uint8_t Button1Pressed();   // return if the button1 was pressed or not: 0 - 1
+
+ButtonStatus buttonsPressed;        // example: if buttonsPressed.b1 == 1 means it was pressed (to be reseted after use)
 
 /* ADC FUNCTIONS */
+volatile joystick JoyValues;
 joystick getJoyValue(); // return the joystick X & Y values (0-255)
 
 /* RTC FUNCTIONS */

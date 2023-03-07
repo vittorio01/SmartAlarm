@@ -12,14 +12,21 @@
 void testJoy(Graphics_Context *gc);
 
 /* settings interface */
-void settingsView(Graphics_Context *gc);        //main settings code
+void settingsView(Graphics_Context *gc, volatile uint8_t *menuA);        //main settings code
+
+void initSettingsView(Graphics_Context *gc);
+void drawTitle(Graphics_Context *gc, char t[20]);
+void drawMenu(Graphics_Context *gc);            //draw the menu
+void drawCursor(Graphics_Context *gc, uint8_t position, uint8_t menu);    //draw the cursor at the n position depending in witch menu
+
 
 /* clock interface */
-void clockView(Graphics_Context *gc);           //main clock code
+void clockView(Graphics_Context *gc, volatile uint8_t *menuA);           //main clock code
 
 void initClockView(Graphics_Context *gc);       //init all the color for the clock view
 void drawTime(Graphics_Context *gc);            //draw the current time on the display
 void drawDate(Graphics_Context *gc);            //draw the current date on the display
+void drawSeconds(Graphics_Context *gc);         //draw the second clock image
 
 /* clock variables */
 static volatile RTC_C_Calendar currentTime;     // current time updated by the RTC's IRQ

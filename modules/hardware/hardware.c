@@ -2,6 +2,7 @@
 
 /* GENERALS INIT. */
 void initHardware(Graphics_Context* gc) {
+    Interrupt_enableMaster();
     initPCM();
     initClockSystem();
     initTimerSystem();
@@ -9,6 +10,7 @@ void initHardware(Graphics_Context* gc) {
     initLedSystem();
     intiDisplaySystem(gc);
     initAdcSystem();
+    initRTCSystem();
 }
 
 /* MODULES INIT. */
@@ -30,8 +32,9 @@ void initTimerSystem() {
 
 // CLOCK SYSTEM
 void initClockSystem() {
+    /*
     CS_setReferenceOscillatorFrequency(CS_REFO_128KHZ);
-    CS_initClockSignal(CS_ACLK, CS_REFOCLK_SELECT, CS_CLOCK_DIVIDER_1);
+    CS_initClockSignal(CS_ACLK, CS_REFOCLK_SELECT, CS_CLOCK_DIVIDER_1);*/
 
     /* Initializing the clock source as follows:
          *      MCLK = MODOSC/4 = 6MHz
@@ -40,11 +43,11 @@ void initClockSystem() {
          *      SMCLK = DCO/4 = 750kHz
          *      BCLK  = REFO = 32kHz
          */
-   /*CS_setDCOCenteredFrequency(CS_DCO_FREQUENCY_48);
-   MAP_CS_initClockSignal(CS_MCLK, CS_MODOSC_SELECT, CS_CLOCK_DIVIDER_1);
-   MAP_CS_initClockSignal(CS_HSMCLK, CS_DCOCLK_SELECT, CS_CLOCK_DIVIDER_2);
-   MAP_CS_initClockSignal(CS_SMCLK, CS_DCOCLK_SELECT, CS_CLOCK_DIVIDER_4);
-   MAP_CS_initClockSignal(CS_BCLK, CS_REFOCLK_SELECT, CS_CLOCK_DIVIDER_1);*/
+   CS_setDCOCenteredFrequency(CS_DCO_FREQUENCY_48);
+   CS_initClockSignal(CS_MCLK, CS_MODOSC_SELECT, CS_CLOCK_DIVIDER_1);
+   CS_initClockSignal(CS_HSMCLK, CS_DCOCLK_SELECT, CS_CLOCK_DIVIDER_2);
+   CS_initClockSignal(CS_SMCLK, CS_DCOCLK_SELECT, CS_CLOCK_DIVIDER_4);
+   CS_initClockSignal(CS_BCLK, CS_REFOCLK_SELECT, CS_CLOCK_DIVIDER_1);
 }
 
 //BUTTONS
@@ -55,11 +58,15 @@ void initButtonSystem() {
      * - interrupt falling edge
      * - already has the pull-up resistor
      */
-    button1Pressed = 0; //reset the button1 status flag
+    buttonsPressed.b1 = 0; //reset the button1 status flag
     GPIO_setAsInputPinWithPullUpResistor(BUT_S1_PORT, BUT_S1_PIN);
     GPIO_enableInterrupt(BUT_S1_PORT, BUT_S1_PIN);
     Interrupt_enableInterrupt(BUT_S1_PORT_INT);
-    joyButtonPressed = 0;
+    buttonsPressed.b2 = 0;
+    GPIO_setAsInputPinWithPullUpResistor(BUT_S2_PORT, BUT_S2_PIN);
+    GPIO_enableInterrupt(BUT_S2_PORT, BUT_S2_PIN);
+    Interrupt_enableInterrupt(BUT_S2_PORT_INT);
+    buttonsPressed.jb = 0;
     GPIO_setAsInputPinWithPullUpResistor(JOY_B_PORT, JOY_B_PIN);
     GPIO_enableInterrupt(JOY_B_PORT, JOY_B_PIN);
     Interrupt_enableInterrupt(JOY_B_PORT_INT);
@@ -99,7 +106,7 @@ void initAdcSystem() {
     ADC14_enableModule();   // enable ADC block
 
     // Initializing ADC (MCLK/1/4)
-    ADC14_initModule(ADC_CLOCKSOURCE_MCLK, ADC_PREDIVIDER_1, ADC_DIVIDER_1, 0);
+    ADC14_initModule(ADC_CLOCKSOURCE_MCLK, ADC_PREDIVIDER_4, ADC_DIVIDER_4, 0);
 
     // Configuring ADC Memory and ADC mode  !![add here for new adc pin]!!
     ADC14_configureMultiSequenceMode(JOY_Y_MEM, JOY_X_MEM, 0);
@@ -109,13 +116,17 @@ void initAdcSystem() {
     ADC14_configureConversionMemory(JOY_Y_MEM, ADC_VREFPOS_AVCC_VREFNEG_VSS, JOY_Y_ADC_CH, false);
 
     // Configuring Sample Timer
-    ADC14_enableSampleTimer(ADC_MANUAL_ITERATION);
+    ADC14_enableSampleTimer(ADC_AUTOMATIC_ITERATION);
 
     // set resolution at 8-bits (we don't need more for the joystick)
     ADC14_setResolution(ADC_8BIT);
 
     // Enabling Conversion
     ADC14_enableConversion();
+    ADC14_toggleConversionTrigger();
+    ADC14_enableInterrupt(JOY_X_MEM);
+    Interrupt_enableInterrupt(INT_ADC14);
+
 
 
 }
@@ -123,8 +134,8 @@ void initAdcSystem() {
 /* start up time */
  const RTC_C_Calendar currentTime = {
          0x32,
-         0x01,
-         0x15,
+         0x59,
+         0x23,
          0x06,
          0x12,
          0x11,
@@ -134,22 +145,23 @@ void initAdcSystem() {
 void initRTCSystem() {
     /* Initializing RTC with current time as described in time in
      * definitions section */
-    MAP_RTC_C_initCalendar(&currentTime, RTC_C_FORMAT_BINARY);
+    RTC_C_initCalendar(&currentTime, RTC_C_FORMAT_BCD);
 
     /* Specify an interrupt to assert every minute */
-    MAP_RTC_C_setCalendarEvent(RTC_C_CALENDAREVENT_MINUTECHANGE);
+    RTC_C_setCalendarEvent(RTC_C_CALENDAREVENT_MINUTECHANGE);
 
     /* Enable interrupt for RTC Ready Status, which asserts when the RTC
      * Calendar registers are ready to read. */
-    MAP_RTC_C_clearInterruptFlag(RTC_C_CLOCK_READ_READY_INTERRUPT | RTC_C_TIME_EVENT_INTERRUPT | RTC_C_CLOCK_ALARM_INTERRUPT);
-    MAP_RTC_C_enableInterrupt(RTC_C_CLOCK_READ_READY_INTERRUPT | RTC_C_TIME_EVENT_INTERRUPT | RTC_C_CLOCK_ALARM_INTERRUPT);
+    RTC_C_clearInterruptFlag(RTC_C_CLOCK_READ_READY_INTERRUPT | RTC_C_TIME_EVENT_INTERRUPT | RTC_C_CLOCK_ALARM_INTERRUPT);
+    RTC_C_enableInterrupt(RTC_C_CLOCK_READ_READY_INTERRUPT | RTC_C_TIME_EVENT_INTERRUPT | RTC_C_CLOCK_ALARM_INTERRUPT);
 
-    /* Start RTC Clock */
-    MAP_RTC_C_startClock();
+    /* Start RTC Clock & enable Interrupts*/
+    RTC_C_startClock();
+    Interrupt_enableInterrupt(INT_RTC_C);
+    Interrupt_enableMaster();
 
 }
 
-/* TIMER FUNCTIONS */
 /* TIMER FUNCTIONS */
 timerNumber generate_delay(const uint16_t delay, void* handler) {
     timerNumber selectedTimer=NONE;
@@ -339,32 +351,51 @@ void TA3_0_IRQHandler(void)
         }
 }
 /* BUTTONS FUNCTIONS */
-uint8_t Button1Pressed() {
-
-}
 
 
 /* BUTTONS IRQ */
+// PORT3 IRQ
+void PORT3_IRQHandler(void) {
+    uint_fast16_t status = GPIO_getEnabledInterruptStatus(GPIO_PORT_P3); // check which pins generated the interrupt
+    GPIO_clearInterruptFlag(GPIO_PORT_P3, status); // clear the interrupt flag (to clear pending interrupt indicator)
+    if(status & BUT_S2_PIN){
+        buttonsPressed.b2 = 1;
+    }
+
+}
 // PORT4 IRQ
 void PORT4_IRQHandler(void) {
     uint_fast16_t status = GPIO_getEnabledInterruptStatus(GPIO_PORT_P4); // check which pins generated the interrupt
-        GPIO_clearInterruptFlag(GPIO_PORT_P4, status); // clear the interrupt flag (to clear pending interrupt indicator)
-        joyButtonPressed = 1;
+    GPIO_clearInterruptFlag(GPIO_PORT_P4, status); // clear the interrupt flag (to clear pending interrupt indicator)
+    if(status & JOY_B_PIN){
+        buttonsPressed.jb = 1;
+    }
+
 }
 // PORT5 IRQ
 void PORT5_IRQHandler(void) {
     uint_fast16_t status = GPIO_getEnabledInterruptStatus(GPIO_PORT_P5); // check which pins generated the interrupt
     GPIO_clearInterruptFlag(GPIO_PORT_P5, status); // clear the interrupt flag (to clear pending interrupt indicator)
-    button1Pressed = 1;
+    if(status & BUT_S1_PIN){
+        buttonsPressed.b1 = 1;
+    }
 }
 
 /* ADC FUNCTIONS */
 joystick getJoyValue() {
-    joystick JoyValues;
-    ADC14_toggleConversionTrigger();
-    JoyValues.joyXvalue = ADC14_getResult(JOY_X_MEM);    // read the adc value
-    JoyValues.joyYvalue = ADC14_getResult(JOY_Y_MEM);    // read the adc value
     return JoyValues;
+}
+
+// ADC IRQ
+void ADC14_IRQHandler(void){
+    uint64_t status = ADC14_getEnabledInterruptStatus();
+    ADC14_clearInterruptFlag(status);
+
+    if (JOY_X_MEM & status){
+        JoyValues.joyXvalue = ADC14_getResult(JOY_X_MEM)-127;    // read the adc value
+        JoyValues.joyYvalue = ADC14_getResult(JOY_Y_MEM)-127;    // read the adc value
+    }
+    ADC14_toggleConversionTrigger();
 }
 
 /* RTC FUNCTIONS */

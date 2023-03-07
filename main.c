@@ -4,7 +4,13 @@
 
 Graphics_Context g_sContext; // Graphic library context
 Graphics_Context *gc = &g_sContext;
-uint8_t menuActive = 0;     //define which menu show on the display
+/* define which menu show on the display
+ * 0 = clock view
+ * 1 = settings view
+ * 2 = time settings
+ * 3 = date settings
+ */
+volatile uint8_t menuActive = 0;
 
 void main(void) {
 	WDT_A->CTL = WDT_A_CTL_PW | WDT_A_CTL_HOLD;		// stop watchdog timer
@@ -12,8 +18,8 @@ void main(void) {
 
 	while(1){
 	    switch(menuActive) {
-	        case 0: clockView(gc); break;
-	        case 1: settingsView(gc); break;
+	        case 0: clockView(gc, &menuActive); break;
+	        case 1: settingsView(gc, &menuActive); break;
 	    }
 	}
 
