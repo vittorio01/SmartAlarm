@@ -48,7 +48,6 @@ void initClockSystem() {
    CS_initClockSignal(CS_HSMCLK, CS_DCOCLK_SELECT, CS_CLOCK_DIVIDER_2);
    CS_initClockSignal(CS_SMCLK, CS_DCOCLK_SELECT, CS_CLOCK_DIVIDER_4);
    CS_initClockSignal(CS_BCLK, CS_REFOCLK_SELECT, CS_CLOCK_DIVIDER_1);
-   CS_initClockSignal(CS_ACLK, CS_REFOCLK_SELECT, CS_CLOCK_DIVIDER_1);
 }
 
 //BUTTONS
@@ -59,18 +58,22 @@ void initButtonSystem() {
      * - interrupt falling edge
      * - already has the pull-up resistor
      */
-    buttonsPressed.b1 = 0; //reset the button1 status flag
+
     GPIO_setAsInputPinWithPullUpResistor(BUT_S1_PORT, BUT_S1_PIN);
     GPIO_enableInterrupt(BUT_S1_PORT, BUT_S1_PIN);
     Interrupt_enableInterrupt(BUT_S1_PORT_INT);
-    buttonsPressed.b2 = 0;
+
     GPIO_setAsInputPinWithPullUpResistor(BUT_S2_PORT, BUT_S2_PIN);
     GPIO_enableInterrupt(BUT_S2_PORT, BUT_S2_PIN);
     Interrupt_enableInterrupt(BUT_S2_PORT_INT);
-    buttonsPressed.jb = 0;
+
     GPIO_setAsInputPinWithPullUpResistor(JOY_B_PORT, JOY_B_PIN);
     GPIO_enableInterrupt(JOY_B_PORT, JOY_B_PIN);
     Interrupt_enableInterrupt(JOY_B_PORT_INT);
+
+    buttonsPressed.b1 = 0; //reset the button1 status flag
+    buttonsPressed.b2 = 0;
+    buttonsPressed.jb = 0;
 }
 
 // LEDS
@@ -100,20 +103,15 @@ void intiDisplaySystem(Graphics_Context* gc) {
 // ADC14
 void initAdcSystem() {
     // Configuring GPIOs  !![add here for new adc pin]!!
-
     GPIO_setAsPeripheralModuleFunctionInputPin(JOY_X_PORT, JOY_X_PIN, GPIO_TERTIARY_MODULE_FUNCTION);
     GPIO_setAsPeripheralModuleFunctionInputPin(JOY_Y_PORT, JOY_Y_PIN, GPIO_TERTIARY_MODULE_FUNCTION);
 
     ADC14_enableModule();   // enable ADC block
-
-    // Initializing ADC (MCLK/1/4)
     ADC14_initModule(ADC_CLOCKSOURCE_MCLK, ADC_PREDIVIDER_4, ADC_DIVIDER_4, 0);
 
     // Configuring ADC Memory and ADC mode  !![add here for new adc pin]!!
     ADC14_configureMultiSequenceMode(JOY_Y_MEM, JOY_X_MEM, 0);
-    // joy_x
     ADC14_configureConversionMemory(JOY_X_MEM, ADC_VREFPOS_AVCC_VREFNEG_VSS, JOY_X_ADC_CH, false);
-    // joy_y
     ADC14_configureConversionMemory(JOY_Y_MEM, ADC_VREFPOS_AVCC_VREFNEG_VSS, JOY_Y_ADC_CH, false);
 
     // Configuring Sample Timer
@@ -164,48 +162,6 @@ void initRTCSystem() {
 }
 
 /* TIMER FUNCTIONS */
-
-bool generate_wait(const uint16_t delay) {
-    bool selectedTimer=false;
-        if (delay<=32768 && delay!=0) {
-            Timer_A_UpModeConfig config;
-            config.clockSource=TIMER_A_CLOCKSOURCE_ACLK;
-            config.clockSourceDivider=TIMER_A_CLOCKSOURCE_DIVIDER_64;
-            config.timerInterruptEnable_TAIE=TIMER_A_TAIE_INTERRUPT_DISABLE;
-            config.captureCompareInterruptEnable_CCR0_CCIE=TIMER_A_CCIE_CCR0_INTERRUPT_ENABLE;
-            config.timerClear=TIMER_A_DO_CLEAR;
-            config.timerPeriod=delay*2;
-            if (timerlist.timer1_type==NOT_USED) {
-                timerlist.timer1_type=WAIT;
-                selectedTimer=true;
-                Timer_A_configureUpMode(TIMER_A1_BASE,&config);
-                Timer_A_startCounter(TIMER_A1_BASE,TIMER_A_UP_MODE);
-                Interrupt_enableInterrupt(INT_TA1_0);
-                PCM_gotoLPM0();
-                return selectedTimer;
-            }
-            if (timerlist.timer2_type==NOT_USED) {
-                timerlist.timer2_type=WAIT;
-                selectedTimer=true;
-                Timer_A_configureUpMode(TIMER_A2_BASE,&config);
-                Timer_A_startCounter(TIMER_A2_BASE,TIMER_A_UP_MODE);
-                Interrupt_enableInterrupt(INT_TA2_0);
-                PCM_gotoLPM0();
-                return selectedTimer;
-            }
-            if (timerlist.timer3_type==NOT_USED) {
-                timerlist.timer3_type=WAIT;
-                selectedTimer=true;
-                Timer_A_configureUpMode(TIMER_A3_BASE,&config);
-                Timer_A_startCounter(TIMER_A3_BASE,TIMER_A_UP_MODE);
-                Interrupt_enableInterrupt(INT_TA3_0);
-                PCM_gotoLPM0();
-                return selectedTimer;
-            }
-        }
-        return selectedTimer;
-}
-
 timerNumber generate_delay(const uint16_t delay, void* handler) {
     timerNumber selectedTimer=NONE;
     if (delay<=32768 && delay!=0) {
@@ -358,11 +314,7 @@ void TA1_0_IRQHandler(void)
         case RATE:
             timerlist.timer1_handler();
             break;
-        case WAIT:
-            Timer_A_stopTimer(TIMER_A1_BASE);
-            Interrupt_disableInterrupt(INT_TA1_0);
-            timerlist.timer1_type=NOT_USED;
-        default:
+        case PWM:
             break;
         }
 }
@@ -377,11 +329,7 @@ void TA2_0_IRQHandler(void)
         case RATE:
             timerlist.timer2_handler();
             break;
-        case WAIT:
-            Timer_A_stopTimer(TIMER_A2_BASE);
-            Interrupt_disableInterrupt(INT_TA2_0);
-            timerlist.timer2_type=NOT_USED;
-        default:
+        case PWM:
             break;
         }
 }
@@ -397,16 +345,17 @@ void TA3_0_IRQHandler(void)
         case RATE:
             timerlist.timer3_handler();
             break;
-        case WAIT:
-            Timer_A_stopTimer(TIMER_A3_BASE);
-            Interrupt_disableInterrupt(INT_TA3_0);
-            timerlist.timer1_type=NOT_USED;
         case PWM:
             break;
         }
 }
 /* BUTTONS FUNCTIONS */
-
+void resetButtonsState(){
+    /* reset the button state */
+    buttonsPressed.b1 = 0;
+    buttonsPressed.b2 = 0;
+    buttonsPressed.jb = 0;
+}
 
 /* BUTTONS IRQ */
 // PORT3 IRQ
