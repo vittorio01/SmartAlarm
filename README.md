@@ -1,110 +1,110 @@
 # SmartAlarm
 
-SmartAlarm è un progetto che prevede lo sviluppo di una sveglia intelligente in grado di risvegliare, nel modo meno brusco possibile, anche le persone più resistenti ai metodi tradizionali tra cui:
-- I più furbi che spengono le sveglie inconsciamente nel sonno (tra cui anche me).
-- I più sonnolenti, che non riescono a svegliarsi neanche con una bomba atomica, che mettono 50 sveglie a distanza di 5 minuti in grado di disturbare qualsiasi persona nel raggio di 20 metri.
-- I più pigri che, una volta svegli, non riescono ad alzarsi dal letto e si riaddormentano dopo qualche secondo.
+SmartAlarm is a project that involves the development of an intelligent alarm clock capable of awakening, in the least annoying way possible, even the people most resistant to traditional methods including:
+- The smartest ones who unconsciously turn off their alarm clocks in their sleep (including me too).
+- The sleepiest ones, who can't wake up even with an atomic bomb, who set 50 alarms every 5 minutes capable of disturbing anyone within a radius of 20 meters.
+- The laziest who, once awake, can't get out of bed and fall asleep again after a few seconds.
 
-Il progetto viene sviluppato per funzionare su una scheda di sviluppo Ti MSP432, dotata di un microcontrollore Arm Cortex M4, con il relativo BoosterPack.
-L'idea originale è quella di implementare nella sveglia, oltre le funzioni base di una normale sveglia, dei minigiochi/attività in grado di riattivare il più velocemente possibile l'attività cerebrale del mal capitato. 
-## Avvertenze sull'utilizzo 
 
-La sveglia SmartAlarm potrebbe indurre allo sviluppo dei seguenti sintomi:
-- Viso gonfio e pallido
-- Sonnolenza a lungo termine
-- Cattivo umore
-- Sbalzi d'umore e aggressività 
-- Perdita di interesse nella vita (nei casi più estremi)
+The project is being developed to run on a Ti MSP432 development board, equipped with an Arm Cortex M4 microcontroller, with its BoosterPack. The original idea is to implement in the alarm clock, in addition to the basic functions of a normal alarm clock, mini-games / activities capable of reactivating the brain activity of the user as quick as possible. 
+## Usage Warnings 
 
-Per evitare questi sintomi consigliamo caldamente di impostare la sveglia in modo da dormire un minimo di 8 ore per notte per non mettere in pericolo il prodotto, l'individuo e la comunità.
-## Linee guida per lo sviluppo 
+The SmartAlarm alarm clock may lead to the development of the following symptoms:
+- Puffy and pale face
+- Long-term drowsiness
+- Bad mood
+- Mood swings and aggression
+- Loss of interest in life (in the most extreme cases)
 
-Passando alle cose serie, l'intero progetto si basa su una struttura formata da due layer principali: uno per la gestione delle funzioni principali della sveglia e uno che rappresenta i minigiochi che possono essere attivati dalla sveglia. 
+To avoid these symptoms, we strongly recommend that you set your alarm to get a minimum of 8 hours of sleep per night in order not to endanger the product, the individual and the community.
+## Development guidelines 
+
+Moving on to serious things, the whole project is based on a structure formed by three main layers: one for managing the main functions of the alarm clock, one that represents the minigames that can be activated by the alarm clock and one for the ringtones. /!\ 
 
 <p align="center">
     <img src="/documentation/main_structure.png" alt="System structure">
 </p>
 
-# Clock system (1 persona)
+# Clock system (1 person)
 
-Questo layer rappresenta la base operativa del progetto e ha il compito di gestire tutte informazioni basilari tra cui data, ora, giorno della settimana, informazioni ambientali (temperatura e luce) implementare un sistema di sveglie che, oltre ad avere le stesse caratteristiche delle sveglie normali, permette di lanciare e monitorare i minigiochi tramite l'Activity launch system. Il clock system gestisce, dal punto di vista dell'utente, due menu principali: uno dedicato alla visualizzazione delle informazioni e uno per la modifica delle impostazioni. 
+This layer represents the operational basis of the project and has the task of managing all basic information including date, time, day of the week, "" environmental information (temperature and light)"" implementing an alarm clock system which, in addition to having the same characteristics as normal alarm clocks , allows you to launch and monitor minigames via the Activity launch system. From the user's point of view, the clock system manages two main menus: one dedicated to displaying information and one for changing settings. 
 
-## Schermata principale
+## main screen
 
-La schermata principale viene visualizzata ogni volta che la sveglia non deve eseguire altre operazioni. Come una normale sveglia, questa schermata deve rappresentare alcune informazioni necessarie (data, ora, giorno della settimana,...) e alcune opzionali per rendere il tutto più figo (temperatura, giorno/notte,...). Il desing può essere scelto liberamente dal programmatore assegnato (per favore fallo bello e stiloso).
+The main screen is displayed whenever the alarm clock does not have to do anything else. Like a normal alarm clock, this screen has to represent some necessary information (date, time, day of the week,...) ""and some optional ones to make it cooler (temperature, day/night,...)"". The design can be chosen freely by the assigned programmer (please make it nice and stylish).
 <p align="center">
     <img width="200" src="/documentation/main.png" alt="Main panel">
 </p>
 <p align="center"> 
     Esempio Scemo
 </p>
-Alcune idee per la realizzazione:
+""Some ideas for making:
   
-- La retroilluminazione del display potrebbe dare fastidio durante i periodi notturni e consumare energia. Sarebbe carino trovare un sistema per tenere accesa la retroilluminazione del display solo quando il dispositivo capisce quanto viene utilizzato, tipo alla pressione di un tasto o alla ricezione di un  movimento
+- The backlighting of the display could be annoying during the night and consume energy. It would be nice to find a system to keep the display backlight on only when the device understands how much it is being used, such as when a key is pressed or when a movement is received
   
-- Qualche persona poco intelligente potrebbe lasciare la sveglia sottosopra. Ricordate come il professore ha implementato l'accelerometro? Bene ci siamo capiti
+- Some unintelligent people may leave the alarm clock upside down. Do you remember how the professor implemented the accelerometer? Well we understand each other 
+""
 
-## Menù impostazioni
+## Settings menu
 
-Il menù impostazioni viene utilizzato per la modifica delle informazioni base e l'assegnazione delle sveglie. Dal punto di vista grafico è un semplice menù accessibile tramite la pressione di un tasto che contiene una lista di informazioni modificabili (data e ora) e un sottomenù per impostare le sveglie.
+The settings menu is used for changing basic information and assigning alarms. From a graphical point of view, it is a simple menu accessible by pressing a key which contains a list of modifiable information (date and time) and a submenu for setting alarms.
 
-Idee per la realizzazione:
-- Sarebbe molto soddisfacente poter scorrere fra le impostazioni utilizzanto il pad analogico a sinistra e selezionare l'opzione tramite uno dei due tasti a destra 
-- Alcune impostazioni utili potrebbero modificare altri aspetti della sveglia come il volume delle suonerie
-- Quando l'alimentazione viene a mancare il menu dovrebbe essere lanciato subito dopo all'avvio successivo per impostare tutte le informazioni perse.
+""Ideas for making:
+- It would be very satisfying to be able to scroll through the settings using the analog pad on the left and select the option using one of the two buttons on the right
+- Some useful settings may change other aspects of the alarm such as the volume of ringtones
+- When power fails the menu should be launched soon after next boot to set all lost information.""
 
-### Sottomenù sveglie 
+### Alarm submenu
+""
+This submenu is entirely dedicated to alarm management. For the realization one could opt for a simple version that contains a predefined number of alarm clocks or a more complex version that gives the possibility of assigning an arbitrary number. 
 
-Questo sottomenu viene dedicato interamente alla gestione delle sveglie. Per la realizzazione si potrebbe optare per una versione semplice che contiene un numero predefinito di sveglie oppure una versione più complessa che da la possibilità di assegnarne un numero arbitrario.
+Ideas for making:
 
-Idee per la realizzazione:
+- All alarm clocks could use the same ringtone but the result would be quite boring. It could therefore be the user himself who chooses the ringtones.
+- An even more complex system could allow the user to choose one or more days of the week in which to activate (actually management could be too difficult)""
 
-- Tutte le sveglie potrebbero utilizzare la stessa suoneria ma i risultato sarebbe alquanto noioso. Potrebbe quindi essere l'utente stesso a scegliere le suonerie.
-- Un sistema ancora più complesso potrebbe permettere all'utente di scegliere uno o più giorni della settimana in cui attivarsi (effettivamente la gestione potrebbe risultare troppo difficile)
 
-## Activity launch system 
+## Activity launch system
 
-L'activity launch system è un aspetto della programmazione che merita una sua descrizione a parte. L'idea è quella di creare un piccolo sistema in grado di lanciare un minigioco in modo casuale, avendo una lista di scelte disponibili.
-Il lancio delle attività corrisponde effettivamente all'avvio delle funzioni specifiche delle attività e alla gestione delle variabili di ritorno della funzione (vedi la descrizione).
+The activity launch system is an aspect of programming that deserves its own description. The idea is to create a small system capable of launching a minigame randomly, having a list of choices available. Launching activities corresponds to launching activity-specific functions and handling function return variables (see description).
 
-Idee per la realizzazione:
+Ideas for making:
 
-- Dal punto di vista della programmazione un'idea efficente potrebbe essere quella di inserire un array di puntatori a funzioni in cui ogni campo punta ala funzione di un'attività specifica. In questo modo l'interfaccia deve solamente sorteggiare un indice casuale dell'array e lanciare la funzione corrispondente. 
-- l'attività, dato che viene lanciata subito dopo all'attivazione di una sveglia, deve avviarsi una volta che l'utente è pronto per giocare. Un'idea potrebbe essere quella di visualizzare una schermata di attesa dedicata e di avviare il gioco alla pressione di un tasto. 
-Da un punto di vista pratico, il sistema casuale per il lancio dell'attività dovrebbe essere implementato separatamente rispetto alla schermata di attesa.
+- From a programming point of view, an efficient idea could be to insert an array of pointers to functions in which each field points to the function of a specific activity. In this way the interface has only to draw a random index of the array and launch the corresponding function.
+- the activity, since it is launched immediately after an alarm is activated, must start once the user is ready to play. One idea might be to display a dedicated waiting screen and launch the game on a keypress. From a practical point of view, the random system for launching the activity should be implemented separately from the waiting screen.
 
 <p align="center"> 
     <img width="200" src="/documentation/game_launch.png" alt="Game launch">
 </p>
 
-- Il sistema dovrebbe inoltre verificare l'esito dell'esecuzione dei minigames ed eseguire operazioni in caso di esito negativo. Ad esempio, lanciare un altra attività nel caso in cui quella precedente restituisca uno stato di inattività .
+- The system should also check the outcome of the execution of the minigames and perform operations in case of a negative outcome. For example, launch another activity in case the previous one returns an inactive status.
 
 ## Ringtones system 
+""
+This layer simply deals with the management and triggering of ringtones. The ringtones are played cyclically via the built-in buzzer and can be of different lengths.
 
-Questo layer si occupa semplicemente della gestione e dell'avvio delle suonerie. Le suonerie vengono riprodotte in modo ciclico tramite il buzzer integrato e possono essere di diversa durata.
+Ideas for implementation:
 
-Idee per l'implementazione:
+- There are many projects for playing ringtones on the internet. A good idea would be to represent ringtones as arrays containing tones, which are played back in series at pre-established intervals (like 100ms)
 
-- Su internet si trovano molti progetti per la riproduzione di suonerie. Una buona idea sarebbe quella di rappresentare le suonerie come array contenenti toni, che vengono riporodotti in serie ad intervalli prestabiliti (tipo 100ms)
-
-- Sempre su internet si trovano moltissime suonerie già create precedentemente (l'ideale per non perdere tempo a scrivere manualmente i toni)
+- Always on the internet there are many ringtones already created previously (ideal for not wasting time manually writing the tones)""
 
 ### Activities
 
-Ogni attività viene concretamente realizzata e impacchettata come una funzione che viene lanciata dall'activity launch system. Le funzioni possono utilizzare tutti i disositivi hardware della scheda con alcune restrizioni (il sistema RTC e uno dei timer devono rimanere inalterati per il corretto funzionamento del clock system). Le funzioni devono ritornare un valore prestabilito per segnalare al clock system come è stata eseguita l'attività:
+Each activity is actually built and packaged as a function that is launched by the activity launch system. The functions can use all the hardware devices of the board with some restrictions (the RTC system and one of the timers must remain unchanged for the correct functioning of the clock system). The functions must return a predetermined value to tell the clock system how the task was performed:
  
-- Completa esecuzione, nel caso in cui l'attività è stata eseguita correttamente 
-- Inattivo, nel caso l'utente non reagisce agli stimoli
-- Annullato, nel caso in cui all'utente non piace il gioco
+- Complete Execution, in case the task was executed successfully
+- Inactive, if the user does not react to the stimuli
+- Canceled, in case the user doesn't like the game
 
-Le attività possono essere di qualunque tipo (devono portare l'utente a svegliarsi completamente invece di farlo riaddormentare di nuovo). Alcune idee possono essere:
+Activities can be of any type (should cause the user to wake up completely instead of falling asleep again). Some ideas can be:
 
-- snake 
-- risoluzione di operazioni algebriche 
+- snake
+- solving algebraic operations
 - ...
-- Non lo so non mi vengono alte idee
+- I don't know, I don't have other ideas
 
-# Struttura del progetto
+# Project structure
 La programmazione, dato che deve essere composta da più parti, deve essere separata in più files. Le cartelle ![activities](/modules/activities_launcher) e ![ringtones](/modules/ringtones_manager) contengono la programmazione dell'activities system launcher e del ringtones manager, che verranno implementati come delle librerie da aggiungere al programma principale.
 Nel progetto Github si trovano diverse sottocartelle dedicate allo sviluppo delle varie sezioni:
 
