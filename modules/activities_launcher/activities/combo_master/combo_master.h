@@ -7,6 +7,8 @@
 
 state currentState;
 
+extern const tImage  down_arrow1BPP_UNCOMP;
+
 state combo_master_start(Graphics_Context* gc);
 
 #endif

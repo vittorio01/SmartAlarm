@@ -19,6 +19,8 @@
 #define TITLE "COMBO MASTER!"
 #define TITLE_DIMENSION 13
 #define TITLE_SHOW_TIME 1500
+#define TITLE_POSITION_X 20
+#define TITLE_POSITION_Y 20
 
 state combo_master_start(Graphics_Context* gc) {
     currentState=RUNNING;
@@ -27,7 +29,7 @@ state combo_master_start(Graphics_Context* gc) {
 
     Graphics_setForegroundColor(gc, GRAPHICS_COLOR_GRAY);
     Graphics_setFont(gc, &g_sFontCm18b);
-    Graphics_drawString(gc, (int8_t*) title, TITLE_DIMENSION, TEXT_POSITION_X, TEXT_POSITION_Y, OPAQUE_TEXT);
+    Graphics_drawString(gc, (int8_t*) title, TITLE_DIMENSION, TITLE_POSITION_X, TITLE_POSITION_Y, OPAQUE_TEXT);
     Graphics_setForegroundColor(gc, GRAPHICS_COLOR_WHITE);
     drawTitle(gc, title);
     generate_wait(TITLE_SHOW_TIME);
