@@ -125,6 +125,7 @@ GEN_OPTS__QUOTED :=
 # Every subdirectory with source files must be described here
 SUBDIRS := \
 . \
+modules/activities_launcher/activities/combo_master \
 modules/activities_launcher \
 modules/clock_system \
 modules/hardware \
