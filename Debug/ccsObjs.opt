@@ -5,6 +5,8 @@
 "./modules/activities_launcher/activities/combo_master/images/down_arrow.obj"
 "./modules/activities_launcher/activities/combo_master/images/left_arrow.obj"
 "./modules/activities_launcher/activities/combo_master/images/right_arrow.obj"
+"./modules/activities_launcher/activities/combo_master/images/rotation_clock_wise.obj"
+"./modules/activities_launcher/activities/combo_master/images/rotation_counter_clock_wise.obj"
 "./modules/activities_launcher/activities/combo_master/images/up_arrow.obj"
 "./modules/activities_launcher/activities.obj"
 "./modules/clock_system/clock.obj"
