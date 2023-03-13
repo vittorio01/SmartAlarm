@@ -8,6 +8,6 @@ state launch_game(){
     time_t t;
     srand((unsigned) time(&t));
     int i = rand() % activitiesNumber;
-    return activityList[i]();//manca il passaggio del graphic context
+    return activityList[i](); //manca il passaggio del graphic context
 
 }

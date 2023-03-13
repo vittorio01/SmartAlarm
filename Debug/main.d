@@ -61,6 +61,10 @@ main.obj: /home/asus-laptop/github/SmartAlarm/modules/ringtones_manager/ringtone
 main.obj: /home/asus-laptop/github/SmartAlarm/modules/ringtones_manager/ringtones/the_lick.c
 main.obj: /home/asus-laptop/github/SmartAlarm/modules/ringtones_manager/ringtones/notes.h
 main.obj: /home/asus-laptop/github/SmartAlarm/modules/activities_launcher/activities.h
+main.obj: /home/asus-laptop/Applications/CodeComposerStudio/ccs/tools/compiler/ti-cgt-arm_20.2.7.LTS/include/stdlib.h
+main.obj: /home/asus-laptop/Applications/CodeComposerStudio/ccs/tools/compiler/ti-cgt-arm_20.2.7.LTS/include/time.h
+main.obj: /home/asus-laptop/Applications/CodeComposerStudio/ccs/tools/compiler/ti-cgt-arm_20.2.7.LTS/include/abi_prefix.h
+main.obj: /home/asus-laptop/Applications/CodeComposerStudio/ccs/tools/compiler/ti-cgt-arm_20.2.7.LTS/include/xlocale/_time.h
 main.obj: /home/asus-laptop/Applications/CodeComposerStudio/ccs/tools/compiler/ti-cgt-arm_20.2.7.LTS/include/stdio.h
 main.obj: /home/asus-laptop/Applications/CodeComposerStudio/ccs/tools/compiler/ti-cgt-arm_20.2.7.LTS/include/stdarg.h
 main.obj: /home/asus-laptop/Applications/CodeComposerStudio/ccs/tools/compiler/ti-cgt-arm_20.2.7.LTS/include/string.h
@@ -187,6 +191,14 @@ main.obj: /home/asus-laptop/Applications/CodeComposerStudio/ccs/tools/compiler/t
 /home/asus-laptop/github/SmartAlarm/modules/ringtones_manager/ringtones/notes.h:
 
 /home/asus-laptop/github/SmartAlarm/modules/activities_launcher/activities.h:
+
+/home/asus-laptop/Applications/CodeComposerStudio/ccs/tools/compiler/ti-cgt-arm_20.2.7.LTS/include/stdlib.h:
+
+/home/asus-laptop/Applications/CodeComposerStudio/ccs/tools/compiler/ti-cgt-arm_20.2.7.LTS/include/time.h:
+
+/home/asus-laptop/Applications/CodeComposerStudio/ccs/tools/compiler/ti-cgt-arm_20.2.7.LTS/include/abi_prefix.h:
+
+/home/asus-laptop/Applications/CodeComposerStudio/ccs/tools/compiler/ti-cgt-arm_20.2.7.LTS/include/xlocale/_time.h:
 
 /home/asus-laptop/Applications/CodeComposerStudio/ccs/tools/compiler/ti-cgt-arm_20.2.7.LTS/include/stdio.h:
 

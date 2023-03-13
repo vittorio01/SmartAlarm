@@ -16,16 +16,53 @@
  * -    B -> a pressure of the second button is used for delete the last action
  */
 
-#define TITLE "COMBO MASTER!"
-#define TITLE_DIMENSION 13
-#define TITLE_SHOW_TIME 1500
-#define TITLE_POSITION_X 20
-#define TITLE_POSITION_Y 20
+
 
 state combo_master_start(Graphics_Context* gc) {
     currentState=RUNNING;
 
+
+
     return currentState;
-
-
 }
+
+void initJoypadSystem() {
+    sampledPosition.joyXvalue=0;
+    sampledPosition.joyYvalue=0;
+    predictedMovement=UNDEFINED_MOVEMENT;
+    joystickArea=OTHER;
+}
+
+joystick getJoyPosition() {
+    joystick newPosition=getJoyValue();
+    if (((sampledPosition.joyXvalue - newPosition.joyXvalue)<JOYPAD_DELTA_MOVEMENT_X) && ((sampledPosition.joyXvalue - newPosition.joyXvalue)>-JOYPAD_DELTA_MOVEMENT_X)) {
+       newPosition.joyXvalue=sampledPosition.joyXvalue;
+    }
+    if (((sampledPosition.joyYvalue - newPosition.joyYvalue)<JOYPAD_DELTA_MOVEMENT_Y) && ((sampledPosition.joyYvalue - newPosition.joyYvalue)>-JOYPAD_DELTA_MOVEMENT_Y)) {
+        newPosition.joyYvalue=sampledPosition.joyYvalue;
+    }
+    return newPosition;
+}
+
+joystick_area getJoyArea() {
+    if (((sampledPosition.joyXvalue>JOYPAD_CENTER_AREA_POSITION_X) && (sampledPosition.joyXvalue<(JOYPAD_CENTER_AREA_POSITION_X+JOYPAD_CENTER_AREA_DELTA_X)))&&((sampledPosition.joyYvalue>JOYPAD_CENTER_AREA_POSITION_Y) && (sampledPosition.joyYvalue<(JOYPAD_CENTER_AREA_POSITION_Y+JOYPAD_CENTER_AREA_DELTA_Y)))) {
+        return CENTER;
+    }
+    if (((sampledPosition.joyXvalue>JOYPAD_LEFT_AREA_POSITION_X) && (sampledPosition.joyXvalue<(JOYPAD_LEFT_AREA_POSITION_X+JOYPAD_LEFT_AREA_DELTA_X)))&&((sampledPosition.joyYvalue>JOYPAD_LEFT_AREA_POSITION_Y) && (sampledPosition.joyYvalue<(JOYPAD_LEFT_AREA_POSITION_Y+JOYPAD_LEFT_AREA_DELTA_Y)))) {
+            return LEFT_CORNER;
+    }
+    if (((sampledPosition.joyXvalue>JOYPAD_RIGHT_AREA_POSITION_X) && (sampledPosition.joyXvalue<(JOYPAD_RIGHT_AREA_POSITION_X+JOYPAD_RIGHT_AREA_DELTA_X)))&&((sampledPosition.joyYvalue>JOYPAD_RIGHT_AREA_POSITION_Y) && (sampledPosition.joyYvalue<(JOYPAD_RIGHT_AREA_POSITION_Y+JOYPAD_RIGHT_AREA_DELTA_Y)))) {
+            return RIGHT_CORNER;
+    }
+    if (((sampledPosition.joyXvalue>JOYPAD_TOP_AREA_POSITION_X) && (sampledPosition.joyXvalue<(JOYPAD_TOP_AREA_POSITION_X+JOYPAD_TOP_AREA_DELTA_X)))&&((sampledPosition.joyYvalue>JOYPAD_TOP_AREA_POSITION_Y) && (sampledPosition.joyYvalue<(JOYPAD_TOP_AREA_POSITION_Y+JOYPAD_TOP_AREA_DELTA_Y)))) {
+            return UP_CORNER;
+    }
+    if (((sampledPosition.joyXvalue>JOYPAD_BOTTOM_AREA_POSITION_X) && (sampledPosition.joyXvalue<(JOYPAD_BOTTOM_AREA_POSITION_X+JOYPAD_BOTTOM_AREA_DELTA_X)))&&((sampledPosition.joyYvalue>JOYPAD_BOTTOM_AREA_POSITION_Y) && (sampledPosition.joyYvalue<(JOYPAD_BOTTOM_AREA_POSITION_Y+JOYPAD_BOTTOM_AREA_DELTA_Y)))) {
+            return DOWN_CORNER;
+    }
+    return OTHER;
+}
+
+
+
+
