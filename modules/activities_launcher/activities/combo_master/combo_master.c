@@ -1,47 +1,21 @@
 #include "combo_master.h"
 
-/*
- * Combo master!
- *
- * To win this minigame the user has to repeat a given combination of movements in the correct order in a specific time interval.
- * The combination is visualized only once at game start. All possible movements and actions are:
- * -    up_arrow -> a vertical movement from the center to the upper position of the analog joypad
- * -    down_arrow -> a vertical movement from the center to the lower position of the analog joypad
- * -    left_arrow -> a horizontal movement from the center to the max left position of the analog joypad
- * -    right_arrow -> a horizontal movement from the center to the max right position of the analog joypad
- * -    circle_counter_wise -> a circular movement which start from the upper position, travel to the edge and returns to the upper position of the joypad
- * -    circle_wise_clock -> same as circle_counter_wise but in the opposite direction
- *
- * -    A -> a pressure of the first button is used for send the combination
- * -    B -> a pressure of the second button is used for delete the last action
- */
-
-
 
 state combo_master_start(Graphics_Context* gc) {
     currentState=RUNNING;
-
-
-
     return currentState;
 }
 
 void initJoypadSystem() {
     sampledPosition.joyXvalue=0;
     sampledPosition.joyYvalue=0;
-    predictedMovement=UNDEFINED_MOVEMENT;
-    joystickArea=OTHER;
 }
 
-joystick getJoyPosition() {
+void updateJoyPosition() {
     joystick newPosition=getJoyValue();
-    if (((sampledPosition.joyXvalue - newPosition.joyXvalue)<JOYPAD_DELTA_MOVEMENT_X) && ((sampledPosition.joyXvalue - newPosition.joyXvalue)>-JOYPAD_DELTA_MOVEMENT_X)) {
-       newPosition.joyXvalue=sampledPosition.joyXvalue;
+    if (sqrt((newPosition.joyXvalue^2)+(newPosition.joyYvalue^2))>JOYPAD_APROXIMATION_RADIUS) {
+        sampledPosition=newPosition;
     }
-    if (((sampledPosition.joyYvalue - newPosition.joyYvalue)<JOYPAD_DELTA_MOVEMENT_Y) && ((sampledPosition.joyYvalue - newPosition.joyYvalue)>-JOYPAD_DELTA_MOVEMENT_Y)) {
-        newPosition.joyYvalue=sampledPosition.joyYvalue;
-    }
-    return newPosition;
 }
 
 joystick_area getJoyArea() {
@@ -60,7 +34,132 @@ joystick_area getJoyArea() {
     if (((sampledPosition.joyXvalue>JOYPAD_BOTTOM_AREA_POSITION_X) && (sampledPosition.joyXvalue<(JOYPAD_BOTTOM_AREA_POSITION_X+JOYPAD_BOTTOM_AREA_DELTA_X)))&&((sampledPosition.joyYvalue>JOYPAD_BOTTOM_AREA_POSITION_Y) && (sampledPosition.joyYvalue<(JOYPAD_BOTTOM_AREA_POSITION_Y+JOYPAD_BOTTOM_AREA_DELTA_Y)))) {
             return DOWN_CORNER;
     }
+
+    if (((sampledPosition.joyXvalue>JOYPAD_LEFT_TRAJECTORY_AREA_POSITION_X) && (sampledPosition.joyXvalue<(JOYPAD_LEFT_TRAJECTORY_AREA_POSITION_X+JOYPAD_LEFT_TRAJECTORY_AREA_DELTA_X)))&&((sampledPosition.joyYvalue>JOYPAD_LEFT_TRAJECTORY_AREA_POSITION_Y) && (sampledPosition.joyYvalue<(JOYPAD_LEFT_TRAJECTORY_AREA_POSITION_Y+JOYPAD_LEFT_TRAJECTORY_AREA_DELTA_Y)))) {
+            return LEFT_TRAJECTORY;
+    }
+    if (((sampledPosition.joyXvalue>JOYPAD_RIGHT_TRAJECTORY_AREA_POSITION_X) && (sampledPosition.joyXvalue<(JOYPAD_RIGHT_TRAJECTORY_AREA_POSITION_X+JOYPAD_RIGHT_TRAJECTORY_AREA_DELTA_X)))&&((sampledPosition.joyYvalue>JOYPAD_RIGHT_TRAJECTORY_AREA_POSITION_Y) && (sampledPosition.joyYvalue<(JOYPAD_RIGHT_TRAJECTORY_AREA_POSITION_Y+JOYPAD_RIGHT_TRAJECTORY_AREA_DELTA_Y)))) {
+            return RIGHT_TRAJECTORY;
+    }
+    if (((sampledPosition.joyXvalue>JOYPAD_TOP_TRAJECTORY_AREA_POSITION_X) && (sampledPosition.joyXvalue<(JOYPAD_TOP_TRAJECTORY_AREA_POSITION_X+JOYPAD_TOP_TRAJECTORY_AREA_DELTA_X)))&&((sampledPosition.joyYvalue>JOYPAD_TOP_TRAJECTORY_AREA_POSITION_Y) && (sampledPosition.joyYvalue<(JOYPAD_TOP_TRAJECTORY_AREA_POSITION_Y+JOYPAD_TOP_TRAJECTORY_AREA_DELTA_Y)))) {
+            return UP_TRAJECTORY;
+    }
+    if (((sampledPosition.joyXvalue>JOYPAD_BOTTOM_TRAJECTORY_AREA_POSITION_X) && (sampledPosition.joyXvalue<(JOYPAD_BOTTOM_TRAJECTORY_AREA_POSITION_X+JOYPAD_BOTTOM_TRAJECTORY_AREA_DELTA_X)))&&((sampledPosition.joyYvalue>JOYPAD_BOTTOM_TRAJECTORY_AREA_POSITION_Y) && (sampledPosition.joyYvalue<(JOYPAD_BOTTOM_TRAJECTORY_AREA_POSITION_Y+JOYPAD_BOTTOM_TRAJECTORY_AREA_DELTA_Y)))) {
+            return DOWN_TRAJECTORY;
+    }
+
+
     return OTHER;
+}
+
+
+joystick_movement getJoyMovement() {
+    bool detected_movement=false;
+    joystick_movement predictedMovement=UNDEFINED_MOVEMENT;
+    joystick_area joystickSampledArea=OTHER;
+    while (!detected_movement) {
+        //generate_delay(JOYPAD_SAMPLING_RATE);
+        updateJoyPosition();
+        switch(predictedMovement) {
+            case CENTER_HOLD:
+                switch(getJoyArea()) {
+                case UP_CORNER:
+                    predictedMovement=LINE_UP;
+                    detected_movement=true;
+                    break;
+                case UP_TRAJECTORY:
+                    predictedMovement=LINE_UP;
+                    break;
+                case DOWN_CORNER:
+                    predictedMovement=LINE_DOWN;
+                    detected_movement=true;
+                    break;
+                case DOWN_TRAJECTORY:
+                    predictedMovement=LINE_DOWN;
+                    break;
+                case LEFT_CORNER:
+                    predictedMovement=LINE_LEFT;
+                    detected_movement=true;
+                    break;
+                case LEFT_TRAJECTORY:
+                    predictedMovement=LINE_LEFT;
+                    break;
+                case RIGHT_CORNER:
+                    predictedMovement=LINE_RIGHT;
+                    detected_movement=true;
+                    break;
+                case RIGHT_TRAJECTORY:
+                    predictedMovement=LINE_RIGHT;
+                    break;
+                default:
+                    predictedMovement=UNDEFINED_MOVEMENT;
+                    break;
+                }
+                break;
+
+            case LINE_UP:
+                switch(getJoyArea()) {
+                case UP_TRAJECTORY:
+                    break;
+                case UP_CORNER:
+                    detected_movement=true;
+                    break;
+                default:
+                    predictedMovement=UNDEFINED_MOVEMENT;
+                    break;
+                }
+                break;
+
+            case LINE_DOWN:
+                switch(getJoyArea()) {
+                case DOWN_TRAJECTORY:
+                    break;
+                case DOWN_CORNER:
+                    detected_movement=true;
+                    break;
+                default:
+                    predictedMovement=UNDEFINED_MOVEMENT;
+                    break;
+                }
+                break;
+
+            case LINE_LEFT:
+                switch(getJoyArea()) {
+                case LEFT_TRAJECTORY:
+                    break;
+                case LEFT_CORNER:
+                    detected_movement=true;
+                    break;
+                default:
+                    predictedMovement=UNDEFINED_MOVEMENT;
+                    break;
+                }
+                break;
+
+            case LINE_RIGHT:
+                switch(getJoyArea()) {
+                case RIGHT_TRAJECTORY:
+                    break;
+                case RIGHT_CORNER:
+                    detected_movement=true;
+                    break;
+                default:
+                    predictedMovement=UNDEFINED_MOVEMENT;
+                    break;
+                }
+                break;
+
+            default:
+                if (getJoyArea()==CENTER) {
+                    predictedMovement=CENTER_HOLD;
+                }
+                break;
+
+            }
+
+
+    }
+    return predictedMovement;
 }
 
 
