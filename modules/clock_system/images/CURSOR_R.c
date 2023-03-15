@@ -1,0 +1,32 @@
+#include "grlib.h"
+
+static const unsigned char pixel_CURSOR_R1BPP_UNCOMP[] =
+{
+0x04, 0x00, 
+0x06, 0x00, 
+0x07, 0x00, 
+0x03, 0x80, 
+0xfb, 0xc0, 
+0xfb, 0xe0, 
+0xfb, 0xc0, 
+0x03, 0x80, 
+0x07, 0x00, 
+0x06, 0x00, 
+0x04, 0x04
+};
+
+static const unsigned long palette_CURSOR_R1BPP_UNCOMP[]=
+{
+	0x000000, 	0xffffff
+};
+
+const tImage  CURSOR_R1BPP_UNCOMP=
+{
+	IMAGE_FMT_1BPP_UNCOMP,
+	11,
+	11,
+	2,
+	palette_CURSOR_R1BPP_UNCOMP,
+	pixel_CURSOR_R1BPP_UNCOMP,
+};
+

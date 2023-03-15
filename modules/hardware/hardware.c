@@ -121,8 +121,6 @@ void initAdcSystem() {
     ADC14_setResolution(ADC_8BIT);
 
     // Enabling Conversion
-    ADC14_enableConversion();
-    ADC14_toggleConversionTrigger();
     ADC14_enableInterrupt(JOY_X_MEM);
     Interrupt_enableInterrupt(INT_ADC14);
 
@@ -386,6 +384,15 @@ void PORT5_IRQHandler(void) {
 }
 
 /* ADC FUNCTIONS */
+void startADCconversions(){
+    ADC14_enableConversion();
+    ADC14_toggleConversionTrigger();
+}
+
+void stopADCconversions(){
+    ADC14_disableConversion();
+}
+
 joystick getJoyValue() {
     return JoyValues;
 }

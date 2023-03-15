@@ -110,6 +110,8 @@ void resetButtonsState();           // reset all the button states
 
 /* ADC FUNCTIONS */
 volatile joystick JoyValues;
+void startADCconversions();
+void stopADCconversions();
 joystick getJoyValue(); // return the joystick X & Y values (0-255)
 
 /* RTC FUNCTIONS */

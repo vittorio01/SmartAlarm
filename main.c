@@ -17,12 +17,14 @@ void main(void) {
 	 * 3 = date settings
 	 */
 	volatile uint8_t menuActive = 0;
+	uint8_t alarmOn = 0;
 
 	while(1){
 	    switch(menuActive) {
-	        case 0: clockView(gc, &menuActive); break;
+	        case 0: clockView(gc, &menuActive, &alarmOn); break;
 	        case 1: settingsView(gc, &menuActive); break;
 	        case 2: timeSettView(gc, &menuActive); break;
+	        case 3: alarmSettView(gc, &menuActive); break;
 	    }
 	}
 }

@@ -129,6 +129,7 @@ modules/activities_launcher/activities/combo_master \
 modules/activities_launcher/activities/combo_master/images \
 modules/activities_launcher \
 modules/clock_system \
+modules/clock_system/images \
 modules/hardware \
 modules/hardware/libraries \
 modules/ringtones_manager/ringtones \

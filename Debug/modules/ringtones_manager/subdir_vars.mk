@@ -2,6 +2,8 @@
 # Automatically-generated file. Do not edit!
 ################################################################################
 
+SHELL = cmd.exe
+
 # Add inputs and outputs from these tool invocations to the build variables 
 C_SRCS += \
 ../modules/ringtones_manager/ringtones_manager.c 
@@ -13,10 +15,10 @@ OBJS += \
 ./modules/ringtones_manager/ringtones_manager.obj 
 
 OBJS__QUOTED += \
-"modules/ringtones_manager/ringtones_manager.obj" 
+"modules\ringtones_manager\ringtones_manager.obj" 
 
 C_DEPS__QUOTED += \
-"modules/ringtones_manager/ringtones_manager.d" 
+"modules\ringtones_manager\ringtones_manager.d" 
 
 C_SRCS__QUOTED += \
 "../modules/ringtones_manager/ringtones_manager.c" 
