@@ -17,7 +17,7 @@ void main(void) {
 	 * 3 = date settings
 	 */
 	volatile uint8_t menuActive = 0;
-	uint8_t alarmOn = 0;
+	volatile uint8_t alarmOn = 0;
 
 	while(1){
 	    switch(menuActive) {
@@ -25,6 +25,15 @@ void main(void) {
 	        case 1: settingsView(gc, &menuActive); break;
 	        case 2: timeSettView(gc, &menuActive); break;
 	        case 3: alarmSettView(gc, &menuActive); break;
+	    }
+	    if(alarmFired == 1){
+	        GPIO_toggleOutputOnPin(RGB_LED_RED_PORT, RGB_LED_RED_PIN);
+            int i;
+            for(i=0; i<1000;i++);   //big delay, slower incrementation
+            GPIO_toggleOutputOnPin(RGB_LED_RED_PORT, RGB_LED_RED_PIN);
+
+	        //run the game and the ringtones
+	        alarmFired = 0;
 	    }
 	}
 }

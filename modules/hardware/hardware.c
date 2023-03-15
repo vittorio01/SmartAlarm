@@ -78,9 +78,14 @@ void initButtonSystem() {
 
 // LEDS
 void initLedSystem() {
-    // Blue of RGB LED [P5.6]
     GPIO_setAsOutputPin(RGB_LED_BLUE_PORT, RGB_LED_BLUE_PIN);
     GPIO_setOutputLowOnPin(RGB_LED_BLUE_PORT, RGB_LED_BLUE_PIN);
+
+    GPIO_setAsOutputPin(RGB_LED_RED_PORT, RGB_LED_RED_PIN);
+    GPIO_setOutputLowOnPin(RGB_LED_RED_PORT, RGB_LED_RED_PIN);
+
+    GPIO_setAsOutputPin(RGB_LED_GREEN_PORT, RGB_LED_GREEN_PIN);
+    GPIO_setOutputLowOnPin(RGB_LED_GREEN_PORT, RGB_LED_GREEN_PIN);
 }
 
 // DIPLAY

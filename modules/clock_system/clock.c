@@ -13,7 +13,7 @@ void testJoy(Graphics_Context *gc) { //only a test
 
 /* ALARM SETTINGS VIEW */
 void alarmSettView(Graphics_Context *gc, volatile uint8_t *menuA){
-    RTC_C_Calendar settedTime;
+    RTC_C_Calendar settedTime = currentTime;
     uint8_t cursor = 1;
     uint8_t updateCursor = 1;
     uint8_t up = 0;
@@ -71,6 +71,7 @@ void alarmSettView(Graphics_Context *gc, volatile uint8_t *menuA){
             updateCursor = 0;
         }
     }
+    alarmTime = settedTime;
     RTC_C_setCalendarAlarm(settedTime.minutes, settedTime.hours, RTC_C_ALARMCONDITION_OFF, RTC_C_ALARMCONDITION_OFF);
     *menuA = 0;
     buttonsPressed.jb = 0;
@@ -451,13 +452,20 @@ void drawMenu(Graphics_Context *gc){
 /* CLOCK VIEW */
 timerNumber onesTimer;
 
-void clockView(Graphics_Context *gc, volatile uint8_t *menuA, uint8_t *alarmOn) {
+void clockView(Graphics_Context *gc, volatile uint8_t *menuA, volatile uint8_t *alarmOn) {
     initClockView(gc, *alarmOn);
     onesTimer = generate_rate(250, &IRQdrawClock);
     while(!buttonsPressed.jb) {  // exit this loop when the joystick button are pressed and enter the menu viewed
         if(buttonsPressed.b1){
             *alarmOn = (*alarmOn+1)%2;
             drawAlarm(gc, *alarmOn);
+            if(*alarmOn == 1){
+                RTC_C_enableInterrupt(RTC_C_CLOCK_ALARM_INTERRUPT);
+            }
+            if(*alarmOn == 0){
+                RTC_C_disableInterrupt(RTC_C_CLOCK_ALARM_INTERRUPT);
+            }
+
             buttonsPressed.b1 = 0;
         }
         if(updateClockImage){
@@ -469,17 +477,33 @@ void clockView(Graphics_Context *gc, volatile uint8_t *menuA, uint8_t *alarmOn) 
         if(updateDate){
             drawDate(gc,currentTime);
         }
+        if(alarmFired == 1){
+            disable_timer(onesTimer);
+            return;
+        }
+
     }
     disable_timer(onesTimer);
     buttonsPressed.jb = 0;      // remember to reset the button state
     *menuA = 1;
-
 }
 
 void drawAlarm(Graphics_Context *gc, uint8_t alarmOn){
     if(alarmOn){
         Graphics_drawImage(gc, &ALARM_ON8BPP_UNCOMP, 0, 0);
+        char t[10];
+        sprintf(t," %02d:%02d", RTC_C_convertBCDToBinary(alarmTime.hours), RTC_C_convertBCDToBinary(alarmTime.minutes));
+        Graphics_setFont(gc, &g_sFontCm14);
+        Graphics_drawString(gc, (int8_t*) t, sizeof(t), 20, 3, OPAQUE_TEXT);
     }else{
+        Graphics_Rectangle fillRectangle;
+        fillRectangle.xMin = 20;
+        fillRectangle.xMax = 64;
+        fillRectangle.yMin = 0;
+        fillRectangle.yMax = 20;
+        Graphics_setForegroundColor(gc, GRAPHICS_COLOR_BLACK);
+        Graphics_fillRectangle(gc, &fillRectangle);
+        Graphics_setForegroundColor(gc, GRAPHICS_COLOR_WHITE);
         Graphics_drawImage(gc, &ALARM_OFF8BPP_UNCOMP, 0, 0);
     }
 }
@@ -598,13 +622,22 @@ void RTC_C_IRQHandler(void) {
     RTC_C_clearInterruptFlag(status);
 
     if (status & RTC_C_TIME_EVENT_INTERRUPT){
+        /*
         GPIO_toggleOutputOnPin(RGB_LED_BLUE_PORT, RGB_LED_BLUE_PIN);
+        int i;
+        for(i=0; i<1000;i++);   //big delay, slower incrementation
+        GPIO_toggleOutputOnPin(RGB_LED_BLUE_PORT, RGB_LED_BLUE_PIN);
+        */
+
         updateTime = 1;       //display need a time update (updated every minute)
         currentTime = RTC_C_getCalendarTime();
         if(currentTime.hours == 0 && currentTime.minutes == 0) {    // check if the date need an update
             updateDate = 1;
         }
 
+    }
+    if (status & RTC_C_CLOCK_ALARM_INTERRUPT) {
+        alarmFired = 1;
     }
 }
 

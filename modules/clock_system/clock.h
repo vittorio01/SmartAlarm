@@ -43,7 +43,7 @@ void drawTimeMenu(Graphics_Context *gc);
 
 
 /* clock interface */
-void clockView(Graphics_Context *gc, volatile uint8_t *menuA, uint8_t *alarmOn);           //main clock code
+void clockView(Graphics_Context *gc, volatile uint8_t *menuA, volatile uint8_t *alarmOn);           //main clock code
 
 void initClockView(Graphics_Context *gc, uint8_t alarmOn);       // init all the color for the clock view
 void drawTime(Graphics_Context *gc, RTC_C_Calendar t);            // draw the current time on the display
@@ -57,11 +57,12 @@ void drawAlarm(Graphics_Context *gc, uint8_t alarmOn);  // draw the alarm icon
 
 /* clock variables */
 static volatile RTC_C_Calendar currentTime;     // current time updated by the RTC's IRQ
-static volatile RTC_C_Calendar alarmTime;
-static volatile uint8_t updateTime;             // flag that tell to update the time on the display (!=0 need update)
-static volatile uint8_t updateDate;             // same of updateTime but for the date
-static volatile uint8_t updateClockImage;       // same of updateTime but for the clock image
-static volatile uint8_t clockImage;             // define witch clock image
+volatile RTC_C_Calendar alarmTime;
+volatile uint8_t alarmFired;             // 1 if alarm fired, reset to 0 after finishing alarm routine
+volatile uint8_t updateTime;             // flag that tell to update the time on the display (!=0 need update)
+volatile uint8_t updateDate;             // same of updateTime but for the date
+volatile uint8_t updateClockImage;       // same of updateTime but for the clock image
+volatile uint8_t clockImage;             // define witch clock image
 
 /* general functions */
 #define AXIS_X 0
