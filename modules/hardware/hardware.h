@@ -42,7 +42,7 @@
 
 /* TIMERS STRUCTS */
 typedef enum {TIMER1,TIMER2,TIMER3,NONE} timerNumber;
-typedef enum {DELAY,RATE,PWM,NOT_USED} timerType;
+typedef enum {DELAY,RATE,PWM,WAIT,NOT_USED} timerType;
 
 typedef struct Timers {
     void (*timer0_handler)(void);
@@ -95,6 +95,8 @@ timerNumber generate_delay(const uint16_t delay, void* handler);
 // - The function returns back a value timerNumber which identifies the assigned timer (assume NONE if all timers are busy or there is an argument error)
 // - The timer can be stopped with the function disable_timer
 timerNumber generate_rate(const uint16_t delay, void* handler);
+
+void generate_wait(const uint16_t delay);
 
 //This function generates a tone with boosterpack buzzer.
 //Frequency value must be between 3Hz and 250Khz and the volume must be a value between 1 and 100 (otherwise the function will not start)

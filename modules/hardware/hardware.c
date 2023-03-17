@@ -171,7 +171,7 @@ timerNumber generate_delay(const uint16_t delay, void* handler) {
 
         Timer_A_UpModeConfig config;
         config.clockSource=TIMER_A_CLOCKSOURCE_ACLK;
-        config.clockSourceDivider=TIMER_A_CLOCKSOURCE_DIVIDER_64;
+        config.clockSourceDivider=TIMER_A_CLOCKSOURCE_DIVIDER_16;
         config.timerInterruptEnable_TAIE=TIMER_A_TAIE_INTERRUPT_DISABLE;
         config.captureCompareInterruptEnable_CCR0_CCIE=TIMER_A_CCIE_CCR0_INTERRUPT_ENABLE;
         config.timerClear=TIMER_A_DO_CLEAR;
@@ -207,12 +207,57 @@ timerNumber generate_delay(const uint16_t delay, void* handler) {
     return selectedTimer;
 }
 
+void generate_wait(const uint16_t delay) {
+    if (delay<=32768 && delay!=0) {
+        Timer_A_UpModeConfig config;
+        config.clockSource=TIMER_A_CLOCKSOURCE_ACLK;
+        config.clockSourceDivider=TIMER_A_CLOCKSOURCE_DIVIDER_16;
+        config.timerInterruptEnable_TAIE=TIMER_A_TAIE_INTERRUPT_DISABLE;
+        config.captureCompareInterruptEnable_CCR0_CCIE=TIMER_A_CCIE_CCR0_INTERRUPT_ENABLE;
+        config.timerClear=TIMER_A_DO_CLEAR;
+        config.timerPeriod=delay*2;
+        if (timerlist.timer1_type==NOT_USED) {
+            timerlist.timer1_type=WAIT;
+
+            Timer_A_configureUpMode(TIMER_A1_BASE,&config);
+            Timer_A_startCounter(TIMER_A1_BASE,TIMER_A_UP_MODE);
+            Interrupt_enableInterrupt(INT_TA1_0);
+            while (timerlist.timer1_type==WAIT) {
+                PCM_gotoLPM0();
+            }
+
+            return;
+        }
+        if (timerlist.timer2_type==NOT_USED) {
+            timerlist.timer2_type=WAIT;
+            Timer_A_configureUpMode(TIMER_A2_BASE,&config);
+            Timer_A_startCounter(TIMER_A2_BASE,TIMER_A_UP_MODE);
+            Interrupt_enableInterrupt(INT_TA2_0);
+            while (timerlist.timer2_type==WAIT) {
+                PCM_gotoLPM0();
+            }
+            return;
+        }
+        if (timerlist.timer3_type==NOT_USED) {
+            timerlist.timer3_type=WAIT;
+            Timer_A_configureUpMode(TIMER_A3_BASE,&config);
+            Timer_A_startCounter(TIMER_A3_BASE,TIMER_A_UP_MODE);
+            Interrupt_enableInterrupt(INT_TA3_0);
+            while (timerlist.timer3_type==WAIT) {
+                PCM_gotoLPM0();
+            }
+            return;
+        }
+    }
+
+}
+
 timerNumber generate_rate(const uint16_t delay, void* handler) {
     timerNumber selectedTimer=NONE;
         if (delay<=32768 && delay!=0) {
             Timer_A_UpModeConfig config;
             config.clockSource=TIMER_A_CLOCKSOURCE_ACLK;
-            config.clockSourceDivider=TIMER_A_CLOCKSOURCE_DIVIDER_64;
+            config.clockSourceDivider=TIMER_A_CLOCKSOURCE_DIVIDER_16;
             config.timerInterruptEnable_TAIE=TIMER_A_TAIE_INTERRUPT_DISABLE;
             config.captureCompareInterruptEnable_CCR0_CCIE=TIMER_A_CCIE_CCR0_INTERRUPT_ENABLE;
             config.timerClear=TIMER_A_DO_CLEAR;
@@ -317,7 +362,10 @@ void TA1_0_IRQHandler(void)
         case RATE:
             timerlist.timer1_handler();
             break;
-        case PWM:
+        default:
+            Timer_A_stopTimer(TIMER_A1_BASE);
+            Interrupt_disableInterrupt(INT_TA1_0);
+            timerlist.timer1_type=NOT_USED;
             break;
         }
 }
@@ -332,7 +380,10 @@ void TA2_0_IRQHandler(void)
         case RATE:
             timerlist.timer2_handler();
             break;
-        case PWM:
+        default:
+            Timer_A_stopTimer(TIMER_A2_BASE);
+            Interrupt_disableInterrupt(INT_TA2_0);
+            timerlist.timer2_type=NOT_USED;
             break;
         }
 }
@@ -348,7 +399,10 @@ void TA3_0_IRQHandler(void)
         case RATE:
             timerlist.timer3_handler();
             break;
-        case PWM:
+        default:
+            Timer_A_stopTimer(TIMER_A3_BASE);
+            Interrupt_disableInterrupt(INT_TA3_0);
+            timerlist.timer3_type=NOT_USED;
             break;
         }
 }
