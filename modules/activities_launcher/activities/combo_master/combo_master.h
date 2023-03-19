@@ -28,7 +28,10 @@ extern const tImage  down_arrow1BPP_UNCOMP;
 extern const tImage  up_arrow1BPP_UNCOMP;
 extern const tImage  left_arrow1BPP_UNCOMP;
 extern const tImage  right_arrow1BPP_UNCOMP;
+#define MOVEMENTS_NUMBER 4
+#define IMAGES_WIDTH    24
 
+extern const tImage* index[MOVEMENTS_NUMBER];
 
 #define JOYPAD_SAMPLE_RATE    50
 
@@ -81,15 +84,39 @@ extern const tImage  right_arrow1BPP_UNCOMP;
 #define JOYPAD_RIGHT_TRAJECTORY_AREA_POSITION_X     JOYPAD_CENTER_AREA_POSITION_X+JOYPAD_CENTER_AREA_DELTA_X
 #define JOYPAD_RIGHT_TRAJECTORY_AREA_POSITION_Y     JOYPAD_CENTER_AREA_POSITION_Y
 
-#define TITLE_DIMENSION 14
-#define TITLE_TEXT  "COMBO\nMASTER!"
-#define TITLE_POSITION_X 20
-#define TITLE_POSITION_Y 20
+#define DISPLAY_SIZE_X          128
+#define DISPLAY_SIZE_Y          128
+
+#define TITLE_FONT              &g_sFontCm26b
+#define TITLE_SPACING           5
+#define TITLE_TEXT              {"combo","master"}
+#define TITLE_DIMENSION         2
+#define TITLE_SHOW_TIME         2000
+
+#define MESSAGE_FONT            &g_sFontCm12b
+#define GAME_DESCRIPTION_TEXT1  {"Repeat the given ","combination of ","actions with", "buttons (A and B) ","and joypad ","movements (arrows)"," ","Press A to continue"}
+#define GAME_DESCRIPTION_TEXT2  {"An action is", "automatically", "captured when ","executed but you", "can cancel it with ","the joypad button"," ","Press A to start"}
+#define GAME_DESCRIPTION_TEXT1_DIMENSION 8
+#define GAME_DESCRIPTION_TEXT2_DIMENSION 8
+
+#define MESSAGE_SPACING    2
+#define MESSAGE_MARGIN_X   10
+#define MESSAGE_MARGIN_Y   10
+
+#define BUTTON_POLLING_DELAY    100
+
+#define ACTION_GENERATION_NUMBER    5
 
 typedef enum{LINE_UP,LINE_DOWN,LINE_LEFT,LINE_RIGHT,CENTER_HOLD,UNDEFINED_MOVEMENT} joystick_movement;
 typedef enum{CENTER,UP_CORNER,DOWN_CORNER,LEFT_CORNER,RIGHT_CORNER,UP_TRAJECTORY,DOWN_TRAJECTORY,LEFT_TRAJECTORY,RIGHT_TRAJECTORY,OTHER} joystick_area;
 
 void initJoypadSystem();
+void waitButtonA();
+void waitButtonB();
+void waitJoyButton();
+void printMessage(char** message,int lines,Graphics_Context* gc);
+void clearScreen(Graphics_Context* gc);
+void printTitleMessage(char* message[],int lines,Graphics_Context* gc);
 
 joystick_area getJoyArea();
 joystick_movement getJoyMovement();
