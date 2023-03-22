@@ -6,7 +6,7 @@
 #include <time.h>
 #include <modules/hardware/hardware.h>
 
-typedef enum {RUNNING, USER_INACTIVE, TASK_COMPLETED, TASK_CLOSED, UNDEFINED} state;
+typedef enum {USER_INACTIVE, TASK_COMPLETED, UNDEFINED} state;
 typedef state (*func_type)(Graphics_Context* gc);
 
 #define ACTIVITIES_NUMBER 1

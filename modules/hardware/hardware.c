@@ -218,7 +218,6 @@ void generate_wait(const uint16_t delay) {
         config.timerPeriod=delay*2;
         if (timerlist.timer1_type==NOT_USED) {
             timerlist.timer1_type=WAIT;
-
             Timer_A_configureUpMode(TIMER_A1_BASE,&config);
             Timer_A_startCounter(TIMER_A1_BASE,TIMER_A_UP_MODE);
             Interrupt_enableInterrupt(INT_TA1_0);
@@ -372,6 +371,7 @@ void TA1_0_IRQHandler(void)
 
 void TA2_0_IRQHandler(void)
 {
+    Timer_A_clearCaptureCompareInterrupt(TIMER_A2_BASE,TIMER_A_CAPTURECOMPARE_REGISTER_0);
     switch(timerlist.timer2_type) {
         case DELAY:
             Timer_A_stopTimer(TIMER_A2_BASE);

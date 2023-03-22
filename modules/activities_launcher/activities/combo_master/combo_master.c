@@ -1,8 +1,9 @@
 #include "combo_master.h"
 
-const tImage* index[MOVEMENTS_NUMBER]={&down_arrow1BPP_UNCOMP,&up_arrow1BPP_UNCOMP,&left_arrow1BPP_UNCOMP,&right_arrow1BPP_UNCOMP};
+const tImage* index[MOVEMENTS_NUMBER]={&down_arrow1BPP_UNCOMP,&up_arrow1BPP_UNCOMP,&left_arrow1BPP_UNCOMP,&right_arrow1BPP_UNCOMP,&a1BPP_UNCOMP,&b1BPP_UNCOMP};
 
 state combo_master_start(Graphics_Context* gc) {
+    inactivity_timer=NONE;
     clearScreen(gc);
     char* title[] = TITLE_TEXT;
     printTitleMessage(title,TITLE_DIMENSION,gc);
@@ -10,40 +11,189 @@ state combo_master_start(Graphics_Context* gc) {
 
     char* gameDescription[]=GAME_DESCRIPTION_TEXT1;
     printMessage (gameDescription,GAME_DESCRIPTION_TEXT1_DIMENSION,gc);
-    waitButtonA();
-
-    char* gameDescription2[]=GAME_DESCRIPTION_TEXT2;
-    printMessage(gameDescription2,GAME_DESCRIPTION_TEXT2_DIMENSION,gc);
-    waitButtonA();
-
-    int i;
-    char* c[1];
-    for (i=3;i>0;i--) {
-        sprintf(c[0],"%d",i);
-        printTitleMessage(c,1,gc);
-        generate_wait(1000);
+    int showTime=GAME_DESCRIPTION_SHOW_TIME;
+    while (showTime>0) {
+        if (buttonsPressed.b1) {
+            break;
+        }
+        generate_wait(BUTTON_POLLING_DELAY);
+        showTime=showTime-BUTTON_POLLING_DELAY;
     }
     clearScreen(gc);
-
+    resetButtonsState();
+    startADCconversions();
     tImage* generation[ACTION_GENERATION_NUMBER];
     time_t t;
     srand((unsigned) time(&t));
-    int pos;
     int pos_x=IMAGES_WIDTH/(ACTION_GENERATION_NUMBER*2);
-    int pos_y=(DISPLAY_SIZE_Y/2)-(IMAGES_WIDTH/2);
-    for (i=0;i<ACTION_GENERATION_NUMBER;i++) {
-        pos = rand() % MOVEMENTS_NUMBER;
-        generation[i]=index[pos];
-        Graphics_drawImage(gc, generation[i], pos_x, pos_y);
-        pos_x=pos_x+IMAGES_WIDTH;
+    int pos_y=(DISPLAY_SIZE_Y/2)-(IMAGES_WIDTH/2)-(IMAGES_BOTTOM_MARGIN/2);
+    int pos_y2=pos_y+IMAGES_BOTTOM_MARGIN;
+    int pos_x2=IMAGES_WIDTH/(ACTION_GENERATION_NUMBER*2);
+    Graphics_Rectangle clearLine;
+    clearLine.xMin = pos_x2;
+    clearLine.xMax = pos_x2+(IMAGES_WIDTH*ACTION_GENERATION_NUMBER);
+    clearLine.yMin = pos_y2;
+    clearLine.yMax = pos_y2+IMAGES_WIDTH;
+    int i,j;
+    resetInactivityTimer();
+    for (i=0;i<STAGE_GENERATION_NUMBER;i++) {
+        for (j=0;j<ACTION_GENERATION_NUMBER;j++) {
+            generation[j]=index[rand() % MOVEMENTS_NUMBER];
+            Graphics_drawImage(gc, generation[j], pos_x, pos_y);
+            pos_x=pos_x+IMAGES_WIDTH;
+        }
+        j=0;
+        while(j<ACTION_GENERATION_NUMBER) {
+            if (getInactivityTimerStatus()) {
+                clearScreen(gc);
+                return USER_INACTIVE;
+            }
+            switch(getJoyMovement()) {
+            case CENTER_HOLD:
+                if (buttonsPressed.b1) {
+                    //resetInactivityTimer();
+                    generate_wait(BUTTON_POLLING_DELAY);
+                    resetButtonsState();
+                    if (generation[j]==&a1BPP_UNCOMP) {
+                        j++;
+                        Graphics_drawImage(gc,&v1BPP_UNCOMP,pos_x2,pos_y2);
+                        pos_x2=pos_x2+IMAGES_WIDTH;
+                        continue;
+                    } else {
+                        j=0;
+                        Graphics_drawImage(gc,&x1BPP_UNCOMP,pos_x2,pos_y2);
+                        generate_wait(1000);
+                        Graphics_setForegroundColor(gc, GRAPHICS_COLOR_BLACK);
+                        Graphics_fillRectangle(gc,&clearLine);
+                        Graphics_setForegroundColor(gc, GRAPHICS_COLOR_WHITE);
+                        pos_x2=IMAGES_WIDTH/(ACTION_GENERATION_NUMBER*2);
+                        continue;
+                    }
+                } else {
+                    if (buttonsPressed.b2) {
+                        //resetInactivityTimer();
+                        generate_wait(BUTTON_POLLING_DELAY);
+                        resetButtonsState();
+                        if (generation[j]==&b1BPP_UNCOMP) {
+                            j++;
+                            Graphics_drawImage(gc,&v1BPP_UNCOMP,pos_x2,pos_y2);
+                            pos_x2=pos_x2+IMAGES_WIDTH;
+                            continue;
+                        } else {
+                            j=0;
+                            Graphics_drawImage(gc,&x1BPP_UNCOMP,pos_x2,pos_y2);
+                            generate_wait(1000);
+                            Graphics_setForegroundColor(gc, GRAPHICS_COLOR_BLACK);
+                            Graphics_fillRectangle(gc,&clearLine);
+                            Graphics_setForegroundColor(gc, GRAPHICS_COLOR_WHITE);
+                            pos_x2=IMAGES_WIDTH/(ACTION_GENERATION_NUMBER*2);
+                            continue;
+                        }
+                    }
+                }
+                break;
+            case LINE_UP:
+                //resetInactivityTimer();
+                if (generation[j]==&up_arrow1BPP_UNCOMP) {
+                    j++;
+                    Graphics_drawImage(gc,&v1BPP_UNCOMP,pos_x2,pos_y2);
+                    pos_x2=pos_x2+IMAGES_WIDTH;
+                    continue;
+                } else {
+                    j=0;
+                    Graphics_drawImage(gc,&x1BPP_UNCOMP,pos_x2,pos_y2);
+                    generate_wait(1000);
+                    Graphics_setForegroundColor(gc, GRAPHICS_COLOR_BLACK);
+                    Graphics_fillRectangle(gc,&clearLine);
+                    Graphics_setForegroundColor(gc, GRAPHICS_COLOR_WHITE);
+                    pos_x2=IMAGES_WIDTH/(ACTION_GENERATION_NUMBER*2);
+                    continue;
+                }
+            case LINE_DOWN:
+                //resetInactivityTimer();
+                if (generation[j]==&down_arrow1BPP_UNCOMP) {
+                    j++;
+                    Graphics_drawImage(gc,&v1BPP_UNCOMP,pos_x2,pos_y2);
+                    pos_x2=pos_x2+IMAGES_WIDTH;
+                    continue;
+                } else {
+                    j=0;
+                    Graphics_drawImage(gc,&x1BPP_UNCOMP,pos_x2,pos_y2);
+                    generate_wait(1000);
+                    Graphics_setForegroundColor(gc, GRAPHICS_COLOR_BLACK);
+                    Graphics_fillRectangle(gc,&clearLine);
+                    Graphics_setForegroundColor(gc, GRAPHICS_COLOR_WHITE);
+                    pos_x2=IMAGES_WIDTH/(ACTION_GENERATION_NUMBER*2);
+                    continue;
+                }
+            case LINE_LEFT:
+                //resetInactivityTimer();
+                if (generation[j]==&left_arrow1BPP_UNCOMP) {
+                    j++;
+                    Graphics_drawImage(gc,&v1BPP_UNCOMP,pos_x2,pos_y2);
+                    pos_x2=pos_x2+IMAGES_WIDTH;
+                    continue;
+                } else {
+                    j=0;
+                    Graphics_drawImage(gc,&x1BPP_UNCOMP,pos_x2,pos_y2);
+                    generate_wait(1000);
+                    Graphics_setForegroundColor(gc, GRAPHICS_COLOR_BLACK);
+                    Graphics_fillRectangle(gc,&clearLine);
+                    Graphics_setForegroundColor(gc, GRAPHICS_COLOR_WHITE);
+                    pos_x2=IMAGES_WIDTH/(ACTION_GENERATION_NUMBER*2);
+                    continue;
+                }
+            case LINE_RIGHT:
+                //resetInactivityTimer();
+                if (generation[j]==&right_arrow1BPP_UNCOMP) {
+                    j++;
+                    Graphics_drawImage(gc,&v1BPP_UNCOMP,pos_x2,pos_y2);
+                    pos_x2=pos_x2+IMAGES_WIDTH;
+                    continue;
+                } else {
+                    j=0;
+                    Graphics_drawImage(gc,&x1BPP_UNCOMP,pos_x2,pos_y2);
+                    generate_wait(1000);
+                    Graphics_setForegroundColor(gc, GRAPHICS_COLOR_BLACK);
+                    Graphics_fillRectangle(gc,&clearLine);
+                    Graphics_setForegroundColor(gc, GRAPHICS_COLOR_WHITE);
+                    pos_x2=IMAGES_WIDTH/(ACTION_GENERATION_NUMBER*2);
+                    continue;
+                }
+            }
+        }
+        pos_x=IMAGES_WIDTH/(ACTION_GENERATION_NUMBER*2);
+        pos_y=(DISPLAY_SIZE_Y/2)-(IMAGES_WIDTH/2)-(IMAGES_BOTTOM_MARGIN/2);
+        pos_y2=pos_y+IMAGES_BOTTOM_MARGIN;
+        pos_x2=IMAGES_WIDTH/(ACTION_GENERATION_NUMBER*2);
+        clearScreen(gc);
     }
-
-
-    //Graphics_drawImage(gc, &down_arrow1BPP_UNCOMP, TITLE_POSITION_X, TITLE_POSITION_Y,);
-    startADCconversions();
-
+    char* endMessage[]=END_MESSAGE_TEXT;
+    printTitleMessage(endMessage,END_MESSAGE_DIMENSION,gc);
+    generate_wait(2000);
+    clearScreen(gc);
     stopADCconversions();
+    stopInactivityTimer();
     return TASK_COMPLETED;
+}
+
+void inactivityHandler() {
+    inactivity_status=true;
+}
+
+void resetInactivityTimer() {
+    inactivity_status=false;
+    disable_timer(inactivity_timer);
+    inactivity_timer=NONE;
+    inactivity_timer=generate_delay(INACTIVITY_TIME,&inactivityHandler);
+}
+bool getInactivityTimerStatus() {
+    return inactivity_status;
+}
+
+void stopInactivityTimer() {
+    disable_timer(inactivity_timer);
+    inactivity_timer=NONE;
 }
 
 void printTitleMessage(char* message[],int lines,Graphics_Context* gc) {
@@ -94,31 +244,6 @@ void printMessage(char* message[],int lines,Graphics_Context* gc) {
     }
 }
 
-void waitButtonA() {
-    resetButtonsState();
-    while(!buttonsPressed.b1) {
-       generate_wait(BUTTON_POLLING_DELAY);
-    }
-    resetButtonsState();
-}
-
-void waitButtonB() {
-    resetButtonsState();
-    while(!buttonsPressed.b2) {
-       generate_wait(BUTTON_POLLING_DELAY);
-    }
-    resetButtonsState();
-}
-
-void waitJoyButton() {
-    resetButtonsState();
-    while(!buttonsPressed.jb) {
-       generate_wait(BUTTON_POLLING_DELAY);
-    }
-    resetButtonsState();
-}
-
-
 joystick_area getJoyArea() {
     joystick sampledPosition=getJoyValue();
     if (((sampledPosition.joyXvalue>JOYPAD_CENTER_AREA_POSITION_X) && (sampledPosition.joyXvalue<(JOYPAD_CENTER_AREA_POSITION_X+JOYPAD_CENTER_AREA_DELTA_X)))&&((sampledPosition.joyYvalue>JOYPAD_CENTER_AREA_POSITION_Y) && (sampledPosition.joyYvalue<(JOYPAD_CENTER_AREA_POSITION_Y+JOYPAD_CENTER_AREA_DELTA_Y)))) {
@@ -158,7 +283,6 @@ joystick_movement getJoyMovement() {
     joystick_movement predictedMovement=UNDEFINED_MOVEMENT;
     joystick_area joystickSampledArea=OTHER;
     while (!detected_movement) {
-        generate_wait(JOYPAD_SAMPLE_RATE);
         joystickSampledArea=getJoyArea();
         switch(predictedMovement) {
                 case CENTER_HOLD:
@@ -258,6 +382,7 @@ joystick_movement getJoyMovement() {
                     break;
 
                 }
+        generate_wait(JOYPAD_SAMPLE_RATE);
 
 
     }
