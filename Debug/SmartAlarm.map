@@ -1,7 +1,7 @@
 ******************************************************************************
                   TI ARM Linker Unix v20.2.7                   
 ******************************************************************************
->> Linked Wed Mar 22 19:00:54 2023
+>> Linked Fri Apr 21 12:27:18 2023
 
 OUTPUT FILE NAME:   <SmartAlarm.out>
 ENTRY POINT SYMBOL: "_c_int00_noargs"  address: 00006d7d
@@ -420,7 +420,7 @@ MODULE SUMMARY
     +--+----------------------------------------------------+-------+---------+---------+
        Total:                                               332     42        52     
                                                                                      
-    /home/asus-laptop/Applications/CodeComposerStudio/ccs/tools/compiler/ti-cgt-arm_20.2.7.LTS/lib/rtsv7M4_T_le_v4SPD16_eabi.lib
+    /home/vittorio/Applications/ccs1230/ccs/tools/compiler/ti-cgt-arm_20.2.7.LTS/lib/rtsv7M4_T_le_v4SPD16_eabi.lib
        _printfi.c.obj                                       4851    0         0      
        trgmsg.c.obj                                         108     0         576    
        fd_add_t2.asm.obj                                    438     0         0      
@@ -461,7 +461,7 @@ MODULE SUMMARY
     +--+----------------------------------------------------+-------+---------+---------+
        Total:                                               7981    257       624    
                                                                                      
-    /home/asus-laptop/github/SmartAlarm/driverlib/source/ti/devices/msp432p4xx/driverlib/ccs/msp432p4xx_driverlib.lib
+    /home/vittorio/GitHub/SmartAlarm/driverlib/source/ti/devices/msp432p4xx/driverlib/ccs/msp432p4xx_driverlib.lib
        adc14.o                                              1244    128       0      
        rtc_c.o                                              1032    0         0      
        pcm.o                                                888     0         0      
@@ -475,7 +475,7 @@ MODULE SUMMARY
     +--+----------------------------------------------------+-------+---------+---------+
        Total:                                               5536    192       0      
                                                                                      
-    /home/asus-laptop/github/SmartAlarm/driverlib/source/ti/grlib/lib/ccs/m4f/grlib.a
+    /home/vittorio/GitHub/SmartAlarm/driverlib/source/ti/grlib/lib/ccs/m4f/grlib.a
        fontcm34b.obj                                        0       4103      0      
        image.obj                                            1020    0         2048   
        fontcm24b.obj                                        0       3041      0      
