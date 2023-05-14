@@ -9,10 +9,11 @@
 typedef enum {USER_INACTIVE, TASK_COMPLETED, UNDEFINED} state;
 typedef state (*func_type)(Graphics_Context* gc);
 
-#define ACTIVITIES_NUMBER 1
+#define ACTIVITIES_NUMBER 2
 
 /* add activities start functions here */
 state combo_master_start(Graphics_Context* gc);
+state treasure_hunt_start(Graphics_Context* gc);
 
 state launch_game();
 

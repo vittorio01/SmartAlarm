@@ -2,7 +2,9 @@
 # Automatically-generated file. Do not edit!
 ################################################################################
 
-CG_TOOL_ROOT := /home/vittorio/Applications/ccs1230/ccs/tools/compiler/ti-cgt-arm_20.2.7.LTS
+SHELL = cmd.exe
+
+CG_TOOL_ROOT := D:/Program Files (x86)/ccs/tools/compiler/ti-cgt-arm_20.2.7.LTS
 
 GEN_OPTS__FLAG := 
 GEN_CMDS__FLAG := 
@@ -20,6 +22,8 @@ ORDERED_OBJS += \
 "./modules/activities_launcher/activities/combo_master/images/up_arrow.obj" \
 "./modules/activities_launcher/activities/combo_master/images/v.obj" \
 "./modules/activities_launcher/activities/combo_master/images/x.obj" \
+"./modules/activities_launcher/activities/treasure_hunt/treasure_hunt.obj" \
+"./modules/activities_launcher/activities/treasure_hunt/v.obj" \
 "./modules/activities_launcher/activities.obj" \
 "./modules/clock_system/clock.obj" \
 "./modules/clock_system/images/ALARM_OFF.obj" \
@@ -39,19 +43,20 @@ ORDERED_OBJS += \
 "../msp432p401r.cmd" \
 $(GEN_CMDS__FLAG) \
 -llibc.a \
--l"/home/vittorio/GitHub/SmartAlarm/driverlib/source/ti/grlib/lib/ccs/m4f/grlib.a" \
--l"/home/vittorio/GitHub/SmartAlarm/driverlib/source/ti/devices/msp432p4xx/driverlib/ccs/msp432p4xx_driverlib.lib" \
+-l"D:/IoT/progetto/SmartAlarm/driverlib/source/ti/grlib/lib/ccs/m4f/grlib.a" \
+-l"D:/IoT/progetto/SmartAlarm/driverlib/source/ti/devices/msp432p4xx/driverlib/ccs/msp432p4xx_driverlib.lib" \
 
 -include ../makefile.init
 
-RM := rm -rf
-RMDIR := rm -rf
+RM := DEL /F
+RMDIR := RMDIR /S/Q
 
 # All of the sources participating in the build are defined here
 -include sources.mk
 -include subdir_vars.mk
 -include modules/activities_launcher/activities/combo_master/subdir_vars.mk
 -include modules/activities_launcher/activities/combo_master/images/subdir_vars.mk
+-include modules/activities_launcher/activities/treasure_hunt/subdir_vars.mk
 -include modules/activities_launcher/subdir_vars.mk
 -include modules/clock_system/subdir_vars.mk
 -include modules/clock_system/images/subdir_vars.mk
@@ -62,6 +67,7 @@ RMDIR := rm -rf
 -include subdir_rules.mk
 -include modules/activities_launcher/activities/combo_master/subdir_rules.mk
 -include modules/activities_launcher/activities/combo_master/images/subdir_rules.mk
+-include modules/activities_launcher/activities/treasure_hunt/subdir_rules.mk
 -include modules/activities_launcher/subdir_rules.mk
 -include modules/clock_system/subdir_rules.mk
 -include modules/clock_system/images/subdir_rules.mk
@@ -170,6 +176,12 @@ SmartAlarm.out \
 EXE_OUTPUTS__QUOTED += \
 "SmartAlarm.out" \
 
+BIN_OUTPUTS += \
+SmartAlarm.hex \
+
+BIN_OUTPUTS__QUOTED += \
+"SmartAlarm.hex" \
+
 
 # All Target
 all: $(OBJS) $(CMD_SRCS) $(LDS_SRCS) $(LD_SRCS) $(A_SRCS) $(LIB_SRCS) $(GEN_CMDS)
@@ -179,17 +191,24 @@ all: $(OBJS) $(CMD_SRCS) $(LDS_SRCS) $(LD_SRCS) $(A_SRCS) $(LIB_SRCS) $(GEN_CMDS
 SmartAlarm.out: $(OBJS) $(CMD_SRCS) $(LDS_SRCS) $(LD_SRCS) $(A_SRCS) $(LIB_SRCS) $(GEN_CMDS)
 	@echo 'Building target: "$@"'
 	@echo 'Invoking: Arm Linker'
-	"/home/vittorio/Applications/ccs1230/ccs/tools/compiler/ti-cgt-arm_20.2.7.LTS/bin/armcl" -mv7M4 --code_state=16 --float_support=FPv4SPD16 -me --advice:power="all" --define=__MSP432P401R__ --define=ccs -g --gcc --diag_warning=225 --diag_wrap=off --display_error_number --abi=eabi -z -m"SmartAlarm.map" --heap_size=1024 --stack_size=512 -i"/home/vittorio/Applications/ccs1230/ccs/ccs_base/arm/include" -i"/home/vittorio/Applications/ccs1230/ccs/tools/compiler/ti-cgt-arm_20.2.7.LTS/lib" -i"/home/vittorio/Applications/ccs1230/ccs/tools/compiler/ti-cgt-arm_20.2.7.LTS/include" --reread_libs --diag_wrap=off --display_error_number --warn_sections --xml_link_info="SmartAlarm_linkInfo.xml" --rom_model -o "SmartAlarm.out" $(ORDERED_OBJS) $(A_SRCS)
+	"D:/Program Files (x86)/ccs/tools/compiler/ti-cgt-arm_20.2.7.LTS/bin/armcl" -mv7M4 --code_state=16 --float_support=FPv4SPD16 -me --advice:power="all" --define=__MSP432P401R__ --define=ccs -g --gcc --diag_warning=225 --diag_wrap=off --display_error_number --abi=eabi -z -m"SmartAlarm.map" --heap_size=1024 --stack_size=512 -i"D:/Program Files (x86)/ccs/ccs_base/arm/include" -i"D:/Program Files (x86)/ccs/tools/compiler/ti-cgt-arm_20.2.7.LTS/lib" -i"D:/Program Files (x86)/ccs/tools/compiler/ti-cgt-arm_20.2.7.LTS/include" --reread_libs --diag_wrap=off --display_error_number --warn_sections --xml_link_info="SmartAlarm_linkInfo.xml" --rom_model -o "SmartAlarm.out" $(ORDERED_OBJS) $(A_SRCS)
 	@echo 'Finished building target: "$@"'
+	@echo ' '
+
+SmartAlarm.hex: $(EXE_OUTPUTS)
+	@echo 'Building secondary target: "$@"'
+	@echo 'Invoking: Arm Hex Utility'
+	"D:/Program Files (x86)/ccs/tools/compiler/ti-cgt-arm_20.2.7.LTS/bin/armhex" --memwidth=8 --romwidth=8 --diag_wrap=off -o "SmartAlarm.hex" $(EXE_OUTPUTS__QUOTED)
+	@echo 'Finished building secondary target: "$@"'
 	@echo ' '
 
 # Other Targets
 clean:
-	-$(RM) $(GEN_FILES__QUOTED)$(EXE_OUTPUTS__QUOTED)
-	-$(RM) "main.obj" "startup_msp432p401r_ccs.obj" "system_msp432p401r.obj" "modules/activities_launcher/activities/combo_master/combo_master.obj" "modules/activities_launcher/activities/combo_master/images/a.obj" "modules/activities_launcher/activities/combo_master/images/b.obj" "modules/activities_launcher/activities/combo_master/images/down_arrow.obj" "modules/activities_launcher/activities/combo_master/images/left_arrow.obj" "modules/activities_launcher/activities/combo_master/images/right_arrow.obj" "modules/activities_launcher/activities/combo_master/images/up_arrow.obj" "modules/activities_launcher/activities/combo_master/images/v.obj" "modules/activities_launcher/activities/combo_master/images/x.obj" "modules/activities_launcher/activities.obj" "modules/clock_system/clock.obj" "modules/clock_system/images/ALARM_OFF.obj" "modules/clock_system/images/ALARM_ON.obj" "modules/clock_system/images/CLOCK_1.obj" "modules/clock_system/images/CLOCK_2.obj" "modules/clock_system/images/CLOCK_3.obj" "modules/clock_system/images/CLOCK_4.obj" 
-	-$(RM) "modules/clock_system/images/CURSOR_DOWN.obj" "modules/clock_system/images/CURSOR_R.obj" "modules/clock_system/images/CURSOR_UP.obj" "modules/hardware/hardware.obj" "modules/hardware/libraries/Crystalfontz128x128_ST7735.obj" "modules/hardware/libraries/HAL_MSP_EXP432P401R_Crystalfontz128x128_ST7735.obj" "modules/ringtones_manager/ringtones/the_lick.obj" "modules/ringtones_manager/ringtones_manager.obj" 
-	-$(RM) "main.d" "startup_msp432p401r_ccs.d" "system_msp432p401r.d" "modules/activities_launcher/activities/combo_master/combo_master.d" "modules/activities_launcher/activities/combo_master/images/a.d" "modules/activities_launcher/activities/combo_master/images/b.d" "modules/activities_launcher/activities/combo_master/images/down_arrow.d" "modules/activities_launcher/activities/combo_master/images/left_arrow.d" "modules/activities_launcher/activities/combo_master/images/right_arrow.d" "modules/activities_launcher/activities/combo_master/images/up_arrow.d" "modules/activities_launcher/activities/combo_master/images/v.d" "modules/activities_launcher/activities/combo_master/images/x.d" "modules/activities_launcher/activities.d" "modules/clock_system/clock.d" "modules/clock_system/images/ALARM_OFF.d" "modules/clock_system/images/ALARM_ON.d" "modules/clock_system/images/CLOCK_1.d" "modules/clock_system/images/CLOCK_2.d" "modules/clock_system/images/CLOCK_3.d" "modules/clock_system/images/CLOCK_4.d" 
-	-$(RM) "modules/clock_system/images/CURSOR_DOWN.d" "modules/clock_system/images/CURSOR_R.d" "modules/clock_system/images/CURSOR_UP.d" "modules/hardware/hardware.d" "modules/hardware/libraries/Crystalfontz128x128_ST7735.d" "modules/hardware/libraries/HAL_MSP_EXP432P401R_Crystalfontz128x128_ST7735.d" "modules/ringtones_manager/ringtones/the_lick.d" "modules/ringtones_manager/ringtones_manager.d" 
+	-$(RM) $(BIN_OUTPUTS__QUOTED)$(EXE_OUTPUTS__QUOTED)
+	-$(RM) "main.obj" "startup_msp432p401r_ccs.obj" "system_msp432p401r.obj" "modules\activities_launcher\activities\combo_master\combo_master.obj" "modules\activities_launcher\activities\combo_master\images\a.obj" "modules\activities_launcher\activities\combo_master\images\b.obj" "modules\activities_launcher\activities\combo_master\images\down_arrow.obj" "modules\activities_launcher\activities\combo_master\images\left_arrow.obj" "modules\activities_launcher\activities\combo_master\images\right_arrow.obj" "modules\activities_launcher\activities\combo_master\images\up_arrow.obj" "modules\activities_launcher\activities\combo_master\images\v.obj" "modules\activities_launcher\activities\combo_master\images\x.obj" "modules\activities_launcher\activities\treasure_hunt\treasure_hunt.obj" "modules\activities_launcher\activities\treasure_hunt\v.obj" "modules\activities_launcher\activities.obj" "modules\clock_system\clock.obj" "modules\clock_system\images\ALARM_OFF.obj" "modules\clock_system\images\ALARM_ON.obj" 
+	-$(RM) "modules\clock_system\images\CLOCK_1.obj" "modules\clock_system\images\CLOCK_2.obj" "modules\clock_system\images\CLOCK_3.obj" "modules\clock_system\images\CLOCK_4.obj" "modules\clock_system\images\CURSOR_DOWN.obj" "modules\clock_system\images\CURSOR_R.obj" "modules\clock_system\images\CURSOR_UP.obj" "modules\hardware\hardware.obj" "modules\hardware\libraries\Crystalfontz128x128_ST7735.obj" "modules\hardware\libraries\HAL_MSP_EXP432P401R_Crystalfontz128x128_ST7735.obj" "modules\ringtones_manager\ringtones\the_lick.obj" "modules\ringtones_manager\ringtones_manager.obj" 
+	-$(RM) "main.d" "startup_msp432p401r_ccs.d" "system_msp432p401r.d" "modules\activities_launcher\activities\combo_master\combo_master.d" "modules\activities_launcher\activities\combo_master\images\a.d" "modules\activities_launcher\activities\combo_master\images\b.d" "modules\activities_launcher\activities\combo_master\images\down_arrow.d" "modules\activities_launcher\activities\combo_master\images\left_arrow.d" "modules\activities_launcher\activities\combo_master\images\right_arrow.d" "modules\activities_launcher\activities\combo_master\images\up_arrow.d" "modules\activities_launcher\activities\combo_master\images\v.d" "modules\activities_launcher\activities\combo_master\images\x.d" "modules\activities_launcher\activities\treasure_hunt\treasure_hunt.d" "modules\activities_launcher\activities\treasure_hunt\v.d" "modules\activities_launcher\activities.d" "modules\clock_system\clock.d" "modules\clock_system\images\ALARM_OFF.d" "modules\clock_system\images\ALARM_ON.d" "modules\clock_system\images\CLOCK_1.d" 
+	-$(RM) "modules\clock_system\images\CLOCK_2.d" "modules\clock_system\images\CLOCK_3.d" "modules\clock_system\images\CLOCK_4.d" "modules\clock_system\images\CURSOR_DOWN.d" "modules\clock_system\images\CURSOR_R.d" "modules\clock_system\images\CURSOR_UP.d" "modules\hardware\hardware.d" "modules\hardware\libraries\Crystalfontz128x128_ST7735.d" "modules\hardware\libraries\HAL_MSP_EXP432P401R_Crystalfontz128x128_ST7735.d" "modules\ringtones_manager\ringtones\the_lick.d" "modules\ringtones_manager\ringtones_manager.d" 
 	-@echo 'Finished clean'
 	-@echo ' '
 

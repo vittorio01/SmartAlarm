@@ -127,6 +127,7 @@ SUBDIRS := \
 . \
 modules/activities_launcher/activities/combo_master \
 modules/activities_launcher/activities/combo_master/images \
+modules/activities_launcher/activities/treasure_hunt \
 modules/activities_launcher \
 modules/clock_system \
 modules/clock_system/images \
