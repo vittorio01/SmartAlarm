@@ -25,7 +25,7 @@ void alarmSettView(Graphics_Context *gc, volatile uint8_t *menuA){
     uint8_t minutes = RTC_C_convertBCDToBinary(settedTime.minutes);
     joystick joy;
     startADCconversions();
-    while(!buttonsPressed.jb){
+    while(!buttonsPressed.b2){
         joy = getJoyValue();
 
         if(!(joy.joyYvalue<50 && joy.joyYvalue>-50)){
@@ -74,7 +74,7 @@ void alarmSettView(Graphics_Context *gc, volatile uint8_t *menuA){
     alarmTime = settedTime;
     RTC_C_setCalendarAlarm(settedTime.minutes, settedTime.hours, RTC_C_ALARMCONDITION_OFF, RTC_C_ALARMCONDITION_OFF);
     *menuA = 0;
-    buttonsPressed.jb = 0;
+    buttonsPressed.b2 = 0;
     stopADCconversions();
 }
 
@@ -126,7 +126,7 @@ void timeSettView(Graphics_Context *gc, volatile uint8_t *menuA){
     uint16_t year = RTC_C_convertBCDToBinary(settedTime.year);
     joystick joy;
     startADCconversions();
-    while(!buttonsPressed.jb){
+    while(!buttonsPressed.b2){
         joy = getJoyValue();
 
 
@@ -252,7 +252,7 @@ void timeSettView(Graphics_Context *gc, volatile uint8_t *menuA){
     }
     RTC_C_initCalendar(&settedTime, RTC_C_FORMAT_BCD);
     *menuA = 0;
-    buttonsPressed.jb = 0;
+    buttonsPressed.b2 = 0;
     stopADCconversions();
 }
 
@@ -301,7 +301,7 @@ void settingsView(Graphics_Context *gc,  volatile uint8_t *menuA) {
 
     joystick joy;
     startADCconversions();
-    while(!buttonsPressed.jb){
+    while(!buttonsPressed.b2){
         /* CHANGE THE CURSOR POSITION */
         joy = getJoyValue();
         getCursorPosition(2, &cursor, &updateCursor, &up, &down, joy, AXIS_Y);
@@ -315,7 +315,7 @@ void settingsView(Graphics_Context *gc,  volatile uint8_t *menuA) {
             return;
         }
     }
-    buttonsPressed.jb = 0;      //remember to reset the button state
+    buttonsPressed.b2 = 0;      //remember to reset the button state
     *menuA = 0;
     stopADCconversions();
 }

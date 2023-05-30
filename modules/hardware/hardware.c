@@ -15,6 +15,7 @@ void initHardware(Graphics_Context* gc) {
 
 /* MODULES INIT. */
 
+// POWER CONTROL MODULE
 void initPCM() {
     PCM_setCoreVoltageLevel(PCM_VCORE1);
     FlashCtl_setWaitState(FLASH_BANK0, 2);
@@ -61,14 +62,17 @@ void initButtonSystem() {
 
     GPIO_setAsInputPinWithPullUpResistor(BUT_S1_PORT, BUT_S1_PIN);
     GPIO_enableInterrupt(BUT_S1_PORT, BUT_S1_PIN);
+    GPIO_interruptEdgeSelect(BUT_S1_PORT, BUT_S1_PIN, GPIO_HIGH_TO_LOW_TRANSITION);
     Interrupt_enableInterrupt(BUT_S1_PORT_INT);
 
     GPIO_setAsInputPinWithPullUpResistor(BUT_S2_PORT, BUT_S2_PIN);
     GPIO_enableInterrupt(BUT_S2_PORT, BUT_S2_PIN);
+    GPIO_interruptEdgeSelect(BUT_S2_PORT, BUT_S2_PIN, GPIO_HIGH_TO_LOW_TRANSITION);
     Interrupt_enableInterrupt(BUT_S2_PORT_INT);
 
     GPIO_setAsInputPinWithPullUpResistor(JOY_B_PORT, JOY_B_PIN);
     GPIO_enableInterrupt(JOY_B_PORT, JOY_B_PIN);
+    GPIO_interruptEdgeSelect(JOY_B_PORT, JOY_B_PIN, GPIO_HIGH_TO_LOW_TRANSITION);
     Interrupt_enableInterrupt(JOY_B_PORT_INT);
 
     buttonsPressed.b1 = 0; //reset the button1 status flag
@@ -122,15 +126,12 @@ void initAdcSystem() {
     // Configuring Sample Timer
     ADC14_enableSampleTimer(ADC_AUTOMATIC_ITERATION);
 
-    // set resolution at 8-bits (we don't need more for the joystick)
+    // set resolution at 8-bits (we don't need more resolution for the joystick)
     ADC14_setResolution(ADC_8BIT);
 
     // Enabling Conversion
     ADC14_enableInterrupt(JOY_X_MEM);
     Interrupt_enableInterrupt(INT_ADC14);
-
-
-
 }
 
 /* start up time */
