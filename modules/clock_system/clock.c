@@ -25,7 +25,7 @@ void alarmSettView(Graphics_Context *gc, volatile uint8_t *menuA){
     uint8_t minutes = RTC_C_convertBCDToBinary(settedTime.minutes);
     joystick joy;
     startADCconversions();
-    while(!buttonsPressed.b2){
+    while(!buttonsPressed.jb){
         joy = getJoyValue();
 
         if(!(joy.joyYvalue<50 && joy.joyYvalue>-50)){
@@ -74,7 +74,7 @@ void alarmSettView(Graphics_Context *gc, volatile uint8_t *menuA){
     alarmTime = settedTime;
     RTC_C_setCalendarAlarm(settedTime.minutes, settedTime.hours, RTC_C_ALARMCONDITION_OFF, RTC_C_ALARMCONDITION_OFF);
     *menuA = 0;
-    buttonsPressed.b2 = 0;
+    buttonsPressed.jb = 0;
     stopADCconversions();
 }
 
@@ -126,7 +126,7 @@ void timeSettView(Graphics_Context *gc, volatile uint8_t *menuA){
     uint16_t year = RTC_C_convertBCDToBinary(settedTime.year);
     joystick joy;
     startADCconversions();
-    while(!buttonsPressed.b2){
+    while(!buttonsPressed.jb){
         joy = getJoyValue();
 
 
@@ -251,8 +251,9 @@ void timeSettView(Graphics_Context *gc, volatile uint8_t *menuA){
         }
     }
     RTC_C_initCalendar(&settedTime, RTC_C_FORMAT_BCD);
+    RTC_C_startClock();
     *menuA = 0;
-    buttonsPressed.b2 = 0;
+    buttonsPressed.jb = 0;
     stopADCconversions();
 }
 
@@ -301,7 +302,7 @@ void settingsView(Graphics_Context *gc,  volatile uint8_t *menuA) {
 
     joystick joy;
     startADCconversions();
-    while(!buttonsPressed.b2){
+    while(!buttonsPressed.jb){
         /* CHANGE THE CURSOR POSITION */
         joy = getJoyValue();
         getCursorPosition(2, &cursor, &updateCursor, &up, &down, joy, AXIS_Y);
@@ -309,13 +310,13 @@ void settingsView(Graphics_Context *gc,  volatile uint8_t *menuA) {
             drawCursor(gc, cursor, *menuA);
             updateCursor = 0;
         }
-        if(buttonsPressed.b2){
+        if(buttonsPressed.jb){
             *menuA = cursor+1;
-            buttonsPressed.b2 = 0;
+            buttonsPressed.jb = 0;
             return;
         }
     }
-    buttonsPressed.b2 = 0;      //remember to reset the button state
+    buttonsPressed.jb = 0;      //remember to reset the button state
     *menuA = 0;
     stopADCconversions();
 }
@@ -622,12 +623,12 @@ void RTC_C_IRQHandler(void) {
     RTC_C_clearInterruptFlag(status);
 
     if (status & RTC_C_TIME_EVENT_INTERRUPT){
-        /*
+
         GPIO_toggleOutputOnPin(RGB_LED_BLUE_PORT, RGB_LED_BLUE_PIN);
         int i;
         for(i=0; i<1000;i++);   //big delay, slower incrementation
         GPIO_toggleOutputOnPin(RGB_LED_BLUE_PORT, RGB_LED_BLUE_PIN);
-        */
+
 
         updateTime = 1;       //display need a time update (updated every minute)
         currentTime = RTC_C_getCalendarTime();

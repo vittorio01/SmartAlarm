@@ -27,7 +27,8 @@ state treasure_hunt_start(Graphics_Context* gc) {
     startADCconversions();
     resetInactivityTimer2();
     joystick position;
-
+    time_t t;
+    srand((unsigned) time(&t));
 
     int i;
     for(i=0;i<=STAGE_GENERATION_NUMBER;i++){
@@ -134,10 +135,9 @@ void printMessage2(char* message[],int lines,Graphics_Context* gc) {
 }
 
 void newTreasure(treasure* treasure){
-    time_t t;
-    srand((unsigned) time(&t));
-    treasure->x = (rand() % (JOYPAD_MAX_X_VALUE-30))+15;
-    treasure->y = (rand() % (JOYPAD_MAX_Y_VALUE-30))+15;
+
+    treasure->x = (rand() % (JOYPAD_MAX_X_VALUE));
+    treasure->y = (rand() % (JOYPAD_MAX_Y_VALUE));
     /*treasure->x = 10;
     treasure->y = 10;*/
 }

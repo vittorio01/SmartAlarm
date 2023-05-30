@@ -30,5 +30,5 @@
 "./modules/ringtones_manager/ringtones_manager.obj"
 "../msp432p401r.cmd"
 -llibc.a
--l"C:/Users/Filippo Castellan/Desktop/SmartAlarm/driverlib/source/ti/grlib/lib/ccs/m4f/grlib.a"
--l"C:/Users/Filippo Castellan/Desktop/SmartAlarm/driverlib/source/ti/devices/msp432p4xx/driverlib/ccs/msp432p4xx_driverlib.lib"
+-l"D:/IoT/progetto/SmartAlarm/driverlib/source/ti/grlib/lib/ccs/m4f/grlib.a"
+-l"D:/IoT/progetto/SmartAlarm/driverlib/source/ti/devices/msp432p4xx/driverlib/ccs/msp432p4xx_driverlib.lib"
