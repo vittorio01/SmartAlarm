@@ -17,7 +17,7 @@ void main(void) {
 	 */
 	volatile uint8_t menuActive = 0;
 	volatile uint8_t alarmOn = 0;
-
+/*
 	while(1){
 	    switch(menuActive) {
 	        case 0: clockView(gc, &menuActive, &alarmOn); break;
@@ -44,7 +44,8 @@ void main(void) {
 	        //run the game and the ringtones
 	        alarmFired = 0;
 	    }
-	}
+	}*/
+	launch_game(gc);
 }
 
 //end

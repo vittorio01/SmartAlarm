@@ -455,7 +455,7 @@ timerNumber onesTimer;
 
 void clockView(Graphics_Context *gc, volatile uint8_t *menuA, volatile uint8_t *alarmOn) {
     initClockView(gc, *alarmOn);
-    onesTimer = generate_rate(250, &IRQdrawClock);
+    onesTimer = generate_rate(1000, &IRQdrawClock);
     while(!buttonsPressed.jb) {  // exit this loop when the joystick button are pressed and enter the menu viewed
         if(buttonsPressed.b1){
             *alarmOn = (*alarmOn+1)%2;
