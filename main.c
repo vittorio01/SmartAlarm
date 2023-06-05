@@ -29,10 +29,6 @@ void main(void) {
 	    if(alarmFired == 1){
 	        start_ringtone(0,5);
 
-	        clearScreen(gc);
-	        char* title[] = {"WAKE UP!"};
-	        printTitleMessage(title,TITLE_DIMENSION,gc);
-
 	        while (!buttonsPressed.b1 && !buttonsPressed.b1 && !buttonsPressed.jb) {
 	            generate_wait(100);
 	        }
