@@ -1,5 +1,6 @@
 #include "msp.h"
 #include "modules/clock_system/clock.h"
+#include "modules/activities_launcher/activities/combo_master/combo_master.h"
 #include <modules/hardware/hardware.h>
 
 Graphics_Context g_sContext; // Graphic library context
@@ -27,8 +28,12 @@ void main(void) {
 	    }
 	    if(alarmFired == 1){
 	        start_ringtone(0,5);
+
+	        clearScreen(gc);
+	        char* title[] = {"WAKE UP!"};
+	        printTitleMessage(title,TITLE_DIMENSION,gc);
+
 	        while (!buttonsPressed.b1 && !buttonsPressed.b1 && !buttonsPressed.jb) {
-	            clockView(gc, &menuActive, &alarmOn);
 	            generate_wait(100);
 	        }
 	        stop_ringtone();
