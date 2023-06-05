@@ -28,6 +28,7 @@ void main(void) {
 	    if(alarmFired == 1){
 	        start_ringtone(0,5);
 	        while (!buttonsPressed.b1 && !buttonsPressed.b1 && !buttonsPressed.jb) {
+	            clockView(gc, &menuActive, &alarmOn);
 	            generate_wait(100);
 	        }
 	        stop_ringtone();
