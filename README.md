@@ -25,42 +25,33 @@ Moving on to serious things, the whole project is based on a structure formed by
     <img src="/documentation/main_structure.png" alt="System structure">
 </p>
 
-# Clock system (1 person)
+# Clock system
 
 This layer represents the operational basis of the project and has the task of managing all basic information including date, time, day of the week, "" environmental information (temperature and light)"" implementing an alarm clock system which, in addition to having the same characteristics as normal alarm clocks , allows you to launch and monitor minigames via the Activity launch system. From the user's point of view, the clock system manages two main menus: one dedicated to displaying information and one for changing settings. 
 
 ## main screen
 
-The main screen is displayed whenever the alarm clock does not have to do anything else. Like a normal alarm clock, this screen has to represent some necessary information (date, time, day of the week,...) ""and some optional ones to make it cooler (temperature, day/night,...)"". The design can be chosen freely by the assigned programmer (please make it nice and stylish).
+The main screen is displayed whenever the alarm clock does not have to do anything else. Like a normal alarm clock, this screen has to represent some necessary information.
 <p align="center">
     <img width="200" src="/documentation/main.png" alt="Main panel">
 </p>
 <p align="center"> 
     Esempio Scemo
 </p>
-""Some ideas for making:
+""Some ideas for future improvements:
   
 - The backlighting of the display could be annoying during the night and consume energy. It would be nice to find a system to keep the display backlight on only when the device understands how much it is being used, such as when a key is pressed or when a movement is received
   
-- Some unintelligent people may leave the alarm clock upside down. Do you remember how the professor implemented the accelerometer? Well we understand each other 
+- Some people may leave the alarm clock upside down. A future implementation may use the giroscope to recognize the right position and rotate the screen automatically. 
 ""
 
 ## Settings menu
 
 The settings menu is used for changing basic information and assigning alarms. From a graphical point of view, it is a simple menu accessible by pressing a key which contains a list of modifiable information (date and time) and a submenu for setting alarms.
 
-""Ideas for making:
-- It would be very satisfying to be able to scroll through the settings using the analog pad on the left and select the option using one of the two buttons on the right
+""Ideas for future upgrades:
 - Some useful settings may change other aspects of the alarm such as the volume of ringtones
 - When power fails the menu should be launched soon after next boot to set all lost information.""
-
-### Alarm submenu
-""
-This submenu is entirely dedicated to alarm management. For the realization one could opt for a simple version that contains a predefined number of alarm clocks or a more complex version that gives the possibility of assigning an arbitrary number. 
-
-Ideas for making:
-
-- All alarm clocks could use the same ringtone but the result would be quite boring. It could therefore be the user himself who chooses the ringtones.
 - An even more complex system could allow the user to choose one or more days of the week in which to activate (actually management could be too difficult)""
 
 
@@ -68,26 +59,12 @@ Ideas for making:
 
 The activity launch system is an aspect of programming that deserves its own description. The idea is to create a small system capable of launching a minigame randomly, having a list of choices available. Launching activities corresponds to launching activity-specific functions and handling function return variables (see description).
 
-Ideas for making:
-
-- From a programming point of view, an efficient idea could be to insert an array of pointers to functions in which each field points to the function of a specific activity. In this way the interface has only to draw a random index of the array and launch the corresponding function.
+Ideas for future upgrades:
 - the activity, since it is launched immediately after an alarm is activated, must start once the user is ready to play. One idea might be to display a dedicated waiting screen and launch the game on a keypress. From a practical point of view, the random system for launching the activity should be implemented separately from the waiting screen.
-
-<p align="center"> 
-    <img width="200" src="/documentation/game_launch.png" alt="Game launch">
-</p>
-
-- The system should also check the outcome of the execution of the minigames and perform operations in case of a negative outcome. For example, launch another activity in case the previous one returns an inactive status.
 
 ## Ringtones system 
 ""
 This layer simply deals with the management and triggering of ringtones. The ringtones are played cyclically via the built-in buzzer and can be of different lengths.
-
-Ideas for implementation:
-
-- There are many projects for playing ringtones on the internet. A good idea would be to represent ringtones as arrays containing tones, which are played back in series at pre-established intervals (like 100ms)
-
-- Always on the internet there are many ringtones already created previously (ideal for not wasting time manually writing the tones)""
 
 ### Activities
 
@@ -97,12 +74,11 @@ Each activity is actually built and packaged as a function that is launched by t
 - Inactive, if the user does not react to the stimuli
 - Canceled, in case the user doesn't like the game
 
-Activities can be of any type (should cause the user to wake up completely instead of falling asleep again). Some ideas can be:
+Activities can be of any type (should cause the user to wake up completely instead of falling asleep again). Two minigames already developed are:
+- Combo Master. The user has to repeat all exact five given combinations with buttons (A and B) and joypad (for arrows). If the user doesn't respect the given order, the level will be resetted.
+- Treasure hunt. The user has to move the pointer with the joypad to find the hidden area.
 
-- snake
-- solving algebraic operations
-- ...
-- I don't know, I don't have other ideas
+
 
 # Project structure
 La programmazione, dato che deve essere composta da più parti, deve essere separata in più files. Le cartelle ![activities](/modules/activities_launcher) e ![ringtones](/modules/ringtones_manager) contengono la programmazione dell'activities system launcher e del ringtones manager, che verranno implementati come delle librerie da aggiungere al programma principale.
