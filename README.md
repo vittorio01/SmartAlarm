@@ -1,3 +1,6 @@
+Presentation -> https://docs.google.com/presentation/d/10k4tyO-IFauvRD4opIbPKDKe18_IUEi6HgjZJo3L0wQ/edit?usp=sharing
+Demonstration -> https://youtu.be/sSwYLoQlOco
+
 # SmartAlarm
 
 SmartAlarm is a project that involves the development of an intelligent alarm clock capable of awakening, in the least annoying way possible, even the people most resistant to traditional methods including:
