@@ -21,7 +21,7 @@ To avoid these symptoms, we strongly recommend that you set your alarm to get a 
 
 Moving on to serious things, the whole project is based on a structure formed by four main layers: one for managing the main functions of the alarm clock, one that represents the minigames that can be activated by the alarm clock, one for the ringtones system and one for all hardware management.
 
-The diagram shows that the Hardware layer is the base of other layers and the clock system controls others projects parts.
+The diagram shows that the Hardware layer is the base of other layers and the clock system controls others projects parts (dotted nets represents dependency relations and arrows represent control relations).
 <p align="center">
     <img src="/documentation/main_structure.png" alt="System structure">
 </p>
