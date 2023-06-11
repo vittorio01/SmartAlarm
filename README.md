@@ -17,93 +17,96 @@ The SmartAlarm alarm clock may lead to the development of the following symptoms
 - Loss of interest in life (in the most extreme cases)
 
 To avoid these symptoms, we strongly recommend that you set your alarm to get a minimum of 8 hours of sleep per night in order not to endanger the product, the individual and the community.
-## Development guidelines 
+## Development
 
-Moving on to serious things, the whole project is based on a structure formed by three main layers: one for managing the main functions of the alarm clock, one that represents the minigames that can be activated by the alarm clock and one for the ringtones. /!\ 
+Moving on to serious things, the whole project is based on a structure formed by four main layers: one for managing the main functions of the alarm clock, one that represents the minigames that can be activated by the alarm clock, one for the ringtones system and one for all hardware management.
 
 <p align="center">
     <img src="/documentation/main_structure.png" alt="System structure">
 </p>
+In particular, the Hardware layer is the base of other layers.
+
+# Hardware
+The Hardware layers contains all functions dedicated for the hardware management. It contains:
+- Initialization functions for all features (led, RTC clock, timers, buttons, joypad ADC and display).
+- An autonomus timer system (PWM, delays and timer interrupts).
+- Button state functions, dedicated for reading the state of the Two main BoosterPack buttons A and B.
+- Joypad state function, dedicated for reading the joypad current position
+
+The autonomus timer system is a small code dedicated for sharing 16bit timer and PWM buzzer resources in rutime. Contains:
+- Two PWM dedicated functions, which used a fixed timer (Timer0) for tones generation. In particular, there is one function for the tone activation and one function for the deactivation.
+- Four delay functions, which are used for controlling all the three timer left. 
+
+In particular, all three delay functions verifies if there is one free timer and configures it in base of the right operation:
+- Delay, which is a blocking delay function that stop the normal CPU activity for the specified time.
+- Wait, which is a function that calls automatically an handler after a specified time and doesn't block the CPU activity.
+- Rate, which is a function that calls multiple times a specific handler with a specified delay (like a repeated Wait function).
+The fourth function is used for deactivate the timer choosen by the Rate function.
+
+The display is the only hardware resource that in only initialized and not managed by the Hardware layer, because every layer has to program it in different ways.
 
 # Clock system
 
-This layer represents the operational basis of the project and has the task of managing all basic information including date, time, day of the week, "" environmental information (temperature and light)"" implementing an alarm clock system which, in addition to having the same characteristics as normal alarm clocks , allows you to launch and monitor minigames via the Activity launch system. From the user's point of view, the clock system manages two main menus: one dedicated to displaying information and one for changing settings. 
+This layer represents the operational basis of the project and has the task of managing all basic information including date, time and day of the week implementing an alarm clock system which, in addition to having the same characteristics as normal alarm clocks , allows you to launch and monitor minigames via the Activity launch system. From the user's point of view, the clock system manages two main menus: one dedicated to displaying information and one for changing settings. 
 
-## main screen
+## Main screen
 
 The main screen is displayed whenever the alarm clock does not have to do anything else. Like a normal alarm clock, this screen has to represent some necessary information.
-<p align="center">
-    <img width="200" src="/documentation/main.png" alt="Main panel">
-</p>
-<p align="center"> 
-    Esempio Scemo
-</p>
-""Some ideas for future improvements:
-  
+
+Some ideas for future improvements:
+
 - The backlighting of the display could be annoying during the night and consume energy. It would be nice to find a system to keep the display backlight on only when the device understands how much it is being used, such as when a key is pressed or when a movement is received
   
 - Some people may leave the alarm clock upside down. A future implementation may use the giroscope to recognize the right position and rotate the screen automatically. 
-""
+
 
 ## Settings menu
 
 The settings menu is used for changing basic information and assigning alarms. From a graphical point of view, it is a simple menu accessible by pressing a key which contains a list of modifiable information (date and time) and a submenu for setting alarms.
 
-""Ideas for future upgrades:
-- Some useful settings may change other aspects of the alarm such as the volume of ringtones
-- When power fails the menu should be launched soon after next boot to set all lost information.""
-- An even more complex system could allow the user to choose one or more days of the week in which to activate (actually management could be too difficult)""
+Ideas for future upgrades:
+- Implement a system which allows the user to select different ringtones at different times
+- Some useful settings may change other aspects of the alarm such as the volume of ringtones and a specific ringtone
+- An even more complex system could allow the user to choose one or more days of the week in which to activate a single ringtone (actually management could be too difficult)
 
 
 ## Activity launch system
 
-The activity launch system is an aspect of programming that deserves its own description. The idea is to create a small system capable of launching a minigame randomly, having a list of choices available. Launching activities corresponds to launching activity-specific functions and handling function return variables (see description).
+The activity launch system is an aspect of programming that deserves its own description. The idea is to create a small system capable of launching a minigame randomly, having a list of choices available. Launching activities corresponds to launching activity-specific functions and handling function return different results.
 
 Ideas for future upgrades:
-- the activity, since it is launched immediately after an alarm is activated, must start once the user is ready to play. One idea might be to display a dedicated waiting screen and launch the game on a keypress. From a practical point of view, the random system for launching the activity should be implemented separately from the waiting screen.
+- the clock system might show a specific screen image when the alarm occours ,until the user is ready to play. One idea might be to display a dedicated waiting screen and launch the game on a keypress.
 
 ## Ringtones system 
-""
+
 This layer simply deals with the management and triggering of ringtones. The ringtones are played cyclically via the built-in buzzer and can be of different lengths.
+
+The ringtone system uses timers and buzzer without blocking the normal execution of the clock system.
+
+Ideas for future upgrades:
+- Add one function to turn on a specific ringtones instead using a random system which choose automatically ones.
 
 ### Activities
 
-Each activity is actually built and packaged as a function that is launched by the activity launch system. The functions can use all the hardware devices of the board with some restrictions (the RTC system and one of the timers must remain unchanged for the correct functioning of the clock system). The functions must return a predetermined value to tell the clock system how the task was performed:
+Each activity is actually built and packaged as a function that is launched by the activity launch system. The functions can use all the hardware devices managed in the Hardware layer. The functions must return a predetermined value to tell the clock system how the task was performed:
  
 - Complete Execution, in case the task was executed successfully
 - Inactive, if the user does not react to the stimuli
-- Canceled, in case the user doesn't like the game
 
 Activities can be of any type (should cause the user to wake up completely instead of falling asleep again). Two minigames already developed are:
 - Combo Master. The user has to repeat all exact five given combinations with buttons (A and B) and joypad (for arrows). If the user doesn't respect the given order, the level will be resetted.
 - Treasure hunt. The user has to move the pointer with the joypad to find the hidden area.
 
-
+Ideas for future upgrades:
+- Add one more activity state Canceled, triggered when the user doesn't like the current game.
 
 # Project structure
-La programmazione, dato che deve essere composta da più parti, deve essere separata in più files. Le cartelle ![activities](/modules/activities_launcher) e ![ringtones](/modules/ringtones_manager) contengono la programmazione dell'activities system launcher e del ringtones manager, che verranno implementati come delle librerie da aggiungere al programma principale.
-Nel progetto Github si trovano diverse sottocartelle dedicate allo sviluppo delle varie sezioni:
+The file ![main.c](/main.c) contains the basic code for initialize all hardware and ttart the clock system, which set up the main screen and provide all the features of the alarm.
 
-- La cartella ![activities](/modules/activities_launcher) contiene tutti i minigiochi (un singolo file contiene un minigioco dedicato), che vengono registrati in un file games, che contiene tutti i riferimenti alle funzioni (ancora da perfezionare) e l'activity launch system in un file dedicato.
+The folder ![modules](/modules) contain all four system layers in four different dedicated subfolders. Each layer is programmed as a library (*.h and *.c files) and can contains other resources like images or other libraries:
 
-- La cartella ![ringtones](/modules/ringtones_manager) contiene il sistema per la gestione delle suonerie e le suonerie stesse
+- The folder ![activities_launcher](/modules/activities_launcher) contains the activity launcher and all minigames in the subfolder ![activities](/modules/activities_launcher/activities). Each minigame is structured and packed as a sublibrary.
+- The folder ![ringtones_manager](/modules/ringtones_manager) contains the ringtones system and all ringtones packed with a *.h files in the ![ringtones](/modules/ringtones_manager/ringtones) subfolder.
+- The folder ![hardware](/modules/ringtones_manager) contains the hardware layer.
 
-- La cartella ![lib](/lib) contiene eventuali librerie utilizzate dal clock system. Nelle cartelle ![ringtones](/modules/ringtones_manager) e ![activities](/modules/activities_launcher) sono presenti altre sottocartelle dedicate
-
-- Il file ![main.c](/main.c) contiene l'intero layer dedicato alla gestione dell'intero sistema ed è il file che deve effettivamente essere mandato in compilazione (tutti i moduli hanno un file ".h", che devono essere aggiunti nel codice principale tramite #include)
-
-- Il file ![activities.cpp](/modules/activities_launcher/activities.cpp) deve contenere l'implementazione delle seguenti funzioni:
-    * `state` è un tipo di dato definito tramite 
-        `typedef state enum {RUNNING, USER_INACTIVE, TASK_COMPLETED, TASK_CLOSED, UNDEFINED}`
-    * `state launch_game()` per lanciare casualmente un minigioco. La funzione tiene occupato il microcontrollore fino al suo completamento e restituisce un esito.
-- Il file ![ringtones.cpp](/modules/ringtones_manager/ringtones.cpp) deve contenere l'implementazione delle seguenti funzioni:
-    * `void start_ringtone(unsigned int piezoPin)` per lanciare casualmente una suoneria. La funzione, una volta che viene lanciata, la suoneria viene riprodotta ciclicamente fino a quando non viene invocata la funzione `void start_ringtone(int ringtone)`.
-    * `bool start_ringtone(unsigned int piezoPin,unsigned int ringtone)` per lanciare una suoneria specifica. L'esecuzione rimane la stessa di `void start_ringtone()` ma restituisce `false` in caso di errore
-    * `void stop_ringtone()` per fermare a suoneria attualmente in riproduzione. 
-    * `int get_ringtones_number()` restituisce il numero di suonerie registrate.
-    * `char* get_ringtone_description(unsigned int ringtone)` restituisce una stringa con le informazioni della suoneria
-
-Dato che CCS non permette di utilizzare `bool` come tipo di dato, nelle cartelle lib di tutte le sezioni del progetto è presente una libreria che definisce questo tipo di dato.
-
-Il clock system, quando deve dialogare con gli altri moduli, richiama semplicemente le funzioni implementate nei files ![ringtones.cpp](/modules/ringtones_manager/ringtones.h) e ![activities.cpp](/modules/activities_launcher/activities.h). 
-  
+For the correct compilation, the main folder of the project be completed adding the driverlib folder, which is excluded from the GitHub project. It can be downloaded directly from the official board site, unpacked, renamed and putted directly in the project.
