@@ -1,5 +1,6 @@
-Presentation -> https://docs.google.com/presentation/d/10k4tyO-IFauvRD4opIbPKDKe18_IUEi6HgjZJo3L0wQ/edit?usp=sharing
-Demonstration -> https://youtu.be/sSwYLoQlOco
+**Power Point Presentation** -> https://docs.google.com/presentation/d/10k4tyO-IFauvRD4opIbPKDKe18_IUEi6HgjZJo3L0wQ/edit?usp=sharing
+
+**Video demonstration** -> https://youtu.be/sSwYLoQlOco
 
 # SmartAlarm
 
