@@ -31,7 +31,7 @@ The diagram shows that the Hardware layer is the base of other layers and the cl
 </p>
 
 
-# Hardware
+# Hardware (Filippo, Vittorio)
 The Hardware layers contains all functions dedicated for the hardware management. It contains:
 - Initialization functions for all features (led, RTC clock, timers, buttons, joypad ADC and display).
 - An autonomus timer system (PWM, delays and timer interrupts).
@@ -50,7 +50,7 @@ The fourth function is used for deactivate the timer choosen by the Rate functio
 
 The display is the only hardware resource that in only initialized and not managed by the Hardware layer, because every layer has to program it in different ways.
 
-# Clock system
+# Clock system (Filippo)
 
 This layer represents the operational basis of the project and has the task of managing all basic information including date, time and day of the week implementing an alarm clock system which, in addition to having the same characteristics as normal alarm clocks , allows you to launch and monitor minigames via the Activity launch system. From the user's point of view, the clock system manages two main menus: one dedicated to displaying information and one for changing settings. 
 
@@ -75,23 +75,14 @@ Ideas for future upgrades:
 - An even more complex system could allow the user to choose one or more days of the week in which to activate a single ringtone (actually management could be too difficult)
 
 
-## Activity launch system
+# Activity launch system (Ennio)
 
 The activity launch system is an aspect of programming that deserves its own description. The idea is to create a small system capable of launching a minigame randomly, having a list of choices available. Launching activities corresponds to launching activity-specific functions and handling function return different results.
 
 Ideas for future upgrades:
 - the clock system might show a specific screen image when the alarm occours ,until the user is ready to play. One idea might be to display a dedicated waiting screen and launch the game on a keypress.
 
-## Ringtones system 
-
-This layer simply deals with the management and triggering of ringtones. The ringtones are played cyclically via the built-in buzzer and can be of different lengths.
-
-The ringtone system uses timers and buzzer without blocking the normal execution of the clock system.
-
-Ideas for future upgrades:
-- Add one function to turn on a specific ringtones instead using a random system which choose automatically ones.
-
-### Activities
+### Activities (Ennio, Vittorio)
 
 Each activity is actually built and packaged as a function that is launched by the activity launch system. The functions can use all the hardware devices managed in the Hardware layer. The functions must return a predetermined value to tell the clock system how the task was performed:
  
@@ -104,6 +95,15 @@ Activities can be of any type (should cause the user to wake up completely inste
 
 Ideas for future upgrades:
 - Add one more activity state Canceled, triggered when the user doesn't like the current game.
+
+# Ringtones system (Vittorio)
+
+This layer simply deals with the management and triggering of ringtones. The ringtones are played cyclically via the built-in buzzer and can be of different lengths.
+
+The ringtone system uses timers and buzzer without blocking the normal execution of the clock system.
+
+Ideas for future upgrades:
+- Add one function to turn on a specific ringtones instead using a random system which choose automatically ones.
 
 # Project structure
 The file ![main.c](/main.c) contains the basic code for initialize all hardware and ttart the clock system, which set up the main screen and provide all the features of the alarm.
