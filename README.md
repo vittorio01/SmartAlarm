@@ -114,4 +114,13 @@ The folder ![modules](/modules) contain all four system layers in four different
 - The folder ![ringtones_manager](/modules/ringtones_manager) contains the ringtones system and all ringtones packed with a *.h files in the ![ringtones](/modules/ringtones_manager/ringtones) subfolder.
 - The folder ![hardware](/modules/ringtones_manager) contains the hardware layer.
 
-For the correct compilation, the main folder of the project be completed adding the driverlib folder, which is excluded from the GitHub project. It can be downloaded directly from the official board site, unpacked, renamed and putted directly in the project.
+# Compiling the project
+SmartAlarm ia a project for MSP432 development kit with booster Pack. 
+
+This project contains necessary files to be compiled and loaded with Code Composer Studio.
+
+For the correct compilation, the main folder of the project must be completed by adding the driverlib folder, which is excluded from the GitHub project. It can be downloaded directly from the official board site, unpacked, renamed and putted directly in the project.
+
+# Acknowledgements
+
+![https://www.unitn.it/](https://www.unitn.it/sites/www.unitn.it/themes/unitn_theme/images/newlogo_unitn_it.png)
