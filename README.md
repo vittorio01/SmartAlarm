@@ -10,7 +10,7 @@ SmartAlarm is a project that involves the development of an intelligent alarm cl
 - The laziest who, once awake, can't get out of bed and fall asleep again after a few seconds.
 
 
-The project is being developed to run on a Ti MSP432 development board, equipped with an Arm Cortex M4 microcontroller, with its BoosterPack. The original idea is to implement in the alarm clock, in addition to the basic functions of a normal alarm clock, mini-games / activities capable of reactivating the brain activity of the user as quick as possible. 
+The project is being developed to run on a Ti [MSP432P401R launchpad](https://software-dl.ti.com/msp430/msp430_public_sw/mcu/msp430/SIMPLELINK_MSP432_SDK/1.20.00.45/exports/docs/simplelink_mcu_sdk/project0/project0/docs/MSP-EXP432P401R.html), equipped with an Arm Cortex M4 microcontroller, with its ![BoosterPack](https://www.ti.com/tool/BOOSTXL-EDUMKII). The original idea is to implement in the alarm clock, in addition to the basic functions of a normal alarm clock, mini-games / activities capable of reactivating the brain activity of the user as quick as possible. 
 ## Usage Warnings 
 
 The SmartAlarm alarm clock may lead to the development of the following symptoms:
@@ -115,11 +115,14 @@ The folder ![modules](/modules) contain all four system layers in four different
 - The folder ![hardware](/modules/ringtones_manager) contains the hardware layer.
 
 # Compiling the project
-SmartAlarm ia a project for MSP432 development kit with booster Pack. 
 
 This project contains necessary files to be compiled and loaded with Code Composer Studio.
 
-For the correct compilation, the main folder of the project must be completed by adding the driverlib folder, which is excluded from the GitHub project. It can be downloaded directly from the official board site, unpacked, renamed and putted directly in the project.
+For the correct compilation, the main folder of the project must be completed by adding the driverlib folder (contains the MSP432 Driverlib SDK), which is excluded from the GitHub project. It can be downloaded from ![This link](https://drive.google.com/file/d/1krZfBNAFiE6yAChQfHZVE-b0wfuDitgV/view), unpacked, renamed and putted directly in the project.
+
+<p align="center">
+    <img src="/documentation/project_root.png" alt="project root">
+</p>
 
 # Acknowledgements
 
